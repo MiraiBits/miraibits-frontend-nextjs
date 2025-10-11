@@ -1,10 +1,11 @@
 "use client";
 import Link from 'next/link';
+import type { Route } from 'next';
 import { usePathname } from 'next/navigation';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../lib/cart';
 
-const navLinks = [
+const navLinks: Array<{ href: Route; label: string }> = [
   { href: '/', label: 'Home' },
   { href: '/products', label: 'Products' },
   { href: '/about', label: 'About' },
