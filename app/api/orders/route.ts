@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
   // Fire and forget email
   sendOrderEmail(order).catch(() => {});
 
-  return NextResponse.redirect(new URL('/success', req.url));
+  return NextResponse.redirect(new URL(`/success?orderId=${id}`, req.url));
 }
 
 
