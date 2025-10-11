@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import type { Route } from 'next';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../lib/cart';
 
@@ -15,8 +15,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const { totalQuantity } = useCart();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const q = searchParams?.get('q') || '';
 
   function onSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,7 +48,6 @@ export default function Navbar() {
             <input
               id="navbar-search"
               name="q"
-              defaultValue={q}
               placeholder="Search products"
               className="h-9 w-56 border border-gray-200 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-sakura-200"
             />
