@@ -1,0 +1,49 @@
+[
+  {
+    "id": "arduino-uno-r3",
+    "slug": "arduino-uno-r3",
+    "name": "Arduino Uno R3",
+    "shortDescription": "Classic 8-bit AVR board for learning and prototyping.",
+    "description": "The Arduino Uno R3 is a microcontroller board based on the ATmega328P. Perfect for beginners and hobbyists. Includes USB-B connector, 14 digital I/O pins, and 6 analog inputs.",
+    "price": 3500,
+    "image": "/images/arduino-uno.jpg"
+  },
+  {
+    "id": "esp32-devkit-v1",
+    "slug": "esp32-devkit-v1",
+    "name": "ESP32 DevKit V1",
+    "shortDescription": "Wi-Fi + Bluetooth MCU with dual-core processing.",
+    "description": "ESP32 DevKit V1 features the ESP-WROOM-32 module with Wi-Fi and Bluetooth connectivity. Ideal for IoT projects requiring low power and high performance.",
+    "price": 2200,
+    "image": "/images/esp32.jpg"
+  },
+  {
+    "id": "stm32f103c8t6-bluepill",
+    "slug": "stm32f103c8t6-bluepill",
+    "name": "STM32F103C8T6 Blue Pill",
+    "shortDescription": "ARM Cortex-M3 development board for advanced makers.",
+    "description": "The STM32F103C8T6 'Blue Pill' offers 72MHz Cortex-M3 performance with 64KB Flash and 20KB RAM. Great for embedded experimentation.",
+    "price": 1200,
+    "image": "/images/bluepill.jpg"
+  },
+  {
+    "id": "hc-sr04-ultrasonic",
+    "slug": "hc-sr04-ultrasonic",
+    "name": "HC-SR04 Ultrasonic Sensor",
+    "shortDescription": "Affordable distance sensor for robotics and DIY.",
+    "description": "The HC-SR04 ultrasonic sensor provides 2cm-400cm non-contact measurement with a ranging accuracy up to 3mm.",
+    "price": 300,
+    "image": "/images/hc-sr04.jpg"
+  },
+  {
+    "id": "bme280-sensor",
+    "slug": "bme280-sensor",
+    "name": "BME280 Temperature Humidity Pressure Sensor",
+    "shortDescription": "Bosch sensor for environmental monitoring.",
+    "description": "The BME280 measures temperature, humidity, and barometric pressure with high accuracy. Supports I2C and SPI interfaces.",
+    "price": 900,
+    "image": "/images/bme280.jpg"
+  }
+]
+
+
