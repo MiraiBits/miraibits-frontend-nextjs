@@ -16,7 +16,7 @@ function CartInner() {
           const subtotal = p.price * it.quantity;
           return (
             <div key={it.productId} className="card p-4 flex items-center gap-4">
-              <img src={p.image} alt={p.name} className="h-16 w-16 rounded object-cover" />
+              <img src={p.image} alt={p.name} className="h-16 w-16 rounded object-contain" />
               <div className="flex-1">
                 <div className="font-medium">{p.name}</div>
                 <div className="text-sm text-gray-600">¥{p.price.toLocaleString()} each</div>
