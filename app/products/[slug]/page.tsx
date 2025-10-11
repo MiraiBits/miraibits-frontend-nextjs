@@ -16,7 +16,7 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
     <main className="container-px mx-auto py-10">
       <div className="grid md:grid-cols-2 gap-8 items-start">
         <div className="aspect-square w-full overflow-hidden rounded-xl bg-gray-50">
-          <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+          <img src={product.image} alt={product.name} className="h-full w-full object-contain" />
         </div>
         <div>
           <h1 className="text-2xl font-semibold">{product.name}</h1>
