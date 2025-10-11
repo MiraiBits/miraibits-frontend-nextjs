@@ -1,13 +1,16 @@
-'use client';
-
-import { getProductBySlug } from '../../../lib/products';
-import { useCart } from '../../../lib/cart';
 import { notFound } from 'next/navigation';
-import React from 'react';
+import { getProductBySlug, getProducts } from '../../../lib/products';
+import AddToCartButton from './AddToCartButton';
 
-function ProductDetail({ slug }: { slug: string }) {
+export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  return (
+    <AsyncProduct params={params} />
+  );
+}
+
+async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const product = getProductBySlug(slug);
-  const { addItem } = useCart();
   if (!product) return notFound();
   return (
     <main className="container-px mx-auto py-10">
@@ -20,7 +23,7 @@ function ProductDetail({ slug }: { slug: string }) {
           <p className="mt-2 text-gray-600">{product.description}</p>
           <div className="mt-4 text-xl font-semibold">¥{product.price.toLocaleString()}</div>
           <div className="mt-6 flex gap-3">
-            <button className="btn btn-primary" onClick={() => addItem(product)}>Add to Cart</button>
+            <AddToCartButton product={product} />
           </div>
         </div>
       </div>
@@ -28,8 +31,9 @@ function ProductDetail({ slug }: { slug: string }) {
   );
 }
 
-export default function ProductDetailPage({ params }: { params: { slug: string } }) {
-  return <ProductDetail slug={params.slug} />;
+export async function generateStaticParams() {
+  const products = getProducts();
+  return products.map(p => ({ slug: p.slug }));
 }
 
 
