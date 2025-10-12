@@ -13,8 +13,8 @@ export default function ProductCard({ product }: { product: Product }) {
         <Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'contain' }} />
       </div>
       <div className="mt-3 flex-1">
-        <h3 className="text-gray-900 font-medium">{product.name}</h3>
-        <p className="text-gray-600 text-sm mt-1">{product.shortDescription}</p>
+        <h3 className="text-gray-900 dark:text-gray-100 font-medium">{product.name}</h3>
+        <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">{product.shortDescription}</p>
       </div>
       <div className="mt-3 flex items-center justify-between">
         <span className="font-semibold">{formatCurrencyLKR(product.price)}</span>
