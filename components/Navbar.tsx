@@ -1,14 +1,13 @@
 "use client";
 import Link from 'next/link';
 import type { Route } from 'next';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../lib/cart';
 import ThemeToggleButton from './ThemeToggleButton';
 
 const navLinks: Array<{ href: Route; label: string }> = [
   { href: '/', label: 'Home' },
-  { href: '/products', label: 'Products' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -16,6 +15,15 @@ const navLinks: Array<{ href: Route; label: string }> = [
 export default function Navbar() {
   const pathname = usePathname();
   const { totalQuantity } = useCart();
+  const router = useRouter();
+
+  function onSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const query = String(formData.get('q') || '').trim();
+    const url = query ? `/?q=${encodeURIComponent(query)}` : '/';
+    router.push(url as any);
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur border-b border-gray-100 dark:border-gray-800 shadow-soft">
@@ -39,6 +47,17 @@ export default function Navbar() {
             </Link>
           ))}
           <Link href="/cart" className="relative inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+          <form onSubmit={onSearchSubmit} className="flex items-center gap-2" role="search" aria-label="Site search">
+            <label htmlFor="navbar-search" className="sr-only">Search products</label>
+            <input
+              id="navbar-search"
+              name="q"
+              placeholder="Search products"
+              className="h-9 w-56 border border-gray-200 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-sakura-200"
+            />
+            <button type="submit" className="btn btn-ghost h-9 px-3 text-sm">Search</button>
+          </form>
+          <Link href="/cart" className="relative inline-flex items-center text-gray-600 hover:text-gray-900">
             <ShoppingCart className="h-5 w-5" />
             {totalQuantity > 0 && (
               <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-gray-900 text-white text-[10px] flex items-center justify-center">

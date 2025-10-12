@@ -1,18 +1,14 @@
-"use client";
-import { useEffect } from 'react';
-import { useCart } from '../../lib/cart';
-import Link from 'next/link';
+import SuccessClient from './SuccessClient';
 
-export default function SuccessPage() {
-  const { clearCart } = useCart();
-  useEffect(() => { clearCart(); }, [clearCart]); // Only run once on mount
-  return (
-    <main className="container-px mx-auto py-16 text-center max-w-xl">
-      <h1 className="text-2xl font-semibold">Thank you for your order</h1>
-      <p className="mt-3 text-gray-600">We will review your payment proof and contact you shortly.</p>
-      <Link href="/" className="btn btn-primary mt-6">Back to Home</Link>
-    </main>
-  );
+export default async function SuccessPage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const sp = (await searchParams) || {};
+  const raw = sp['orderId'];
+  const orderId = Array.isArray(raw) ? raw[0] : raw;
+  return <SuccessClient orderId={orderId} />;
 }
 
 

@@ -1,17 +1,21 @@
 import Link from 'next/link';
 
 export default function Footer() {
+  const EMAIL = process.env.COMPANY_EMAIL || 'orders@miraibits.jp';
+  const PHONE = process.env.COMPANY_PHONE || '+94 11 234 5678';
+  const ADDRESS = process.env.COMPANY_ADDRESS || 'Colombo, Sri Lanka';
   return (
     <footer className="mt-16 border-t border-gray-100 dark:border-gray-800 bg-white/70 dark:bg-gray-900/70 backdrop-blur">
       <div className="container-px mx-auto py-10 grid gap-6 md:grid-cols-3 text-sm text-gray-600 dark:text-gray-400">
         <div>
-          <h3 className="text-gray-900 dark:text-gray-100 font-semibold mb-2">Miraibits</h3>
-          <p className="">Japanese-inspired electronics for makers.</p>
+          <h3 className="text-gray-900 font-semibold mb-2">Miraibits</h3>
+          <p className="">Electronics for makers.</p>
+          <p className="mt-1 text-gray-500">{ADDRESS}</p>
         </div>
         <div>
-          <h4 className="text-gray-900 dark:text-gray-100 font-medium mb-2">Contact</h4>
-          <p>Email: <a className="underline" href="mailto:orders@miraibits.jp">orders@miraibits.jp</a></p>
-          <p>Phone: +81-3-1234-5678</p>
+          <h4 className="text-gray-900 font-medium mb-2">Contact</h4>
+          <p>Email: <a className="underline" href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
+          <p>Phone: {PHONE}</p>
         </div>
         <div>
           <h4 className="text-gray-900 dark:text-gray-100 font-medium mb-2">Social</h4>

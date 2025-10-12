@@ -2,6 +2,8 @@
 
 import { useCart } from '../../lib/cart';
 import { getProductById } from '../../lib/products';
+import { formatCurrencyLKR } from '../../lib/currency';
+import Image from 'next/image';
 import Link from 'next/link';
 
 function CartInner() {
@@ -16,10 +18,12 @@ function CartInner() {
           const subtotal = p.price * it.quantity;
           return (
             <div key={it.productId} className="card p-4 flex items-center gap-4">
-              <img src={p.image} alt={p.name} className="h-16 w-16 rounded object-contain" />
+              <div className="h-16 w-16 rounded bg-gray-50 relative overflow-hidden">
+                <Image src={p.image} alt={p.name} fill sizes="64px" style={{ objectFit: 'contain' }} />
+              </div>
               <div className="flex-1">
                 <div className="font-medium">{p.name}</div>
-                <div className="text-sm text-gray-600">¥{p.price.toLocaleString()} each</div>
+                <div className="text-sm text-gray-600">{formatCurrencyLKR(p.price)} each</div>
               </div>
               <input
                 type="number"
@@ -28,7 +32,7 @@ function CartInner() {
                 onChange={e => updateQuantity(it.productId, Math.max(1, Number(e.target.value)))}
                 className="w-20 border border-gray-200 rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-700"
               />
-              <div className="w-32 text-right font-medium">¥{subtotal.toLocaleString()}</div>
+              <div className="w-32 text-right font-medium">{formatCurrencyLKR(subtotal)}</div>
               <button className="btn btn-ghost" onClick={() => removeItem(it.productId)}>Remove</button>
             </div>
           );
@@ -36,7 +40,7 @@ function CartInner() {
       </div>
       {items.length > 0 && (
         <div className="mt-6 flex items-center justify-between">
-          <div className="text-xl font-semibold">Total: ¥{totalPrice.toLocaleString()}</div>
+          <div className="text-xl font-semibold">Total: {formatCurrencyLKR(totalPrice)}</div>
           <Link href="/checkout" className="btn btn-primary">Proceed to Checkout</Link>
         </div>
       )}

@@ -2,6 +2,7 @@
 
 import { useCart } from '../../lib/cart';
 import { getProductById } from '../../lib/products';
+import { formatCurrencyLKR } from '../../lib/currency';
 
 function CheckoutInner() {
   const { items, totalPrice } = useCart();
@@ -37,14 +38,14 @@ function CheckoutInner() {
               return (
                 <div key={it.productId} className="flex justify-between">
                   <span>{p.name} × {it.quantity}</span>
-                  <span>¥{(p.price * it.quantity).toLocaleString()}</span>
+                  <span>{formatCurrencyLKR(p.price * it.quantity)}</span>
                 </div>
               );
             })}
           </div>
           <div className="mt-3 flex justify-between font-medium">
             <span>Total</span>
-            <span>¥{totalPrice.toLocaleString()}</span>
+            <span>{formatCurrencyLKR(totalPrice)}</span>
           </div>
           <input type="hidden" name="cart" value={encodeURIComponent(JSON.stringify(items))} />
           <input type="hidden" name="total" value={totalPrice} />
