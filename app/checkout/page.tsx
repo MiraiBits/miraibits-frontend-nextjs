@@ -3,9 +3,18 @@
 import { useCart } from '../../lib/cart';
 import { getProductById } from '../../lib/products';
 import { formatCurrencyLKR } from '../../lib/currency';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import CartPDF from '../../components/CartPDF';
+import { useEffect, useState } from 'react';
 
 function CheckoutInner() {
   const { items, totalPrice } = useCart();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <main className="container-px mx-auto py-10 max-w-3xl">
       <h1 className="text-2xl font-semibold">Checkout</h1>
@@ -56,7 +65,18 @@ function CheckoutInner() {
           <input type="file" name="proof" accept="image/*,application/pdf" required />
         </section>
 
-        <button type="submit" className="btn btn-primary">Submit Order</button>
+        <div className="flex items-center justify-end gap-4">
+          {isClient && (
+            <PDFDownloadLink
+              document={<CartPDF items={items} totalPrice={totalPrice} />}
+              fileName="cart.pdf"
+              className="btn btn-secondary"
+            >
+              {({ loading }) => (loading ? 'Loading document...' : 'Download PDF')}
+            </PDFDownloadLink>
+          )}
+          <button type="submit" className="btn btn-primary">Submit Order</button>
+        </div>
       </form>
     </main>
   );
