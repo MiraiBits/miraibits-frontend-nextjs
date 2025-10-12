@@ -52,7 +52,7 @@ export default function Navbar() {
               id="navbar-search"
               name="q"
               placeholder="Search products"
-              className="h-9 w-56 border border-gray-200 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-sakura-200"
+              className="h-9 w-56 border border-gray-200 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-sakura-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:ring-gray-600"
             />
             <button type="submit" className="btn btn-ghost h-9 px-3 text-sm">Search</button>
           </form>
