@@ -15,7 +15,7 @@ html, body {
 }
 
 .card {
-  @apply bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-soft dark:bg-gray-800/80 dark:border-gray-700;
+  @apply bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-soft dark:bg-gray-800 dark:border-gray-700;
 }
 
 .btn {
@@ -23,11 +23,9 @@ html, body {
 }
 
 .btn-primary {
-  @apply bg-gray-900 text-white hover:bg-gray-800 dark:bg-sakura-500 dark:hover:bg-sakura-600 dark:text-gray-900;
+  @apply bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-200;
 }
 
 .btn-ghost {
   @apply bg-white text-gray-900 border border-gray-200 hover:bg-gray-50;
 }
-
-
