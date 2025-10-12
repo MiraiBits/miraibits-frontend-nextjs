@@ -5,9 +5,18 @@ import { getProductById } from '../../lib/products';
 import { formatCurrencyLKR } from '../../lib/currency';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import CartPDF from '../../components/CartPDF';
+import { useEffect, useState } from 'react';
 
 function CartInner() {
   const { items, totalPrice, updateQuantity, removeItem } = useCart();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <main className="container-px mx-auto py-10">
       <h1 className="text-2xl font-semibold">Your Cart</h1>
@@ -41,7 +50,18 @@ function CartInner() {
       {items.length > 0 && (
         <div className="mt-6 flex items-center justify-between">
           <div className="text-xl font-semibold">Total: {formatCurrencyLKR(totalPrice)}</div>
-          <Link href="/checkout" className="btn btn-primary">Proceed to Checkout</Link>
+          <div className="flex items-center gap-4">
+            {isClient && (
+              <PDFDownloadLink
+                document={<CartPDF items={items} totalPrice={totalPrice} />}
+                fileName="cart.pdf"
+                className="btn btn-secondary"
+              >
+                {({ loading }) => (loading ? 'Loading document...' : 'Download PDF')}
+              </PDFDownloadLink>
+            )}
+            <Link href="/checkout" className="btn btn-primary">Proceed to Checkout</Link>
+          </div>
         </div>
       )}
     </main>
