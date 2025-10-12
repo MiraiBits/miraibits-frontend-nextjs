@@ -35,13 +35,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning className={`h-full bg-white text-gray-900 ${inter.className} ${noto.className}`}>
       <body suppressHydrationWarning className="min-h-screen antialiased selection:bg-sakura-100 selection:text-gray-900 flex flex-col">
-        <CartProvider>
-          <Navbar />
-          <div className="flex-1">
-            {children}
-          </div>
-          <Footer />
-        </CartProvider>
+        <ThemeProvider>
+          <CartProvider>
+            <Navbar />
+            <div className="flex-1">
+              {children}
+            </div>
+            <Footer />
+          </CartProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
