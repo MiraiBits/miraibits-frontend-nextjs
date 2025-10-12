@@ -30,7 +30,7 @@ function CartInner() {
                 min={1}
                 value={it.quantity}
                 onChange={e => updateQuantity(it.productId, Math.max(1, Number(e.target.value)))}
-                className="w-20 border border-gray-200 rounded px-2 py-1"
+                className="w-20 border border-gray-200 rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-700"
               />
               <div className="w-32 text-right font-medium">{formatCurrencyLKR(subtotal)}</div>
               <button className="btn btn-ghost" onClick={() => removeItem(it.productId)}>Remove</button>
