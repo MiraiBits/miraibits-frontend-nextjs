@@ -46,7 +46,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link href="/cart" className="relative inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
           <form onSubmit={onSearchSubmit} className="flex items-center gap-2" role="search" aria-label="Site search">
             <label htmlFor="navbar-search" className="sr-only">Search products</label>
             <input
