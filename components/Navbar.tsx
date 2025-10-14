@@ -46,16 +46,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <form onSubmit={onSearchSubmit} className="flex items-center gap-2" role="search" aria-label="Site search">
-            <label htmlFor="navbar-search" className="sr-only">Search products</label>
-            <input
-              id="navbar-search"
-              name="q"
-              placeholder="Search products"
-              className="h-9 w-56 border border-gray-200 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-sakura-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:ring-gray-600"
-            />
-            <button type="submit" className="btn btn-ghost h-9 px-3 text-sm">Search</button>
-          </form>
           <Link href="/cart" className="relative inline-flex items-center text-gray-600 hover:text-gray-900">
             <ShoppingCart className="h-5 w-5" />
             {totalQuantity > 0 && (
