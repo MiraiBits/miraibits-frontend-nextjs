@@ -4,6 +4,7 @@
 /build
 /tmp
 .next/
+.open-next/
 
 # Logs
 logs
