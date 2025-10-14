@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",
@@ -31,8 +33,16 @@
     "typescript": "^5.6.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/jest": "^30.0.0",
     "critters": "^0.0.23",
     "eslint": "^9.17.0",
-    "eslint-config-next": "15.5.4"
+    "eslint-config-next": "15.5.4",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "playwright": "^1.56.0",
+    "ts-jest": "^29.4.5"
   }
 }
