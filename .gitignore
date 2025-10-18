@@ -4,6 +4,7 @@
 /build
 /tmp
 .next/
+orders.json
 
 # Logs
 logs
