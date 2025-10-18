@@ -14,10 +14,10 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="mt-3 flex-1">
         <h3 className="text-gray-900 dark:text-gray-100 font-medium">{product.name}</h3>
-        <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">{product.shortDescription}</p>
+  <p className="text-gray-700 dark:text-gray-300 text-sm mt-1">{product.shortDescription}</p>
       </div>
       <div className="mt-3 flex items-center justify-between">
-        <span className="font-semibold">{formatCurrencyLKR(product.price)}</span>
+        <span className="font-semibold text-gray-900 dark:text-gray-100">{formatCurrencyLKR(product.price)}</span>
         <div className="flex gap-2">
           <Link href={`/products/${product.slug}`} className="btn btn-ghost">View Details</Link>
           <button onClick={() => addItem(product)} className="btn btn-primary">Add to Cart</button>

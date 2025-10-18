@@ -13,7 +13,7 @@ export default function ContactPage() {
   return (
     <main className="container-px mx-auto py-10 max-w-3xl">
       <h1 className="text-2xl font-semibold">Contact</h1>
-      <div className="mt-4 text-gray-600 space-y-2">
+  <div className="mt-4 text-gray-700 dark:text-gray-300 space-y-2">
         <p>Email: {EMAIL}</p>
         <p>Phone: {PHONE}</p>
         <p>Address: {ADDRESS}</p>
