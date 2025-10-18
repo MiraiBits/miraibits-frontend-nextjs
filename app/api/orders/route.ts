@@ -14,7 +14,8 @@ const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 
 async function ensureDirs() {
   await mkdir(DATA_DIR, { recursive: true });
-  await mkdir(UPLOAD_DIR, { recursive: true });
+  // UPLOAD_DIR is no longer needed
+  // await mkdir(UPLOAD_DIR, { recursive: true });
 }
 
 export async function POST(req: NextRequest) {
@@ -26,9 +27,8 @@ export async function POST(req: NextRequest) {
   const address = String(formData.get('address') || '');
   const cartEncoded = String(formData.get('cart') || '');
   const totalRaw = Number(formData.get('total') || 0);
-  const proof = formData.get('proof') as File | null;
 
-  if (!name || !email || !cartEncoded || !proof) {
+  if (!name || !email || !cartEncoded) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
 
@@ -51,32 +51,13 @@ export async function POST(req: NextRequest) {
   const id = crypto.randomUUID();
   const createdAt = new Date().toISOString();
 
-  let proofFilename: string | undefined;
-  if (proof) {
-    const arrayBuffer = await proof.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const ext = path.extname((proof as any).name || '') || '.bin';
-    proofFilename = `${id}${ext}`;
-    await writeFile(path.join(UPLOAD_DIR, proofFilename), buffer);
-  }
-
   const order: Order = {
     id,
     createdAt,
     customer: { name, email, phone, address },
     items,
     total,
-    proofFilename,
   };
-
-  // Persist to JSON file
-  let orders: Order[] = [];
-  try {
-    const existing = await readFile(ORDERS_FILE, 'utf8');
-    orders = JSON.parse(existing);
-  } catch {}
-  orders.push(order);
-  await writeFile(ORDERS_FILE, JSON.stringify(orders, null, 2));
 
   // Fire and forget email
   sendOrderEmail(order).catch(() => {});
