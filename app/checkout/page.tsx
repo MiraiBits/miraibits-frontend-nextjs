@@ -1,11 +1,15 @@
-'use client';
+"use client";
 
 import { useCart } from '../../lib/cart';
 import { getProductById } from '../../lib/products';
 import { formatCurrencyLKR } from '../../lib/currency';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 function CheckoutInner() {
-  const { items, totalPrice } = useCart();
+  const { items, totalPrice, clearCart } = useCart();
+  const router = useRouter();
+  const [submitting, setSubmitting] = useState(false);
   return (
     <main className="container-px mx-auto py-10 max-w-3xl">
       <h1 className="text-2xl font-semibold">Checkout</h1>
@@ -21,7 +25,28 @@ function CheckoutInner() {
         </ul>
       </section>
 
-      <form className="mt-6 grid gap-6" action="/api/orders" method="post" encType="multipart/form-data">
+      <form className="mt-6 grid gap-6" onSubmit={async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+        const form = e.currentTarget as HTMLFormElement;
+        const formData = new FormData(form);
+        // attach cart and total
+        formData.set('cart', encodeURIComponent(JSON.stringify(items)));
+        formData.set('total', String(totalPrice));
+
+        try {
+          const res = await fetch('/api/orders', { method: 'POST', body: formData });
+          if (!res.ok) throw new Error('Order failed');
+          const data = await res.json();
+          // clear client cart
+          clearCart();
+          // navigate to success page
+          router.push(`/success?orderId=${data.orderId}`);
+        } catch (err) {
+          console.error(err);
+          setSubmitting(false);
+        }
+      }} encType="multipart/form-data">
         <section className="card p-4 grid gap-3">
           <h2 className="font-medium">Contact Details</h2>
           <input name="name" placeholder="Full Name" required className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
@@ -56,7 +81,7 @@ function CheckoutInner() {
           <input type="file" name="proof" accept="image/*,application/pdf" required className="text-gray-900 dark:text-gray-100" />
         </section>
 
-        <button type="submit" className="btn btn-primary">Submit Order</button>
+        <button type="submit" className="btn btn-primary" disabled={submitting}>{submitting ? 'Submitting...' : 'Submit Order'}</button>
       </form>
     </main>
   );

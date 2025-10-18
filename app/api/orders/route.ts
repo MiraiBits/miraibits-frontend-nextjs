@@ -81,7 +81,8 @@ export async function POST(req: NextRequest) {
   // Fire and forget email
   sendOrderEmail(order).catch(() => {});
 
-  return NextResponse.redirect(new URL(`/success?orderId=${id}`, req.url));
+  // Return JSON so client can perform client-side navigation and clear cart
+  return NextResponse.json({ orderId: id }, { status: 201 });
 }
 
 
