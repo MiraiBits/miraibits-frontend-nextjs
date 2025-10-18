@@ -4,6 +4,7 @@
 /build
 /tmp
 .next/
+uploads/
 
 # Logs
 logs
