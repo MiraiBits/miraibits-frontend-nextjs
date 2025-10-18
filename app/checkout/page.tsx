@@ -36,15 +36,24 @@ function CheckoutInner() {
 
         try {
           const res = await fetch('/api/orders', { method: 'POST', body: formData });
-          if (!res.ok) throw new Error('Order failed');
+          if (!res.ok) {
+            const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
+            console.error('Order submission failed:', errorData);
+            alert(`Order failed: ${errorData.error || 'Please try again'}`);
+            throw new Error(errorData.error || 'Order failed');
+          }
           const data = await res.json();
           // clear client cart
           clearCart();
           // navigate to success page
           router.push(`/success?orderId=${data.orderId}`);
         } catch (err) {
-          console.error(err);
+          console.error('Order error:', err);
           setSubmitting(false);
+          // Show error to user if not already shown
+          if (err instanceof Error && !err.message.includes('Order failed')) {
+            alert('An error occurred. Please check your connection and try again.');
+          }
         }
       }} encType="multipart/form-data">
         <section className="card p-4 grid gap-3">

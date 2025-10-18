@@ -14,7 +14,10 @@ const getPrisma = async () => {
 
 export async function POST(req: NextRequest) {
   try {
+    console.log('Order API: Starting order creation...');
     const prisma = await getPrisma();
+    console.log('Order API: Prisma client loaded');
+    
     const formData = await req.formData();
     const name = String(formData.get('name') || '');
     const email = String(formData.get('email') || '');
@@ -24,7 +27,10 @@ export async function POST(req: NextRequest) {
     const totalRaw = Number(formData.get('total') || 0);
     const proof = formData.get('proof') as File | null;
 
+    console.log('Order API: Form data received', { name, email, hasProof: !!proof, cartLength: cartEncoded.length });
+
     if (!name || !email || !cartEncoded || !proof) {
+      console.error('Order API: Missing required fields', { name: !!name, email: !!email, cartEncoded: !!cartEncoded, proof: !!proof });
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -54,6 +60,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Create order in database
+    console.log('Order API: Creating order in database...');
     const dbOrder = await prisma.order.create({
       data: {
         customerName: name,
@@ -67,6 +74,7 @@ export async function POST(req: NextRequest) {
         proofFilename,
       },
     });
+    console.log('Order API: Order created successfully', dbOrder.id);
 
     // Convert Prisma order to our Order type for email
     const order: Order = {
@@ -91,10 +99,12 @@ export async function POST(req: NextRequest) {
     });
 
     // Return JSON so client can perform client-side navigation and clear cart
+    console.log('Order API: Returning success response');
     return NextResponse.json({ orderId: dbOrder.id }, { status: 201 });
   } catch (error) {
     console.error('Order creation failed:', error);
-    return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create order';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
