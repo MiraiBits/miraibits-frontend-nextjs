@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import type { Order } from "./types";
 import { renderOrderReceiptHtml } from "./email";
 
-export async function generateReceiptPdf(order: Order): Promise<Buffer> {
+export async function generateReceiptPdf(order: Order): Promise<Uint8Array> {
   const html = renderOrderReceiptHtml(order);
 
   const browser = await puppeteer.launch();
