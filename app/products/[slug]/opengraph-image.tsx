@@ -1,39 +1,34 @@
 import { ImageResponse } from 'next/og';
 import { getProductBySlug } from '../../../lib/products';
+import { formatCurrencyLKR } from '../../../lib/currency';
 
-export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
+export const alt = 'Miraibits Product Image';
+export const size = { width: 1200, height: 630 };
 
-export default async function OpengraphImage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const p = getProductBySlug(slug);
-  const brand = process.env.COMPANY_NAME || 'Miraibits';
-  const name = p?.name || 'Product';
-  const price = p ? `Rs. ${p.price.toLocaleString('en-LK')}` : '';
+export default async function OgImage({ params }: { params: { slug: string } }) {
+  const product = getProductBySlug(params.slug);
+
+  if (!product) return new Response('Not found', { status: 404 });
+
+  const productImage = `${process.env.SITE_URL}${product.images[0]}`;
+
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          background: 'linear-gradient(180deg, #ffffff 0%, #f9fafb 100%)',
-          color: '#111827',
-          padding: 64,
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 9999, background: '#ffe4ec', border: '2px solid #fec7d8' }} />
-          <div style={{ fontSize: 40, fontWeight: 700, letterSpacing: 1 }}>{brand}</div>
+      <div tw="flex h-full w-full flex-col items-center justify-center bg-white">
+        <div tw="flex w-full">
+          <div tw="flex w-1/2 flex-col justify-between p-8">
+            <h1 tw="text-6xl font-bold text-gray-900">{product.name}</h1>
+            <div tw="text-4xl font-bold text-gray-800">{formatCurrencyLKR(product.price)}</div>
+          </div>
+          <div tw="relative flex w-1/2 items-center justify-center">
+            <img src={productImage} alt={product.name} tw="h-auto w-full" />
+          </div>
         </div>
-        <div style={{ fontSize: 58, fontWeight: 700 }}>{name}</div>
-        <div style={{ fontSize: 36, color: '#6B7280' }}>{price}</div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+    }
   );
 }
-
-

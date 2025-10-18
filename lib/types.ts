@@ -1,17 +1,19 @@
-export type Product = {
+export interface Product {
   id: string;
   slug: string;
   name: string;
   shortDescription: string;
   description: string;
   price: number;
-  image: string;
-};
+  images: string[];
+  stock: number;
+  specifications: Record<string, string>;
+}
 
-export type CartItem = {
-  productId: string;
+export interface CartItem {
+  product: Product;
   quantity: number;
-};
+}
 
 export type Order = {
   id: string;

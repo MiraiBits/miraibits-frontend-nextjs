@@ -7,7 +7,7 @@ export default function StructuredData({ product }: { product: Product }) {
     '@type': 'Product',
     name: product.name,
     description: product.shortDescription || product.description,
-    image: `${base}${product.image}`,
+    image: `${base}${product.images[0]}`,
     url: `${base}/products/${product.slug}`,
     offers: {
       '@type': 'Offer',

@@ -6,7 +6,20 @@
     "shortDescription": "Classic 8-bit AVR board for learning and prototyping.",
     "description": "The Arduino Uno R3 is a microcontroller board based on the ATmega328P. Perfect for beginners and hobbyists. Includes USB-B connector, 14 digital I/O pins, and 6 analog inputs.",
     "price": 3500,
-    "image": "/images/arduino-uno.jpg"
+    "images": [
+      "/images/products/arduino-uno-r3/1.jpg",
+      "/images/products/arduino-uno-r3/2.jpg",
+      "/images/products/arduino-uno-r3/3.jpg",
+      "/images/products/arduino-uno-r3/4.jpg"
+    ],
+    "stock": 15,
+    "specifications": {
+      "Microcontroller": "ATmega328P",
+      "Operating Voltage": "5V",
+      "Digital I/O Pins": "14",
+      "Analog Input Pins": "6",
+      "Clock Speed": "16 MHz"
+    }
   },
   {
     "id": "esp32-devkit-v1",
@@ -15,7 +28,20 @@
     "shortDescription": "Wi-Fi + Bluetooth MCU with dual-core processing.",
     "description": "ESP32 DevKit V1 features the ESP-WROOM-32 module with Wi-Fi and Bluetooth connectivity. Ideal for IoT projects requiring low power and high performance.",
     "price": 2200,
-    "image": "/images/esp32.jpg"
+    "images": [
+      "/images/products/esp32-devkit-v1/1.jpg",
+      "/images/products/esp32-devkit-v1/2.jpg",
+      "/images/products/esp32-devkit-v1/3.jpg",
+      "/images/products/esp32-devkit-v1/4.jpg"
+    ],
+    "stock": 25,
+    "specifications": {
+      "Processor": "Tensilica Xtensa LX6",
+      "Wireless": "Wi-Fi & Bluetooth",
+      "Operating Voltage": "3.3V",
+      "Digital I/O Pins": "34",
+      "Clock Speed": "240 MHz"
+    }
   },
   {
     "id": "stm32f103c8t6-bluepill",
@@ -24,7 +50,19 @@
     "shortDescription": "ARM Cortex-M3 development board for advanced makers.",
     "description": "The STM32F103C8T6 'Blue Pill' offers 72MHz Cortex-M3 performance with 64KB Flash and 20KB RAM. Great for embedded experimentation.",
     "price": 1200,
-    "image": "/images/bluepill.jpg"
+    "images": [
+      "/images/products/stm32f103c8t6-bluepill/1.jpg",
+      "/images/products/stm32f103c8t6-bluepill/2.jpg",
+      "/images/products/stm32f103c8t6-bluepill/3.jpg",
+      "/images/products/stm32f103c8t6-bluepill/4.jpg"
+    ],
+    "stock": 30,
+    "specifications": {
+      "Core": "ARM Cortex-M3",
+      "Operating Voltage": "3.3V",
+      "Digital I/O Pins": "37",
+      "Clock Speed": "72 MHz"
+    }
   },
   {
     "id": "hc-sr04-ultrasonic",
@@ -33,7 +71,19 @@
     "shortDescription": "Affordable distance sensor for robotics and DIY.",
     "description": "The HC-SR04 ultrasonic sensor provides 2cm-400cm non-contact measurement with a ranging accuracy up to 3mm.",
     "price": 300,
-    "image": "/images/hc-sr04.jpg"
+    "images": [
+      "/images/products/hc-sr04-ultrasonic/1.jpg",
+      "/images/products/hc-sr04-ultrasonic/2.jpg",
+      "/images/products/hc-sr04-ultrasonic/3.jpg",
+      "/images/products/hc-sr04-ultrasonic/4.jpg"
+    ],
+    "stock": 50,
+    "specifications": {
+      "Working Voltage": "5V DC",
+      "Working Current": "15mA",
+      "Measuring Angle": "15°",
+      "Ranging Distance": "2cm - 400cm"
+    }
   },
   {
     "id": "bme280-sensor",
@@ -42,8 +92,18 @@
     "shortDescription": "Bosch sensor for environmental monitoring.",
     "description": "The BME280 measures temperature, humidity, and barometric pressure with high accuracy. Supports I2C and SPI interfaces.",
     "price": 900,
-    "image": "/images/bme280.jpg"
+    "images": [
+      "/images/products/bme280-sensor/1.jpg",
+      "/images/products/bme280-sensor/2.jpg",
+      "/images/products/bme280-sensor/3.jpg",
+      "/images/products/bme280-sensor/4.jpg"
+    ],
+    "stock": 40,
+    "specifications": {
+      "Interface": "I2C, SPI",
+      "Temperature Range": "-40°C to +85°C",
+      "Humidity Range": "0-100%",
+      "Pressure Range": "300-1100 hPa"
+    }
   }
 ]
-
-

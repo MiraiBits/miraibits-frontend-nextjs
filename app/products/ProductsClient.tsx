@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import ProductCard from "../../components/ProductCard";
-import Image from "next/image";
 import type { Product } from "../../lib/types";
 
 type Props = {
@@ -102,7 +101,9 @@ export default function ProductsClient({
           />
           {
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600 dark:text-gray-300">Size</span>
+              <span className="text-sm text-gray-600 dark:text-gray-300">
+                Size
+              </span>
               {[2, 3, 4].map((option) => (
                 <button
                   key={option}
