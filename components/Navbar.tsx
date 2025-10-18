@@ -46,6 +46,14 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <Link href="/cart" className="relative inline-flex items-center text-gray-600 hover:text-gray-900">
+            <ShoppingCart className="h-5 w-5" />
+            {totalQuantity > 0 && (
+              <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-gray-900 text-white text-[10px] flex items-center justify-center">
+                {totalQuantity}
+              </span>
+            )}
+          </Link>
           <ThemeToggleButton />
         </nav>
         <div className="md:hidden flex items-center gap-4">
