@@ -15,7 +15,7 @@ export default function ProductsClient({
 }: Props) {
   const [query, setQuery] = useState(initialQuery || "");
   const AVAILABLE_COLS = [2, 3, 4] as const;
-  const DEFAULT_COLS = 3 as const;
+  const DEFAULT_COLS = 4 as const;
   const [cols, setCols] = useState<number>(DEFAULT_COLS);
 
   // Hydration-safe restore from localStorage after mount
