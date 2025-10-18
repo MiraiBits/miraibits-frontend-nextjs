@@ -5,6 +5,7 @@
 /tmp
 .next/
 orders.json
+uploads/
 
 # Logs
 logs
