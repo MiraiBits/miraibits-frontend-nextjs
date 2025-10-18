@@ -18,17 +18,21 @@ export async function GET(
   const { id } = await params;
 
   try {
+    console.log('Receipt API: Fetching order', id);
     const prisma = await getPrisma();
     const dbOrder = await prisma.order.findUnique({
       where: { id },
     });
 
     if (!dbOrder) {
+      console.error('Receipt API: Order not found', id);
       return new Response(JSON.stringify({ error: "Order not found" }), {
         status: 404,
         headers: { "Content-Type": "application/json" },
       });
     }
+    
+    console.log('Receipt API: Order found, generating PDF...');
 
     // Convert Prisma order to our Order type
     const order: Order = {
@@ -46,17 +50,23 @@ export async function GET(
     };
 
     const pdfBuffer = await generateReceiptPdf(order);
+    console.log('Receipt API: PDF generated, size:', pdfBuffer.length);
 
-    return new Response(new Uint8Array(pdfBuffer), {
+    // Convert Uint8Array to Buffer for proper Response handling
+    const buffer = Buffer.from(pdfBuffer);
+
+    return new Response(buffer, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="miraibits-receipt-${id}.pdf"`,
+        "Content-Length": String(buffer.length),
       },
     });
   } catch (error) {
     console.error('Receipt generation failed:', error);
-    return new Response(JSON.stringify({ error: "Failed to generate receipt" }), {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to generate receipt';
+    return new Response(JSON.stringify({ error: errorMessage, stack: error instanceof Error ? error.stack : undefined }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });

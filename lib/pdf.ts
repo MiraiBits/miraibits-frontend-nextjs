@@ -1,11 +1,23 @@
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
 import type { Order } from "./types";
 import { renderOrderReceiptHtml } from "./email";
 
 export async function generateReceiptPdf(order: Order): Promise<Uint8Array> {
   const html = renderOrderReceiptHtml(order);
 
-  const browser = await puppeteer.launch();
+  // Use different Chrome executable based on environment
+  const browser = await puppeteer.launch({
+    args: process.env.NODE_ENV === 'production' 
+      ? chromium.args 
+      : ['--no-sandbox', '--disable-setuid-sandbox'],
+    defaultViewport: { width: 1280, height: 720 },
+    executablePath: process.env.NODE_ENV === 'production'
+      ? await chromium.executablePath()
+      : process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+    headless: true,
+  });
+  
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: "networkidle0" });
 
