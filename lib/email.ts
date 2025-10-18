@@ -3,9 +3,7 @@ import path from "path";
 import { readFile } from "fs/promises";
 import type { Order } from "./types";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-export async function sendOrderEmail(order: Order) {
+export function renderOrderReceiptHtml(order: Order) {
   const {
     id,
     createdAt,
@@ -15,26 +13,7 @@ export async function sendOrderEmail(order: Order) {
     proofFilename,
   } = order;
 
-  const proofPath = proofFilename
-    ? path.join(process.cwd(), "uploads", proofFilename)
-    : null;
-  let proofAttachment: { filename: string; content: string }[] = [];
-
-  if (proofPath) {
-    try {
-      const fileBuffer = await readFile(proofPath);
-      proofAttachment.push({
-        filename: proofFilename!,
-        content: fileBuffer.toString("base64"),
-      });
-    } catch (err) {
-      console.error("Failed to attach proof:", err);
-    }
-  }
-
-  const orderDate = new Date(createdAt).toLocaleString();
-
-  const orderHtml = `
+  return `
   <!doctype html>
   <html>
     <head>
@@ -173,6 +152,35 @@ export async function sendOrderEmail(order: Order) {
     </body>
   </html>
   `;
+}
+
+export async function sendOrderEmail(order: Order) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const {
+    id,
+    createdAt,
+    customer: { name, email, phone, address },
+    items,
+    total,
+    proofFilename,
+  } = order;
+
+  const proofPath = proofFilename
+    ? path.join(process.cwd(), "uploads", proofFilename)
+    : null;
+  let proofAttachment: { filename: string; content: string }[] = [];
+
+  if (proofPath) {
+    try {
+      const fileBuffer = await readFile(proofPath);
+      proofAttachment.push({
+        filename: proofFilename!,
+        content: fileBuffer.toString("base64"),
+      });
+    } catch (err) {
+      console.error("Failed to attach proof:", err);
+    }
+  }
 
   // Staff notification email with improved format
   const staffHtml = `
@@ -344,7 +352,8 @@ export async function sendOrderEmail(order: Order) {
     );
   }
 
-  /*
+  const orderHtml = renderOrderReceiptHtml(order);
+
   // Send customer email
   const customerHtml = `
       <div style="font-family: 'Segoe UI', Roboto, sans-serif; background: #f9fafb; padding: 24px;">
@@ -393,5 +402,4 @@ export async function sendOrderEmail(order: Order) {
       error
     );
   }
-  */
 }
