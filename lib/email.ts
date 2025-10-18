@@ -1,6 +1,4 @@
 import { Resend } from "resend";
-import path from "path";
-import { readFile } from "fs/promises";
 import type { Order } from "./types";
 import { generateReceiptPdf } from "./pdf";
 
@@ -165,23 +163,17 @@ export async function sendOrderEmail(order: Order) {
     items,
     total,
     proofFilename,
+    proofData,
   } = order;
 
-  const proofPath = proofFilename
-    ? path.join(process.cwd(), "uploads", proofFilename)
-    : null;
   const attachments: { filename: string; content: string }[] = [];
 
-  if (proofPath) {
-    try {
-      const fileBuffer = await readFile(proofPath);
-      attachments.push({
-        filename: proofFilename!,
-        content: fileBuffer.toString("base64"),
-      });
-    } catch (err) {
-      console.error("Failed to attach proof:", err);
-    }
+  // Attach proof if available (now from database)
+  if (proofData && proofFilename) {
+    attachments.push({
+      filename: proofFilename,
+      content: proofData, // Already base64 encoded
+    });
   }
 
   // Generate PDF receipt and add as attachment

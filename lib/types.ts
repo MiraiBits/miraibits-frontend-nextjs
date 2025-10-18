@@ -31,6 +31,8 @@ export type Order = {
   }>;
   total: number;
   proofFilename?: string;
+  proofData?: string; // base64 encoded proof
+  proofMimeType?: string; // mime type of proof
 };
 
 
