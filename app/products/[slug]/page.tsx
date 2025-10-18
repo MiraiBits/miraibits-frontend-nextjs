@@ -25,7 +25,7 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
         </div>
         <div>
           <h1 className="text-2xl font-semibold">{product.name}</h1>
-          <p className="mt-2 text-gray-600">{product.description}</p>
+          <p className="mt-2 text-gray-700 dark:text-gray-300">{product.description}</p>
           <div className="mt-4 text-xl font-semibold">{formatCurrencyLKR(product.price)}</div>
           <div className="mt-6 flex gap-3">
             <AddToCartButton product={product} />

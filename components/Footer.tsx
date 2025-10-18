@@ -6,7 +6,7 @@ export default function Footer() {
   const ADDRESS = process.env.COMPANY_ADDRESS || 'Colombo, Sri Lanka';
   return (
     <footer className="mt-16 border-t border-gray-100 dark:border-gray-800 bg-white/70 dark:bg-gray-900/70 backdrop-blur">
-      <div className="container-px mx-auto py-10 grid gap-6 md:grid-cols-3 text-sm text-gray-600 dark:text-gray-400">
+  <div className="container-px mx-auto py-10 grid gap-6 md:grid-cols-3 text-sm text-gray-600 dark:text-gray-300">
         <div>
           <h3 className="text-gray-900 dark:text-gray-100 font-semibold mb-2">Miraibits</h3>
           <p className="text-gray-700 dark:text-gray-300">Electronics for makers.</p>

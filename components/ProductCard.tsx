@@ -14,7 +14,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="mt-3 flex-1">
         <h3 className="text-gray-900 dark:text-gray-100 font-medium">{product.name}</h3>
-        <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">{product.shortDescription}</p>
+  <p className="text-gray-700 dark:text-gray-300 text-sm mt-1">{product.shortDescription}</p>
       </div>
       <div className="mt-3 flex items-center justify-between">
         <span className="font-semibold text-gray-900 dark:text-gray-100">{formatCurrencyLKR(product.price)}</span>

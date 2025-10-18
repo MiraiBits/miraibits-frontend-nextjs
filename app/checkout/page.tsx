@@ -12,7 +12,7 @@ function CheckoutInner() {
 
       <section className="mt-6 card p-4">
         <h2 className="font-medium">Bank Transfer Details</h2>
-        <ul className="mt-2 text-gray-700 text-sm space-y-1">
+        <ul className="mt-2 text-gray-700 dark:text-gray-300 text-sm space-y-1">
           <li>Bank: Mizuho Bank</li>
           <li>Branch: Shibuya</li>
           <li>Account Name: Miraibits KK</li>
@@ -24,15 +24,15 @@ function CheckoutInner() {
       <form className="mt-6 grid gap-6" action="/api/orders" method="post" encType="multipart/form-data">
         <section className="card p-4 grid gap-3">
           <h2 className="font-medium">Contact Details</h2>
-          <input name="name" placeholder="Full Name" required className="border border-gray-200 rounded px-3 py-2" />
-          <input type="email" name="email" placeholder="Email" required className="border border-gray-200 rounded px-3 py-2" />
-          <input name="phone" placeholder="Phone (optional)" className="border border-gray-200 rounded px-3 py-2" />
-          <textarea name="address" placeholder="Shipping Address (optional)" className="border border-gray-200 rounded px-3 py-2" />
+          <input name="name" placeholder="Full Name" required className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
+          <input type="email" name="email" placeholder="Email" required className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
+          <input name="phone" placeholder="Phone (optional)" className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
+          <textarea name="address" placeholder="Shipping Address (optional)" className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
         </section>
 
         <section className="card p-4">
           <h2 className="font-medium">Order Summary</h2>
-          <div className="mt-3 space-y-2 text-sm text-gray-700">
+          <div className="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-300">
             {items.map(it => {
               const p = getProductById(it.productId)!;
               return (
@@ -53,7 +53,7 @@ function CheckoutInner() {
 
         <section className="card p-4 grid gap-3">
           <h2 className="font-medium">Upload Proof of Payment</h2>
-          <input type="file" name="proof" accept="image/*,application/pdf" required />
+          <input type="file" name="proof" accept="image/*,application/pdf" required className="text-gray-900 dark:text-gray-100" />
         </section>
 
         <button type="submit" className="btn btn-primary">Submit Order</button>

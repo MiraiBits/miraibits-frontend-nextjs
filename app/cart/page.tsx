@@ -12,7 +12,7 @@ function CartInner() {
     <main className="container-px mx-auto py-10">
       <h1 className="text-2xl font-semibold">Your Cart</h1>
       <div className="mt-6 grid gap-4">
-        {items.length === 0 && <p className="text-gray-600">Your cart is empty.</p>}
+  {items.length === 0 && <p className="text-gray-700 dark:text-gray-300">Your cart is empty.</p>}
         {items.map(it => {
           const p = getProductById(it.productId)!;
           const subtotal = p.price * it.quantity;
@@ -23,7 +23,7 @@ function CartInner() {
               </div>
               <div className="flex-1">
                 <div className="font-medium">{p.name}</div>
-                <div className="text-sm text-gray-600">{formatCurrencyLKR(p.price)} each</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">{formatCurrencyLKR(p.price)} each</div>
               </div>
               <input
                 type="number"

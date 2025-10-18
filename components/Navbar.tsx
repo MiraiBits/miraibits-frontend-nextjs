@@ -40,7 +40,7 @@ export default function Navbar() {
               className={
                 pathname === link.href
                   ? 'text-gray-900 dark:text-gray-100 font-medium'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
               }
             >
               {link.label}
