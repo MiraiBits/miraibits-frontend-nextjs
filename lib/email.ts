@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import path from "path";
 import { readFile } from "fs/promises";
 import type { Order } from "./types";
+import puppeteer from "puppeteer";
 
 export function renderOrderReceiptHtml(order: Order) {
   const {
@@ -21,11 +22,12 @@ export function renderOrderReceiptHtml(order: Order) {
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
       <title>${process.env.COMPANY_NAME || "Miraibits"} Receipt ${id}</title>
       <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
         body {
           margin: 0;
           background: #F9FAFB;
           color: #111827;
-          font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+          font-family: 'Share Tech Mono', monospace;
         }
         .container {
           max-width: 640px;
@@ -168,18 +170,35 @@ export async function sendOrderEmail(order: Order) {
   const proofPath = proofFilename
     ? path.join(process.cwd(), "uploads", proofFilename)
     : null;
-  let proofAttachment: { filename: string; content: string }[] = [];
+  const attachments: { filename: string; content: string }[] = [];
 
   if (proofPath) {
     try {
       const fileBuffer = await readFile(proofPath);
-      proofAttachment.push({
+      attachments.push({
         filename: proofFilename!,
         content: fileBuffer.toString("base64"),
       });
     } catch (err) {
       console.error("Failed to attach proof:", err);
     }
+  }
+
+  // Generate PDF receipt and add as attachment
+  try {
+    const html = renderOrderReceiptHtml(order);
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(html);
+    const pdfBuffer = await page.pdf({ format: "A4" });
+    await browser.close();
+
+    attachments.push({
+      filename: `miraibits-receipt-${id}.pdf`,
+      content: pdfBuffer.toString("base64"),
+    });
+  } catch (err) {
+    console.error("Failed to generate PDF receipt:", err);
   }
 
   // Staff notification email with improved format
@@ -342,7 +361,7 @@ export async function sendOrderEmail(order: Order) {
       to: "miraibits.electronics@gmail.com",
       subject: `New Order Received – ${name}`,
       html: staffHtml,
-      attachments: proofAttachment,
+      attachments,
     });
     console.log(`Staff notification sent for Order ID: ${id}`);
   } catch (error) {
@@ -351,8 +370,6 @@ export async function sendOrderEmail(order: Order) {
       error
     );
   }
-
-  const orderHtml = renderOrderReceiptHtml(order);
 
   // Send customer email
   const customerHtml = `
@@ -367,9 +384,8 @@ export async function sendOrderEmail(order: Order) {
           <div style="padding: 24px;">
             <p style="margin: 0 0 6px; font-size: 15px;">Dear <strong>${name}</strong>,</p>
             <p style="margin: 0 0 16px; font-size: 14px; color: #374151;">
-              We have received your order and are processing it. Your order details are below.
+              We have received your order and are processing it. Your order receipt is attached.
             </p>
-            ${orderHtml}
             <p style="margin-top: 18px; font-size: 13px; color: #6b7280;">
               If you have any questions or concerns, please contact us at ${
                 process.env.COMPANY_EMAIL || "onboarding@resend.dev"
@@ -393,7 +409,7 @@ export async function sendOrderEmail(order: Order) {
         process.env.COMPANY_NAME || "Miraibits"
       }`,
       html: customerHtml,
-      attachments: proofAttachment,
+      attachments,
     });
     console.log(`Customer receipt sent for Order ID: ${id}`);
   } catch (error) {
