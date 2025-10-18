@@ -27,13 +27,17 @@ export default function ProductCard({ product }: { product: Product }) {
       className="card p-4 flex flex-col cursor-pointer"
     >
       <div className="aspect-square w-full overflow-hidden rounded-lg bg-gray-50 relative">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          style={{ objectFit: "contain" }}
-        />
+        {product.images && product.images.length > 0 ? (
+          <Image
+            src={product.images[0]}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: "contain" }}
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200" />
+        )}
         {qty > 0 && (
           <span className="absolute top-2 right-2 bg-gray-900 text-white text-xs font-semibold rounded-full h-6 min-w-[24px] px-2 flex items-center justify-center shadow-md">
             ×{qty}
