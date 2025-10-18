@@ -8,9 +8,9 @@ import { sendOrderEmail } from '../../../lib/email';
 
 export const dynamic = 'force-dynamic';
 
-const DATA_DIR = path.join('/tmp', 'data');
+const DATA_DIR = path.join(process.cwd(), 'data');
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
-const UPLOAD_DIR = path.join('/tmp', 'uploads');
+const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 
 async function ensureDirs() {
   await mkdir(DATA_DIR, { recursive: true });
