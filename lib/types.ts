@@ -7,11 +7,11 @@ export interface Product {
   price: number;
   images: string[];
   stock: number;
-  specifications: Record<string, string>;
+  specifications: Record<string, string | undefined>;
 }
 
 export interface CartItem {
-  product: Product;
+  productId: string;
   quantity: number;
 }
 

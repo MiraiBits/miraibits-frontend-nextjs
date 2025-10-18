@@ -189,7 +189,7 @@ export async function sendOrderEmail(order: Order) {
     const pdfBuffer = await generateReceiptPdf(order);
     attachments.push({
       filename: `miraibits-receipt-${id}.pdf`,
-      content: pdfBuffer.toString("base64"),
+      content: Buffer.from(pdfBuffer).toString("base64"),
     });
   } catch (err) {
     console.error("Failed to generate PDF receipt:", err);
