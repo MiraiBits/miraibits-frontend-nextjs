@@ -75,5 +75,34 @@
     ],
     "total": 12700,
     "proofFilename": "2995966a-7bed-4309-bb98-27f323160ccb.pdf"
+  },
+  {
+    "id": "d119aabc-8d41-4b7c-9a6c-123c271f830f",
+    "createdAt": "2025-10-18T12:37:25.710Z",
+    "customer": {
+      "name": "Maneesha Cooray",
+      "email": "bmaneeshacooray@gmail.com",
+      "phone": "0761790316",
+      "address": "147/3 Thalapathpitiya Road"
+    },
+    "items": [
+      {
+        "productId": "stm32f103c8t6-bluepill",
+        "quantity": 4,
+        "price": 1200
+      },
+      {
+        "productId": "esp32-devkit-v1",
+        "quantity": 2,
+        "price": 2200
+      },
+      {
+        "productId": "arduino-uno-r3",
+        "quantity": 1,
+        "price": 3500
+      }
+    ],
+    "total": 12700,
+    "proofFilename": "d119aabc-8d41-4b7c-9a6c-123c271f830f.pdf"
   }
 ]
