@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { readFile } from "fs/promises";
 import path from "path";
 import type { Order } from "../../../../../lib/types";
-import puppeteer from "puppeteer";
-import { renderOrderReceiptHtml } from "../../../../../lib/email";
+import { generateReceiptPdf } from "../../../../../lib/pdf";
 
 export const dynamic = "force-dynamic";
 
@@ -28,13 +27,7 @@ export async function GET(
     });
   }
 
-  const html = renderOrderReceiptHtml(order);
-
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.setContent(html);
-  const pdfBuffer = await page.pdf({ format: "A4" });
-  await browser.close();
+  const pdfBuffer = await generateReceiptPdf(order);
 
   return new Response(pdfBuffer, {
     status: 200,

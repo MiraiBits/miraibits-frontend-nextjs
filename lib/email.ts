@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import path from "path";
 import { readFile } from "fs/promises";
 import type { Order } from "./types";
-import puppeteer from "puppeteer";
+import { generateReceiptPdf } from "./pdf";
 
 export function renderOrderReceiptHtml(order: Order) {
   const {
@@ -186,13 +186,7 @@ export async function sendOrderEmail(order: Order) {
 
   // Generate PDF receipt and add as attachment
   try {
-    const html = renderOrderReceiptHtml(order);
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.setContent(html);
-    const pdfBuffer = await page.pdf({ format: "A4" });
-    await browser.close();
-
+    const pdfBuffer = await generateReceiptPdf(order);
     attachments.push({
       filename: `miraibits-receipt-${id}.pdf`,
       content: pdfBuffer.toString("base64"),
