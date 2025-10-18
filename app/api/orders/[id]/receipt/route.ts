@@ -4,6 +4,7 @@ import { generateReceiptPdf } from "../../../../../lib/pdf";
 import prisma from "../../../../../lib/db";
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 export async function GET(
   _req: Request,

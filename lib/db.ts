@@ -2,7 +2,11 @@ import { PrismaClient } from '@prisma/client'
 import { withOptimize } from '@prisma/extension-optimize'
 
 const prismaClientSingleton = () => {
-  const client = new PrismaClient()
+  // During build time with --no-engine, we can't connect to database
+  // This is fine as API routes won't be executed during build
+  const client = new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  })
   
   // Add Optimize extension if API key is available
   if (process.env.OPTIMIZE_API_KEY) {
