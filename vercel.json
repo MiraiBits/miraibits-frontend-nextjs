@@ -1,0 +1,3 @@
+{
+  "buildCommand": "prisma generate --no-engine && next build"
+}
