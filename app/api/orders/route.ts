@@ -2,13 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getProductById } from '../../../lib/products';
 import type { Order } from '../../../lib/types';
 import { sendOrderEmail } from '../../../lib/email';
-import prisma from '../../../lib/db';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+// Lazy load prisma only at runtime, not during build
+const getPrisma = async () => {
+  const { default: prisma } = await import("../../../lib/db");
+  return prisma;
+};
+
 export async function POST(req: NextRequest) {
   try {
+    const prisma = await getPrisma();
     const formData = await req.formData();
     const name = String(formData.get('name') || '');
     const email = String(formData.get('email') || '');

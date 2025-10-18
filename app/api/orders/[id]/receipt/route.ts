@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import type { Order } from "../../../../../lib/types";
 import { generateReceiptPdf } from "../../../../../lib/pdf";
-import prisma from "../../../../../lib/db";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
+
+// Lazy load prisma only at runtime, not during build
+const getPrisma = async () => {
+  const { default: prisma } = await import("../../../../../lib/db");
+  return prisma;
+};
 
 export async function GET(
   _req: Request,
@@ -13,6 +18,7 @@ export async function GET(
   const { id } = await params;
 
   try {
+    const prisma = await getPrisma();
     const dbOrder = await prisma.order.findUnique({
       where: { id },
     });
