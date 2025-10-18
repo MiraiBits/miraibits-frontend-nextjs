@@ -4,14 +4,28 @@ import Image from "next/image";
 import type { Product } from "../lib/types";
 import { useCart } from "../lib/cart";
 import { formatCurrencyLKR } from "../lib/currency";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem, items } = useCart();
+  const router = useRouter();
   const cartItem = items?.find((it: any) => it.productId === product.id);
   const qty = cartItem?.quantity ?? 0;
 
   return (
-    <div className="card p-4 flex flex-col">
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={() => router.push(`/products/${product.slug}`)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          router.push(`/products/${product.slug}`);
+        }
+      }}
+      className="card p-4 flex flex-col cursor-pointer"
+    >
       <div className="aspect-square w-full overflow-hidden rounded-lg bg-gray-50 relative">
         <Image
           src={product.image}
@@ -40,12 +54,15 @@ export default function ProductCard({ product }: { product: Product }) {
         </span>
 
         <div className="flex gap-2 items-center">
-          <Link href={`/products/${product.slug}`} className="btn btn-ghost">
+          <Link href={`/products/${product.slug}`} className="btn btn-ghost" onClick={(e: any) => e.stopPropagation()}>
             View Details
           </Link>
 
           <button
-            onClick={() => addItem(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              addItem(product);
+            }}
             className="btn btn-primary relative"
             aria-label={`Add ${product.name} to cart`}
           >
