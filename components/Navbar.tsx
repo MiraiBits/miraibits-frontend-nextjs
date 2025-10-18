@@ -28,7 +28,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur border-b border-gray-100 dark:border-gray-800 shadow-soft">
       <div className="container-px mx-auto h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 text-gray-900 dark:text-gray-100">
           <span className="inline-block h-8 w-8 rounded-full bg-sakura-100 border border-sakura-200" />
           <span className="font-semibold tracking-wide">Miraibits</span>
         </Link>
@@ -40,22 +40,12 @@ export default function Navbar() {
               className={
                 pathname === link.href
                   ? 'text-gray-900 dark:text-gray-100 font-medium'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
               }
             >
               {link.label}
             </Link>
           ))}
-          <form onSubmit={onSearchSubmit} className="flex items-center gap-2" role="search" aria-label="Site search">
-            <label htmlFor="navbar-search" className="sr-only">Search products</label>
-            <input
-              id="navbar-search"
-              name="q"
-              placeholder="Search products"
-              className="h-9 w-56 border border-gray-200 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-sakura-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:ring-gray-600"
-            />
-            <button type="submit" className="btn btn-ghost h-9 px-3 text-sm">Search</button>
-          </form>
           <Link href="/cart" className="relative inline-flex items-center text-gray-600 hover:text-gray-900">
             <ShoppingCart className="h-5 w-5" />
             {totalQuantity > 0 && (
@@ -67,14 +57,6 @@ export default function Navbar() {
           <ThemeToggleButton />
         </nav>
         <div className="md:hidden flex items-center gap-4">
-          <Link href="/cart" className="relative inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
-            <ShoppingCart className="h-6 w-6" />
-            {totalQuantity > 0 && (
-              <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-gray-900 text-white text-[10px] flex items-center justify-center">
-                {totalQuantity}
-              </span>
-            )}
-          </Link>
           <ThemeToggleButton />
         </div>
       </div>

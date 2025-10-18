@@ -9,7 +9,7 @@ export default function SuccessClient({ orderId }: { orderId?: string | null }) 
   return (
     <main className="container-px mx-auto py-16 text-center max-w-xl">
       <h1 className="text-2xl font-semibold">Thank you for your order</h1>
-      <p className="mt-3 text-gray-600">We will review your payment proof and contact you shortly.</p>
+  <p className="mt-3 text-gray-700 dark:text-gray-300">We will review your payment proof and contact you shortly.</p>
       {orderId && (
         <div className="mt-6">
           <a
