@@ -15,7 +15,13 @@ export const metadata: Metadata = {
   title: 'Miraibits – Electronics Store',
   description: 'Minimal, modern electronics store for maker hardware.',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.ico', sizes: '16x16', type: 'image/x-icon' },
+      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
   metadataBase: new URL(baseUrl),
   openGraph: {
