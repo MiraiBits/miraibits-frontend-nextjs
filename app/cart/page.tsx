@@ -27,27 +27,34 @@ function CartInner() {
           const p = getProductById(it.productId)!;
           const subtotal = p.price * it.quantity;
           return (
-            <div key={it.productId} className="card p-4 flex items-center gap-4">
-              <div className="h-16 w-16 rounded bg-gray-50 relative overflow-hidden">
-                {p.images && p.images.length > 0 ? (
-                  <Image src={p.images[0]} alt={p.name} fill sizes="64px" style={{ objectFit: 'contain' }} />
-                ) : (
-                  <div className="h-full w-full bg-gray-200" />
-                )}
+            <div key={it.productId} className="card p-4 flex flex-col md:flex-row items-start md:items-center gap-4">
+              {/* Product Info (Image, Name, Price) */}
+              <div className="flex items-center gap-4 w-full md:flex-1">
+                <div className="h-16 w-16 rounded bg-gray-50 relative overflow-hidden flex-shrink-0">
+                  {p.images && p.images.length > 0 ? (
+                    <Image src={p.images[0]} alt={p.name} fill sizes="64px" style={{ objectFit: 'contain' }} />
+                  ) : (
+                    <div className="h-full w-full bg-gray-200" />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="font-medium">{p.name}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300">{formatCurrencyLKR(p.price)} each</div>
+                </div>
               </div>
-              <div className="flex-1">
-                <div className="font-medium">{p.name}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">{formatCurrencyLKR(p.price)} each</div>
+
+              {/* Actions (Quantity, Subtotal, Remove) */}
+              <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto">
+                <input
+                  type="number"
+                  min={1}
+                  value={it.quantity}
+                  onChange={e => updateQuantity(it.productId, Math.max(1, Number(e.target.value)))}
+                  className="w-20 border border-gray-200 rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-700"
+                />
+                <div className="w-auto md:w-32 text-right font-medium">{formatCurrencyLKR(subtotal)}</div>
+                <button className="btn btn-ghost" onClick={() => removeItem(it.productId)}>Remove</button>
               </div>
-              <input
-                type="number"
-                min={1}
-                value={it.quantity}
-                onChange={e => updateQuantity(it.productId, Math.max(1, Number(e.target.value)))}
-                className="w-20 border border-gray-200 rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-700"
-              />
-              <div className="w-32 text-right font-medium">{formatCurrencyLKR(subtotal)}</div>
-              <button className="btn btn-ghost" onClick={() => removeItem(it.productId)}>Remove</button>
             </div>
           );
         })}
