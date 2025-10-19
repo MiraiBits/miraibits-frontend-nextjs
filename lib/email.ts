@@ -1,6 +1,5 @@
 import { Resend } from "resend";
 import type { Order } from "./types";
-import { generateReceiptPdf } from "./pdf";
 
 export function renderOrderReceiptHtml(order: Order) {
   const {
@@ -176,16 +175,8 @@ export async function sendOrderEmail(order: Order) {
     });
   }
 
-  // Generate PDF receipt and add as attachment
-  try {
-    const pdfBuffer = await generateReceiptPdf(order);
-    attachments.push({
-      filename: `miraibits-receipt-${id}.pdf`,
-      content: Buffer.from(pdfBuffer).toString("base64"),
-    });
-  } catch (err) {
-    console.error("Failed to generate PDF receipt:", err);
-  }
+  // Note: PDF generation moved to client-side for better performance
+  // Users can download their receipt from the success page or email link
 
   // Staff notification email with improved format
   const staffHtml = `

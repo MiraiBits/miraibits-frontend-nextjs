@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { Order } from "../../../../../lib/types";
-import { generateReceiptPdf } from "../../../../../lib/pdf";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -11,6 +10,8 @@ const getPrisma = async () => {
   return prisma;
 };
 
+// This endpoint now returns order data as JSON
+// PDF generation happens on the client side
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -26,13 +27,10 @@ export async function GET(
 
     if (!dbOrder) {
       console.error('Receipt API: Order not found', id);
-      return new Response(JSON.stringify({ error: "Order not found" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
     
-    console.log('Receipt API: Order found, generating PDF...');
+    console.log('Receipt API: Order found, returning data for client-side PDF generation');
 
     // Convert Prisma order to our Order type
     const order: Order = {
@@ -49,26 +47,11 @@ export async function GET(
       proofFilename: dbOrder.proofFilename || undefined,
     };
 
-    const pdfBuffer = await generateReceiptPdf(order);
-    console.log('Receipt API: PDF generated, size:', pdfBuffer.length);
-
-    // Convert Uint8Array to Buffer for proper Response handling
-    const buffer = Buffer.from(pdfBuffer);
-
-    return new Response(buffer, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="miraibits-receipt-${id}.pdf"`,
-        "Content-Length": String(buffer.length),
-      },
-    });
+    // Return order data - client will generate PDF
+    return NextResponse.json(order);
   } catch (error) {
-    console.error('Receipt generation failed:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Failed to generate receipt';
-    return new Response(JSON.stringify({ error: errorMessage, stack: error instanceof Error ? error.stack : undefined }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    console.error('Receipt data fetch failed:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch receipt data';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
