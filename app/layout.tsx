@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { CartProvider } from '../lib/cart';
+import CookieBanner from '../components/CookieBanner';
 import { Inter, Noto_Sans_JP } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body suppressHydrationWarning className="min-h-screen antialiased selection:bg-sakura-100 selection:text-gray-900 flex flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <ThemeProvider>
           <CartProvider>
+            <CookieBanner />
             <Navbar />
             <div className="flex-1">
               {children}
