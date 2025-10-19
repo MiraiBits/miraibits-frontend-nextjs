@@ -3,9 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Route } from 'next';
 import { usePathname, useRouter } from 'next/navigation';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useCart } from '../lib/cart';
 import ThemeToggleButton from './ThemeToggleButton';
+import { useState } from 'react';
 
 const navLinks: Array<{ href: Route; label: string }> = [
   { href: '/', label: 'Home' },
@@ -17,6 +18,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const { totalQuantity } = useCart();
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   function onSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -54,10 +56,10 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link href="/cart" className="relative inline-flex items-center text-gray-600 hover:text-gray-900">
+          <Link href="/cart" className="relative inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
             <ShoppingCart className="h-5 w-5" />
             {totalQuantity > 0 && (
-              <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-sakura-500 text-white text-[10px] flex items-center justify-center border-2 border-white">
+              <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-sakura-500 text-white text-[10px] flex items-center justify-center border-2 border-white dark:border-gray-900">
                 {totalQuantity}
               </span>
             )}
@@ -65,8 +67,39 @@ export default function Navbar() {
           <ThemeToggleButton />
         </nav>
         <div className="md:hidden flex items-center gap-4">
+          <Link href="/cart" className="relative inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
+            <ShoppingCart className="h-5 w-5" />
+            {totalQuantity > 0 && (
+              <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-sakura-500 text-white text-[10px] flex items-center justify-center border-2 border-white dark:border-gray-900">
+                {totalQuantity}
+              </span>
+            )}
+          </Link>
           <ThemeToggleButton />
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
+        {isMenuOpen && (
+          <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 md:hidden">
+            <nav className="flex flex-col items-start gap-4 p-4">
+              {navLinks.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={
+                    pathname === link.href
+                      ? 'text-gray-900 dark:text-gray-100 font-medium'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
+                  }
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
