@@ -16,14 +16,15 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
     total,
   } = order;
 
-  // Set font
-  pdf.setFont('helvetica');
+  // Set font to Courier (monospace) - closest to Share Tech Mono
+  // jsPDF built-in fonts: 'courier', 'helvetica', 'times'
+  pdf.setFont('courier');
   
   // Company Header
   pdf.setFillColor(255, 228, 236); // Light pink
   pdf.circle(15, 15, 4, 'F');
   pdf.setFontSize(16);
-  pdf.setFont('helvetica', 'bold');
+  pdf.setFont('courier', 'bold');
   pdf.text(process.env.NEXT_PUBLIC_COMPANY_NAME || 'Miraibits', 25, 17);
   
   // Title
@@ -32,7 +33,7 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   
   // Order info
   pdf.setFontSize(10);
-  pdf.setFont('helvetica', 'normal');
+  pdf.setFont('courier', 'normal');
   pdf.setTextColor(107, 114, 128); // Gray
   pdf.text(`Order ${id} • ${new Date(createdAt).toLocaleString()}`, 15, 42);
   pdf.text(process.env.NEXT_PUBLIC_COMPANY_ADDRESS || 'Colombo, Sri Lanka', 15, 47);
@@ -44,10 +45,10 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   // Billed To
   pdf.setFontSize(12);
   pdf.setTextColor(17, 24, 39); // Dark
-  pdf.setFont('helvetica', 'bold');
+  pdf.setFont('courier', 'bold');
   pdf.text('Billed To', 15, 62);
   
-  pdf.setFont('helvetica', 'normal');
+  pdf.setFont('courier', 'normal');
   pdf.setFontSize(10);
   pdf.text(name, 15, 69);
   pdf.text(`${email}${phone ? ' • ' + phone : ''}`, 15, 74);
@@ -60,13 +61,13 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   
   // Items Header
   pdf.setFontSize(12);
-  pdf.setFont('helvetica', 'bold');
+  pdf.setFont('courier', 'bold');
   pdf.text('Items', 15, 94);
   
   // Table Header
   pdf.setFontSize(9);
   pdf.setTextColor(107, 114, 128);
-  pdf.setFont('helvetica', 'bold');
+  pdf.setFont('courier', 'bold');
   pdf.text('Product', 15, 102);
   pdf.text('Qty', 120, 102, { align: 'center' });
   pdf.text('Price', 150, 102, { align: 'right' });
@@ -77,7 +78,7 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   
   // Table Rows
   pdf.setTextColor(17, 24, 39);
-  pdf.setFont('helvetica', 'normal');
+  pdf.setFont('courier', 'normal');
   let yPos = 112;
   
   items.forEach((item) => {
@@ -94,7 +95,7 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   
   // Total
   yPos += 8;
-  pdf.setFont('helvetica', 'bold');
+  pdf.setFont('courier', 'bold');
   pdf.setFontSize(11);
   pdf.text(`Grand Total: Rs. ${total.toLocaleString()}`, 185, yPos, { align: 'right' });
   
@@ -104,7 +105,7 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   
   yPos += 7;
   pdf.setFontSize(8);
-  pdf.setFont('helvetica', 'normal');
+  pdf.setFont('courier', 'normal');
   pdf.setTextColor(107, 114, 128);
   pdf.text('Thank you for your order. This receipt is not a tax invoice.', 15, yPos);
   
