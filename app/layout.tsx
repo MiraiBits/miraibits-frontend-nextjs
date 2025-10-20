@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { CartProvider } from '../lib/cart';
 import { Inter, Noto_Sans_JP } from 'next/font/google';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 const noto = Noto_Sans_JP({ subsets: ['latin'], weight: ['400','500','700'], display: 'swap' });
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </CartProvider>
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
