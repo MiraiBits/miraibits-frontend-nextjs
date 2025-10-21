@@ -16,7 +16,7 @@ jobs:
           
       - name: Setup SSH
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.MIRROR_REPO_SSH_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.MIRROR_REPO_KEY }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
