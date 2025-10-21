@@ -1,13 +1,13 @@
 export interface Product {
   id: string;
-  slug: string;
   name: string;
-  shortDescription: string;
-  description: string;
+  slug: string;
   price: number;
+  description: string;
+  shortDescription: string;
   images: string[];
   stock: number;
-  specifications: Record<string, string | undefined>;
+  datasheet?: string[];
 }
 
 export interface CartItem {
@@ -34,5 +34,3 @@ export type Order = {
   proofData?: string; // base64 encoded proof
   proofMimeType?: string; // mime type of proof
 };
-
-

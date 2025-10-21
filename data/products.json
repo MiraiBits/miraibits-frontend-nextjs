@@ -19,7 +19,10 @@
       "Digital I/O Pins": "14",
       "Analog Input Pins": "6",
       "Clock Speed": "16 MHz"
-    }
+    },
+    "datasheet": [
+      "https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf"
+    ]
   },
   {
     "id": "esp32-devkit-v1",
@@ -41,7 +44,10 @@
       "Operating Voltage": "3.3V",
       "Digital I/O Pins": "34",
       "Clock Speed": "240 MHz"
-    }
+    },
+    "datasheet": [
+      "https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf"
+    ]
   },
   {
     "id": "stm32f103c8t6-bluepill",
@@ -62,7 +68,11 @@
       "Operating Voltage": "3.3V",
       "Digital I/O Pins": "37",
       "Clock Speed": "72 MHz"
-    }
+    },
+    "datasheet": [
+      "https://www.st.com/resource/en/datasheet/stm32f103c8.pdf",
+      "https://www.st.com/resource/en/reference_manual/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf"
+    ]
   },
   {
     "id": "hc-sr04-ultrasonic",
@@ -83,7 +93,11 @@
       "Working Current": "15mA",
       "Measuring Angle": "15°",
       "Ranging Distance": "2cm - 400cm"
-    }
+    },
+    "datasheet": [
+      "https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf",
+      "https://handsontec.com/dataspecs/sensor/SR-04-Ultrasonic.pdf"
+    ]
   },
   {
     "id": "bme280-sensor",
@@ -104,6 +118,9 @@
       "Temperature Range": "-40°C to +85°C",
       "Humidity Range": "0-100%",
       "Pressure Range": "300-1100 hPa"
-    }
+    },
+    "datasheet": [
+      "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf"
+    ]
   }
 ]
