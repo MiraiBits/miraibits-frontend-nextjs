@@ -7,6 +7,7 @@ export interface Product {
   shortDescription: string;
   images: string[];
   stock: number;
+  specifications?: { [key: string]: string };
   datasheet?: string[];
 }
 

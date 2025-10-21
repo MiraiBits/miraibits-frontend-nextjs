@@ -8,13 +8,14 @@ type Props = {
   initialQuery?: string;
 };
 
+const AVAILABLE_COLS = [2, 3, 4] as const;
+const DEFAULT_COLS = 4 as const;
+
 export default function ProductsClient({
   initialProducts,
   initialQuery,
 }: Props) {
   const [query, setQuery] = useState(initialQuery || "");
-  const AVAILABLE_COLS = [2, 3, 4] as const;
-  const DEFAULT_COLS = 4 as const;
   const [cols, setCols] = useState<number>(DEFAULT_COLS);
 
   // Hydration-safe restore from localStorage after mount
