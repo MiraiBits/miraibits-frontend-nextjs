@@ -3,7 +3,7 @@ name: Mirror Repository
 on:
   push:
     branches:
-      - main
+      - '**' # This now triggers on a push to any branch
 
 jobs:
   mirror:
