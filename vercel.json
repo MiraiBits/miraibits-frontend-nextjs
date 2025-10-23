@@ -1,3 +1,3 @@
 {
-  "buildCommand": "prisma generate --no-engine && next build"
+  "buildCommand": "npx prisma generate --schema ./prisma-orders/schema.prisma --no-engine && npx prisma generate --schema ./prisma-products/schema.prisma --no-engine && next build"
 }
