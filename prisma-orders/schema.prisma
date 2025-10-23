@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma-orders/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+
+  // Customer info
+  customerName    String
+  customerEmail   String
+  customerPhone   String?
+  customerAddress String?
+
+  // Order items stored as JSON
+  items         Json
+  total         Float
+
+  // Proof of payment stored as base64
+  proofData     String?  @db.Text
+  proofMimeType String?
+  proofFilename String?
+
+  @@map("orders")
+}
