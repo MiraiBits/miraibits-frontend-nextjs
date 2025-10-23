@@ -1,18 +1,38 @@
 import type { Product } from './types';
-import productsData from '../data/products.json';
+import { productDBPrismaClient } from './product-prisma-client';
 
-export const products: Product[] = productsData as unknown as Product[];
-
-export function getProducts(): Product[] {
-  return products;
+export async function getProducts(): Promise<Product[]> {
+  const products = await productDBPrismaClient.product.findMany();
+  return products.map(p => ({
+    ...p,
+    specifications: p.specifications as { [key: string]: string } | undefined,
+  }));
 }
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find(p => p.slug === slug);
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const product = await productDBPrismaClient.product.findUnique({
+    where: { slug },
+  });
+  
+  if (!product) return null;
+  
+  return {
+    ...product,
+    specifications: product.specifications as { [key: string]: string } | undefined,
+  };
 }
 
-export function getProductById(id: string): Product | undefined {
-  return products.find(p => p.id === id);
+export async function getProductById(id: string): Promise<Product | null> {
+  const product = await productDBPrismaClient.product.findUnique({
+    where: { id },
+  });
+  
+  if (!product) return null;
+  
+  return {
+    ...product,
+    specifications: product.specifications as { [key: string]: string } | undefined,
+  };
 }
 
 

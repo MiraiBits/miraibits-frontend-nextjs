@@ -2,8 +2,8 @@ import { getProducts } from '../../../lib/products';
 import ProductCard from '../../../components/ProductCard';
 import type { Product } from '../../../lib/types';
 
-export default function RelatedProducts({ currentProductId }: { currentProductId: string }) {
-  const products = getProducts().filter(p => p.id !== currentProductId).slice(0, 4);
+export default async function RelatedProducts({ currentProductId }: { currentProductId: string }) {
+  const products = (await getProducts()).filter(p => p.id !== currentProductId).slice(0, 4);
 
   if (products.length === 0) return null;
 

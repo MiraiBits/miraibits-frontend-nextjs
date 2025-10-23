@@ -146,7 +146,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/app/prisma-products/client",
+      "value": "/home/manupawickramasinghe/Documents/renewaa/miraibits-frontend-nextjs/prisma-products/client",
       "fromEnvVar": null
     },
     "config": {
@@ -160,11 +160,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/app/prisma-products/schema.prisma",
+    "sourceFilePath": "/home/manupawickramasinghe/Documents/renewaa/miraibits-frontend-nextjs/prisma-products/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "..",
@@ -207,3 +207,4 @@ if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !
 const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
+

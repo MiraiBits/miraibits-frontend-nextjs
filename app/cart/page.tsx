@@ -1,13 +1,12 @@
 'use client';
 
 import { useCart } from '../../lib/cart';
-import { getProductById } from '../../lib/products';
 import { formatCurrencyLKR } from '../../lib/currency';
 import Image from 'next/image';
 import Link from 'next/link';
 
 function CartInner() {
-  const { items, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
+  const { items, totalPrice, updateQuantity, removeItem, clearCart, productsCache } = useCart();
   return (
     <main className="container-px mx-auto py-10">
       <div className="flex items-center justify-between gap-4">
@@ -24,7 +23,8 @@ function CartInner() {
       <div className="mt-6 grid gap-4">
         {items.length === 0 && <p className="text-gray-700 dark:text-gray-300">Your cart is empty.</p>}
         {items.map(it => {
-          const p = getProductById(it.productId)!;
+          const p = productsCache.get(it.productId);
+          if (!p) return null;
           const subtotal = p.price * it.quantity;
           return (
             <div key={it.productId} className="card p-4 flex flex-col md:flex-row items-start md:items-center gap-4">

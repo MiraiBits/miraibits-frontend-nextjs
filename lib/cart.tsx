@@ -1,7 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import type { CartItem, Product } from './types';
-import { getProductById } from './products';
 
 type CartContextValue = {
   items: CartItem[];
@@ -11,6 +10,7 @@ type CartContextValue = {
   clearCart: () => void;
   totalQuantity: number;
   totalPrice: number;
+  productsCache: Map<string, Product>;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -19,6 +19,7 @@ const STORAGE_KEY = 'miraibits_cart_v1';
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [productsCache, setProductsCache] = useState<Map<string, Product>>(new Map());
 
   useEffect(() => {
     try {
@@ -33,6 +34,34 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [items]);
 
+  // Fetch product details for items in cart
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const productIds = items.map(it => it.productId);
+      const newCache = new Map(productsCache);
+      
+      for (const productId of productIds) {
+        if (!newCache.has(productId)) {
+          try {
+            const response = await fetch(`/api/products?id=${productId}`);
+            if (response.ok) {
+              const product = await response.json();
+              newCache.set(productId, product);
+            }
+          } catch (error) {
+            console.error(`Failed to fetch product ${productId}:`, error);
+          }
+        }
+      }
+      
+      setProductsCache(newCache);
+    };
+
+    if (items.length > 0) {
+      fetchProducts();
+    }
+  }, [items]);
+
   const addItem = useCallback((product: Product, quantity: number = 1) => {
     setItems(prev => {
       const existing = prev.find(it => it.productId === product.id);
@@ -41,6 +70,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prev, { productId: product.id, quantity }];
     });
+    // Add product to cache immediately
+    setProductsCache(prev => new Map(prev).set(product.id, product));
   }, []);
 
   const removeItem = useCallback((productId: string) => {
@@ -58,11 +89,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     let total = 0;
     for (const it of items) {
       qty += it.quantity;
-      const p = getProductById(it.productId);
+      const p = productsCache.get(it.productId);
       if (p) total += p.price * it.quantity;
     }
     return { totalQuantity: qty, totalPrice: total };
-  }, [items]);
+  }, [items, productsCache]);
 
   const value: CartContextValue = {
     items,
@@ -72,6 +103,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     clearCart,
     totalQuantity,
     totalPrice,
+    productsCache,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
