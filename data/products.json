@@ -7,10 +7,10 @@
     "description": "The Arduino Uno R3 is a microcontroller board based on the ATmega328P. Perfect for beginners and hobbyists. Includes USB-B connector, 14 digital I/O pins, and 6 analog inputs.",
     "price": 3500,
     "images": [
-      "/images/products/arduino-uno-r3/1.jpg",
-      "/images/products/arduino-uno-r3/2.jpg",
-      "/images/products/arduino-uno-r3/3.jpg",
-      "/images/products/arduino-uno-r3/4.jpg"
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/78666b717ef1c1e1557e69e7aed61cfb6422e920/products/arduino-uno-r3/1.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/78666b717ef1c1e1557e69e7aed61cfb6422e920/products/arduino-uno-r3/2.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/78666b717ef1c1e1557e69e7aed61cfb6422e920/products/arduino-uno-r3/3.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/78666b717ef1c1e1557e69e7aed61cfb6422e920/products/arduino-uno-r3/4.jpg"
     ],
     "stock": 15,
     "specifications": {
