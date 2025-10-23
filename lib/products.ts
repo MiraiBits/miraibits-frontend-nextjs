@@ -1,8 +1,14 @@
 import type { Product } from './types';
-import { productDBPrismaClient } from './product-prisma-client';
+
+// Lazy load Prisma client to avoid initialization issues
+const getProductPrisma = async () => {
+  const { productDBPrismaClient } = await import('./product-prisma-client');
+  return productDBPrismaClient;
+};
 
 export async function getProducts(): Promise<Product[]> {
-  const products = await productDBPrismaClient.product.findMany();
+  const prisma = await getProductPrisma();
+  const products = await prisma.product.findMany();
   return products.map(p => ({
     ...p,
     specifications: p.specifications as { [key: string]: string } | undefined,
@@ -10,7 +16,8 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  const product = await productDBPrismaClient.product.findUnique({
+  const prisma = await getProductPrisma();
+  const product = await prisma.product.findUnique({
     where: { slug },
   });
   
@@ -23,7 +30,8 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
-  const product = await productDBPrismaClient.product.findUnique({
+  const prisma = await getProductPrisma();
+  const product = await prisma.product.findUnique({
     where: { id },
   });
   
