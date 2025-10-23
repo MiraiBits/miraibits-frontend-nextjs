@@ -8,30 +8,11 @@ type Props = {
   initialQuery?: string;
 };
 
-const AVAILABLE_COLS = [2, 3, 4] as const;
-const DEFAULT_COLS = 4 as const;
-
 export default function ProductsClient({
   initialProducts,
   initialQuery,
 }: Props) {
   const [query, setQuery] = useState(initialQuery || "");
-  const [cols, setCols] = useState<number>(DEFAULT_COLS);
-
-  // Hydration-safe restore from localStorage after mount
-  useEffect(() => {
-    try {
-      const savedCols = Number(
-        localStorage.getItem("products_cols") || String(DEFAULT_COLS)
-      );
-      if (AVAILABLE_COLS.includes(savedCols as any)) setCols(savedCols);
-    } catch {}
-  }, []);
-  useEffect(() => {
-    try {
-      localStorage.setItem("products_cols", String(cols));
-    } catch {}
-  }, [cols]);
 
   // Keep local query in sync with URL/searchParams updates (e.g., via navbar search)
   useEffect(() => {
@@ -49,45 +30,9 @@ export default function ProductsClient({
     );
   }, [initialProducts, query]);
 
-  function ColumnsIcon({
-    columns,
-    active,
-  }: {
-    columns: 2 | 3 | 4;
-    active: boolean;
-  }) {
-    // Use classNames instead of inline styles to avoid SSR/CSR style serialization differences
-    const baseCell = "block w-1.5 h-1.5 rounded-sm"; // 6px
-    const cellClass = active
-      ? `${baseCell} bg-gray-900`
-      : `${baseCell} bg-gray-400`;
-    const gridCols =
-      columns === 2
-        ? "grid-cols-2"
-        : columns === 3
-        ? "grid-cols-3"
-        : "grid-cols-4";
-    const wrapperClass = `grid ${gridCols} gap-0.5 p-1 rounded-md border ${
-      active ? "bg-gray-100 border-gray-200" : "bg-transparent border-gray-200"
-    }`;
-    const totalCells = columns * 2;
-    return (
-      <span aria-hidden className={wrapperClass} suppressHydrationWarning>
-        {Array.from({ length: totalCells }).map((_, i) => (
-          <span key={i} className={cellClass} />
-        ))}
-      </span>
-    );
-  }
-
-  // compute responsive Tailwind grid classes based on user-selected cols
-  const gridClass = (() => {
-    if (cols === 4)
-      return "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6";
-    if (cols === 3)
-      return "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6";
-    return "grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6"; // cols === 2
-  })();
+  // Responsive grid: 1 col mobile, 2-3 on tablets, 4 on large screens
+  const gridClass =
+    "grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
 
   return (
     <main className="container-px mx-auto py-6 md:py-10">
@@ -100,27 +45,6 @@ export default function ProductsClient({
             placeholder="Search products"
             className="h-10 w-full max-w-xs sm:w-64 border border-gray-200 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-sakura-200"
           />
-          {
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                Size
-              </span>
-              {[2, 3, 4].map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  aria-label={`${option} column grid`}
-                  className="btn btn-ghost h-10 px-2"
-                  onClick={() => setCols(option)}
-                >
-                  <ColumnsIcon
-                    columns={option as 2 | 3 | 4}
-                    active={cols === option}
-                  />
-                </button>
-              ))}
-            </div>
-          }
         </div>
       </div>
 
