@@ -3,6 +3,14 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   typedRoutes: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+      },
+    ],
+  },
 };
 
 // Static export config - currently disabled due to dynamic API routes
