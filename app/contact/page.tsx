@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  const EMAIL = process.env.COMPANY_EMAIL || 'orders@miraibits.jp';
+  const EMAIL = process.env.COMPANY_EMAIL || 'miraibits.electronics@gmail.com';
   const PHONE = process.env.COMPANY_PHONE || '+94 11 234 5678';
   const ADDRESS = process.env.COMPANY_ADDRESS || 'Colombo, Sri Lanka';
   return (
