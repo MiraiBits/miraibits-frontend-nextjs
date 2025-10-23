@@ -17,11 +17,11 @@ function CheckoutInner() {
       <section className="mt-6 card p-4">
         <h2 className="font-medium">Bank Transfer Details</h2>
         <ul className="mt-2 text-gray-700 dark:text-gray-300 text-sm space-y-1">
-          <li>Bank: Mizuho Bank</li>
-          <li>Branch: Shibuya</li>
-          <li>Account Name: Miraibits KK</li>
-          <li>Account Number: 1234567</li>
-          <li>SWIFT: MHCBJPJT</li>
+          <li>Bank: Dialog Finance PLC</li>
+          <li>Branch: Head Office</li>
+          <li>Account Name: MANUPA NIMNETH WICKRAMASINGHE</li>
+          <li>Account Number: 0010 2201 1227</li>
+          <li>SWIFT: DFCCLKLX</li>
         </ul>
       </section>
 
