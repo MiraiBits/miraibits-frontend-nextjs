@@ -7,10 +7,10 @@
     "description": "The Arduino Uno R3 is a microcontroller board based on the ATmega328P. Perfect for beginners and hobbyists. Includes USB-B connector, 14 digital I/O pins, and 6 analog inputs.",
     "price": 3500,
     "images": [
-      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/78666b717ef1c1e1557e69e7aed61cfb6422e920/products/arduino-uno-r3/1.jpg",
-      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/78666b717ef1c1e1557e69e7aed61cfb6422e920/products/arduino-uno-r3/2.jpg",
-      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/78666b717ef1c1e1557e69e7aed61cfb6422e920/products/arduino-uno-r3/3.jpg",
-      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/78666b717ef1c1e1557e69e7aed61cfb6422e920/products/arduino-uno-r3/4.jpg"
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/arduino-uno-r3/1.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/arduino-uno-r3/2.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/arduino-uno-r3/3.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/arduino-uno-r3/4.jpg"
     ],
     "stock": 15,
     "specifications": {
@@ -32,10 +32,10 @@
     "description": "ESP32 DevKit V1 features the ESP-WROOM-32 module with Wi-Fi and Bluetooth connectivity. Ideal for IoT projects requiring low power and high performance.",
     "price": 2200,
     "images": [
-      "/images/products/esp32-devkit-v1/1.jpg",
-      "/images/products/esp32-devkit-v1/2.jpg",
-      "/images/products/esp32-devkit-v1/3.jpg",
-      "/images/products/esp32-devkit-v1/4.jpg"
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/esp32-devkit-v1/1.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/esp32-devkit-v1/2.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/esp32-devkit-v1/3.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/esp32-devkit-v1/4.jpg"
     ],
     "stock": 25,
     "specifications": {
@@ -57,10 +57,10 @@
     "description": "The STM32F103C8T6 'Blue Pill' offers 72MHz Cortex-M3 performance with 64KB Flash and 20KB RAM. Great for embedded experimentation.",
     "price": 1200,
     "images": [
-      "/images/products/stm32f103c8t6-bluepill/1.jpg",
-      "/images/products/stm32f103c8t6-bluepill/2.jpg",
-      "/images/products/stm32f103c8t6-bluepill/3.jpg",
-      "/images/products/stm32f103c8t6-bluepill/4.jpg"
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/stm32f103c8t6-bluepill/1.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/stm32f103c8t6-bluepill/2.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/stm32f103c8t6-bluepill/3.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/stm32f103c8t6-bluepill/4.jpg"
     ],
     "stock": 30,
     "specifications": {
@@ -82,10 +82,10 @@
     "description": "The HC-SR04 ultrasonic sensor provides 2cm-400cm non-contact measurement with a ranging accuracy up to 3mm.",
     "price": 300,
     "images": [
-      "/images/products/hc-sr04-ultrasonic/1.jpg",
-      "/images/products/hc-sr04-ultrasonic/2.jpg",
-      "/images/products/hc-sr04-ultrasonic/3.jpg",
-      "/images/products/hc-sr04-ultrasonic/4.jpg"
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/hc-sr04-ultrasonic/1.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/hc-sr04-ultrasonic/2.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/hc-sr04-ultrasonic/3.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/hc-sr04-ultrasonic/4.jpg"
     ],
     "stock": 50,
     "specifications": {
@@ -107,10 +107,10 @@
     "description": "The BME280 measures temperature, humidity, and barometric pressure with high accuracy. Supports I2C and SPI interfaces.",
     "price": 900,
     "images": [
-      "/images/products/bme280-sensor/1.jpg",
-      "/images/products/bme280-sensor/2.jpg",
-      "/images/products/bme280-sensor/3.jpg",
-      "/images/products/bme280-sensor/4.jpg"
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/bme280-sensor/1.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/bme280-sensor/2.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/bme280-sensor/3.jpg",
+      "https://raw.githubusercontent.com/MiraiBits/miraibits-frontend-components/refs/heads/main/products/bme280-sensor/4.jpg"
     ],
     "stock": 40,
     "specifications": {
