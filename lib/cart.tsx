@@ -38,29 +38,38 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const fetchProducts = async () => {
       const productIds = items.map(it => it.productId);
-      const newCache = new Map(productsCache);
       
       for (const productId of productIds) {
-        if (!newCache.has(productId)) {
-          try {
-            const response = await fetch(`/api/products?id=${productId}`);
-            if (response.ok) {
-              const product = await response.json();
-              newCache.set(productId, product);
-            }
-          } catch (error) {
-            console.error(`Failed to fetch product ${productId}:`, error);
+        // Skip if already fetching or cached
+        setProductsCache(prev => {
+          if (prev.has(productId)) {
+            return prev; // Already cached
           }
-        }
+          
+          // Fetch product
+          fetch(`/api/products?id=${productId}`)
+            .then(response => {
+              if (response.ok) {
+                return response.json();
+              }
+              throw new Error('Failed to fetch product');
+            })
+            .then(product => {
+              setProductsCache(cache => new Map(cache).set(productId, product));
+            })
+            .catch(error => {
+              console.error(`Failed to fetch product ${productId}:`, error);
+            });
+          
+          return prev;
+        });
       }
-      
-      setProductsCache(newCache);
     };
 
     if (items.length > 0) {
       fetchProducts();
     }
-  }, [items, productsCache]);
+  }, [items]);
 
   const addItem = useCallback((product: Product, quantity: number = 1) => {
     setItems(prev => {
