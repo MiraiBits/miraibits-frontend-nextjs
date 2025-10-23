@@ -1,13 +1,18 @@
 import type { Product } from './types';
+import { PrismaClient as ProductPrismaClient } from '../prisma-products/client';
 
-// Lazy load Prisma client to avoid initialization issues
-const getProductPrisma = async () => {
-  const { productDBPrismaClient } = await import('./product-prisma-client');
-  return productDBPrismaClient;
-};
+// Create a singleton instance
+let productPrismaClient: ProductPrismaClient | null = null;
+
+function getProductPrisma() {
+  if (!productPrismaClient) {
+    productPrismaClient = new ProductPrismaClient();
+  }
+  return productPrismaClient;
+}
 
 export async function getProducts(): Promise<Product[]> {
-  const prisma = await getProductPrisma();
+  const prisma = getProductPrisma();
   const products = await prisma.product.findMany();
   return products.map(p => ({
     ...p,
@@ -16,7 +21,7 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  const prisma = await getProductPrisma();
+  const prisma = getProductPrisma();
   const product = await prisma.product.findUnique({
     where: { slug },
   });
@@ -30,7 +35,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
-  const prisma = await getProductPrisma();
+  const prisma = getProductPrisma();
   const product = await prisma.product.findUnique({
     where: { id },
   });
