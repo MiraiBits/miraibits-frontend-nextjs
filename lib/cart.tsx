@@ -60,7 +60,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (items.length > 0) {
       fetchProducts();
     }
-  }, [items]);
+  }, [items, productsCache]);
 
   const addItem = useCallback((product: Product, quantity: number = 1) => {
     setItems(prev => {
