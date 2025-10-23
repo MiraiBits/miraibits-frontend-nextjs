@@ -5,6 +5,7 @@ import type { Route } from 'next';
 import { usePathname, useRouter } from 'next/navigation';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useCart } from '../lib/cart';
+import { useSidebar } from '../lib/sidebar';
 import ThemeToggleButton from './ThemeToggleButton';
 import { useState } from 'react';
 
@@ -19,6 +20,7 @@ export default function Navbar() {
   const { totalQuantity } = useCart();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { toggleSidebar } = useSidebar();
 
   function onSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -76,30 +78,10 @@ export default function Navbar() {
             )}
           </Link>
           <ThemeToggleButton />
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          <button onClick={toggleSidebar} className="md:hidden text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
+            <Menu className="h-6 w-6" />
           </button>
         </div>
-        {isMenuOpen && (
-          <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 md:hidden">
-            <nav className="flex flex-col items-start gap-4 p-4">
-              {navLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={
-                    pathname === link.href
-                      ? 'text-gray-900 dark:text-gray-100 font-medium'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
-                  }
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        )}
       </div>
     </header>
   );

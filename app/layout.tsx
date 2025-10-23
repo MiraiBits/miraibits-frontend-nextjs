@@ -2,8 +2,10 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Sidebar from '../components/Sidebar';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { CartProvider } from '../lib/cart';
+import { SidebarProvider } from '../lib/sidebar';
 import { Inter, Noto_Sans_JP } from 'next/font/google';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
@@ -45,11 +47,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body suppressHydrationWarning className="min-h-screen antialiased selection:bg-sakura-100 selection:text-gray-900 flex flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <ThemeProvider>
           <CartProvider>
-            <Navbar />
-            <div className="flex-1">
-              {children}
-            </div>
-            <Footer />
+            <SidebarProvider>
+              <div className="flex flex-col min-h-screen">
+                <Navbar />
+                <div className="flex flex-1">
+                  <Sidebar />
+                  <main className="flex-1">
+                    {children}
+                  </main>
+                </div>
+                <Footer />
+              </div>
+            </SidebarProvider>
           </CartProvider>
         </ThemeProvider>
         <SpeedInsights />
