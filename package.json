@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate --schema ./prisma-orders/schema.prisma && prisma generate --schema ./prisma-products/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npx prisma generate --schema ./prisma-orders/schema.prisma --no-engine && npx prisma generate --schema ./prisma-products/schema.prisma --no-engine",
-    "generate": "npx prisma generate --schema ./prisma-orders/schema.prisma --no-engine && npx prisma generate --schema ./prisma-products/schema.prisma --no-engine",
+    "postinstall": "prisma generate --schema ./prisma-orders/schema.prisma && prisma generate --schema ./prisma-products/schema.prisma",
+    "generate": "prisma generate --schema ./prisma-orders/schema.prisma && prisma generate --schema ./prisma-products/schema.prisma",
     "migrate": "npx prisma migrate dev --schema ./prisma-orders/schema.prisma && npx prisma migrate dev --schema ./prisma-products/schema.prisma",
     "studio": "npx prisma studio --schema ./prisma-orders/schema.prisma --port 5555 & npx prisma studio --schema ./prisma-products/schema.prisma --port 5556"
   },
