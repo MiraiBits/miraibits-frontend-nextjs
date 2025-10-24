@@ -147,7 +147,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/manupawickramasinghe/Documents/renewaa/miraibits-frontend-nextjs/prisma-orders/client",
+      "value": "/app/prisma-orders/client",
       "fromEnvVar": null
     },
     "config": {
@@ -161,7 +161,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/manupawickramasinghe/Documents/renewaa/miraibits-frontend-nextjs/prisma-orders/schema.prisma",
+    "sourceFilePath": "/app/prisma-orders/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
