@@ -100,7 +100,7 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
               </ul>
             </div>
           )}
-          <div className="mt-6 flex gap-3">
+          <div className="mt-6">
             <AddToCartButton product={product} disabled={product.stock === 0} />
           </div>
         </div>
