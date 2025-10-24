@@ -40,9 +40,11 @@ function getPrismaClient() {
   return prisma
 }
 
-export default new Proxy({} as ReturnType<typeof prismaClientSingleton>, {
+const prismaProxy = new Proxy({} as ReturnType<typeof prismaClientSingleton>, {
   get(_target, prop) {
     const client = getPrismaClient()
     return (client as any)[prop]
   }
 })
+
+export default prismaProxy

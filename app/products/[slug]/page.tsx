@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getProductBySlug, getProducts } from "../../../lib/products";
+import { getProductBySlug } from "../../../lib/products";
 import AddToCartButton from "./AddToCartButton";
 import { formatCurrencyLKR } from "../../../lib/currency";
 import StructuredData from "./StructuredData";
@@ -9,6 +9,9 @@ import RelatedProducts from "./RelatedProducts";
 import Link from "next/link";
 import ProductSpecifications from "./ProductSpecifications";
 import StockAvailability from "./StockAvailability";
+
+// Force dynamic rendering - don't pre-generate at build time
+export const dynamic = 'force-dynamic';
 
 export default function ProductDetailPage({
   params,
@@ -110,10 +113,8 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
   );
 }
 
-export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((p) => ({ slug: p.slug }));
-}
+// Removed generateStaticParams to avoid build-time database access
+// Pages are now generated on-demand at runtime
 
 export async function generateMetadata({
   params,
