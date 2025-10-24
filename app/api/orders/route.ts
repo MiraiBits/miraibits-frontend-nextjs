@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     let total = 0;
     const items: Order['items'] = [];
     for (const it of cart) {
-      const p = getProductById(it.productId);
+      const p = await getProductById(it.productId);
       if (!p) continue;
       items.push({ productId: p.id, quantity: it.quantity, price: p.price });
       total += p.price * it.quantity;

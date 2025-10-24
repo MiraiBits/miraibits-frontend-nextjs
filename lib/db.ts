@@ -1,9 +1,11 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../prisma-orders/client'
 import { withOptimize } from '@prisma/extension-optimize'
 
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton> | undefined;
+} & typeof global;
+
 const prismaClientSingleton = () => {
-  // During build time with --no-engine, we can't connect to database
-  // This is fine as API routes won't be executed during build
   const client = new PrismaClient({
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
@@ -18,12 +20,29 @@ const prismaClientSingleton = () => {
   return client
 }
 
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
-} & typeof global;
+// Lazy initialization - only create client when accessed
+let prisma: ReturnType<typeof prismaClientSingleton> | undefined
 
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+function getPrismaClient() {
+  if (prisma) return prisma
+  
+  if (globalThis.prismaGlobal) {
+    prisma = globalThis.prismaGlobal
+    return prisma
+  }
+  
+  prisma = prismaClientSingleton()
+  
+  if (process.env.NODE_ENV !== 'production') {
+    globalThis.prismaGlobal = prisma
+  }
+  
+  return prisma
+}
 
-export default prisma
-
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
+export default new Proxy({} as ReturnType<typeof prismaClientSingleton>, {
+  get(_target, prop) {
+    const client = getPrismaClient()
+    return (client as any)[prop]
+  }
+})

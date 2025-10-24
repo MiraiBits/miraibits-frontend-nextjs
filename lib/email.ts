@@ -334,8 +334,8 @@ export async function sendOrderEmail(order: Order) {
   // Send staff notification email
   try {
     await resend.emails.send({
-      from: process.env.COMPANY_EMAIL || "onboarding@resend.dev",
-      to: "miraibits.electronics@gmail.com",
+      from: process.env.RESEND_EMAIL || "onboarding@resend.dev",
+      to: process.env.COMPANY_EMAIL || "miraibits.electronics@gmail.com",
       subject: `New Order Received – ${name}`,
       html: staffHtml,
       attachments,
@@ -365,7 +365,7 @@ export async function sendOrderEmail(order: Order) {
             </p>
             <p style="margin-top: 18px; font-size: 13px; color: #6b7280;">
               If you have any questions or concerns, please contact us at ${
-                process.env.COMPANY_EMAIL || "onboarding@resend.dev"
+                process.env.COMPANY_EMAIL || "miraibits.electronics@gmail.com"
               }.
             </p>
             <p style="margin-top: 12px; font-size: 13px; color: #6b7280;">
@@ -380,8 +380,8 @@ export async function sendOrderEmail(order: Order) {
 
   try {
     await resend.emails.send({
-      from: process.env.COMPANY_EMAIL || "onboarding@resend.dev",
-      to: email,
+      from: process.env.RESEND_EMAIL || "onboarding@resend.dev",
+      to: `${email}`,
       subject: `Your order receipt – ${
         process.env.COMPANY_NAME || "Miraibits"
       }`,

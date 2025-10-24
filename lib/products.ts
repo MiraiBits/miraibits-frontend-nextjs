@@ -1,18 +1,51 @@
 import type { Product } from './types';
-import productsData from '../data/products.json';
+import { PrismaClient as ProductPrismaClient } from '../prisma-products/client';
 
-export const products: Product[] = productsData as unknown as Product[];
+// Create a singleton instance
+let productPrismaClient: ProductPrismaClient | null = null;
 
-export function getProducts(): Product[] {
-  return products;
+function getProductPrisma() {
+  if (!productPrismaClient) {
+    productPrismaClient = new ProductPrismaClient();
+  }
+  return productPrismaClient;
 }
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find(p => p.slug === slug);
+export async function getProducts(): Promise<Product[]> {
+  const prisma = getProductPrisma();
+  const products = await prisma.product.findMany();
+  return products.map(p => ({
+    ...p,
+    specifications: p.specifications as { [key: string]: string } | undefined,
+  }));
 }
 
-export function getProductById(id: string): Product | undefined {
-  return products.find(p => p.id === id);
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const prisma = getProductPrisma();
+  const product = await prisma.product.findUnique({
+    where: { slug },
+  });
+  
+  if (!product) return null;
+  
+  return {
+    ...product,
+    specifications: product.specifications as { [key: string]: string } | undefined,
+  };
+}
+
+export async function getProductById(id: string): Promise<Product | null> {
+  const prisma = getProductPrisma();
+  const product = await prisma.product.findUnique({
+    where: { id },
+  });
+  
+  if (!product) return null;
+  
+  return {
+    ...product,
+    specifications: product.specifications as { [key: string]: string } | undefined,
+  };
 }
 
 

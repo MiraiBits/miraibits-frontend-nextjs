@@ -7,7 +7,7 @@ export const alt = 'Miraibits Product Image';
 export const size = { width: 1200, height: 630 };
 
 export default async function OgImage({ params }: { params: { slug: string } }) {
-  const product = getProductBySlug(params.slug);
+  const product = await getProductBySlug(params.slug);
 
   if (!product) return new Response('Not found', { status: 404 });
 

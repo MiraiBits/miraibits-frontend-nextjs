@@ -9,7 +9,7 @@ export default async function HomePage({
   const params = (await searchParams) || {};
   const qRaw = params["q"];
   const q = Array.isArray(qRaw) ? qRaw[0] : qRaw;
-  const products = getProducts();
+  const products = await getProducts();
   return (
     <main className="container-px mx-auto">
       <section className="py-2 md:py-12">

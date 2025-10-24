@@ -16,6 +16,8 @@ To build the project locally, follow these steps:
 2. **Run the build command:**
    ```bash
    npm run build
+
+   npx prisma db push --schema ./prisma-orders/schema.prisma
    ```
 
 ## Vercel Deployment

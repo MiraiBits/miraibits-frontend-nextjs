@@ -1,13 +1,12 @@
 "use client";
 
 import { useCart } from '../../lib/cart';
-import { getProductById } from '../../lib/products';
 import { formatCurrencyLKR } from '../../lib/currency';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 function CheckoutInner() {
-  const { items, totalPrice, clearCart } = useCart();
+  const { items, totalPrice, clearCart, productsCache } = useCart();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   return (
@@ -68,7 +67,8 @@ function CheckoutInner() {
           <h2 className="font-medium">Order Summary</h2>
           <div className="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-300">
             {items.map(it => {
-              const p = getProductById(it.productId)!;
+              const p = productsCache.get(it.productId);
+              if (!p) return null;
               return (
                 <div key={it.productId} className="flex justify-between">
                   <span>{p.name} × {it.quantity}</span>

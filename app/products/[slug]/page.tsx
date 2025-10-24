@@ -20,7 +20,7 @@ export default function ProductDetailPage({
 
 async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return notFound();
 
   return (
@@ -111,7 +111,7 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
 }
 
 export async function generateStaticParams() {
-  const products = getProducts();
+  const products = await getProducts();
   return products.map((p) => ({ slug: p.slug }));
 }
 
@@ -121,7 +121,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return {};
   const base =
     process.env.SITE_URL ||

@@ -4,13 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate --no-engine && next build",
+    "build": "prisma generate --schema ./prisma-orders/schema.prisma && prisma generate --schema ./prisma-products/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate --no-engine"
+    "postinstall": "prisma generate --schema ./prisma-orders/schema.prisma && prisma generate --schema ./prisma-products/schema.prisma",
+    "generate": "prisma generate --schema ./prisma-orders/schema.prisma && prisma generate --schema ./prisma-products/schema.prisma",
+    "migrate": "npx prisma migrate dev --schema ./prisma-orders/schema.prisma && npx prisma migrate dev --schema ./prisma-products/schema.prisma",
+    "studio": "npx prisma studio --schema ./prisma-orders/schema.prisma --port 5555 & npx prisma studio --schema ./prisma-products/schema.prisma --port 5556"
   },
   "dependencies": {
-    "@prisma/client": "^6.17.1",
+    "@prisma/client": "^6.18.0",
     "@prisma/extension-optimize": "^2.0.0",
     "@prisma/instrumentation": "^6.17.1",
     "@types/formidable": "^3.4.5",
@@ -41,6 +44,6 @@
     "critters": "^0.0.23",
     "eslint": "^9.17.0",
     "eslint-config-next": "15.5.4",
-    "prisma": "^6.17.1"
+    "prisma": "^6.18.0"
   }
 }
