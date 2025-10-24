@@ -175,6 +175,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -185,7 +186,7 @@ const config = {
   },
   "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-orders/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  // Customer info\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  // Order items stored as JSON\n  items Json\n  total Float\n\n  // Proof of payment stored as base64\n  proofData     String? @db.Text\n  proofMimeType String?\n  proofFilename String?\n\n  @@map(\"orders\")\n}\n",
   "inlineSchemaHash": "e0c83cb30fca46c7d946752f95eda0e8f2acd09727183c18939a177861ca969d",
-  "copyEngine": false
+  "copyEngine": true
 }
 
 const fs = require('fs')
@@ -222,3 +223,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "prisma-orders/client/libquery_engine-debian-openssl-3.0.x.so.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "schema.prisma");
+path.join(process.cwd(), "prisma-orders/client/schema.prisma")

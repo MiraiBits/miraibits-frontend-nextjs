@@ -185,7 +185,7 @@ const config = {
   },
   "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-products/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"PRISMA_PRODUCT_DB\")\n}\n\nmodel Product {\n  id               String   @id @default(uuid())\n  name             String\n  slug             String   @unique\n  price            Int\n  description      String\n  shortDescription String\n  images           String[]\n  stock            Int\n  specifications   Json?\n  datasheet        String[]\n\n  @@map(\"products\")\n}\n",
   "inlineSchemaHash": "efa2a939e06ae3c2c74c33218a63997b94582b72a5b3c19c2a2bb5c051eb3495",
-  "copyEngine": false
+  "copyEngine": true
 }
 config.dirname = '/'
 
