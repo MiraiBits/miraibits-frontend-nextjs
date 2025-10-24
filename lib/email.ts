@@ -68,7 +68,7 @@ export function renderOrderReceiptHtml(order: Order) {
         <div class="card">
           <div class="card-inner">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-              <span class="logo-dot"></span>
+              <img src="https://miraibits.com/logo.png" alt="Miraibits Logo" width="32" height="32">
               <span class="brand">${
                 process.env.COMPANY_NAME || "Miraibits"
               }</span>
@@ -235,7 +235,7 @@ export async function sendOrderEmail(order: Order) {
         <div class="card">
           <div class="card-inner">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-              <span class="logo-dot"></span>
+              <img src="https://miraibits.com/logo.png" alt="Miraibits Logo" width="32" height="32">
               <span class="brand">${
                 process.env.COMPANY_NAME || "Miraibits"
               }</span>
