@@ -22,7 +22,6 @@ export default function Footer() {
           <div className="flex gap-4">
             <Link className="underline text-gray-700 dark:text-gray-300" href="https://x.com/miraibits">X</Link>
             <Link className="underline text-gray-700 dark:text-gray-300" href="https://instagram.com/miraibits">Instagram</Link>
-            <Link className="underline text-gray-700 dark:text-gray-300" href="https://github.com/miraibits">GitHub</Link>
           </div>
         </div>
       </div>
@@ -30,5 +29,4 @@ export default function Footer() {
     </footer>
   );
 }
-
 
