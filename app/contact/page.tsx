@@ -2,12 +2,12 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact – Miraibits',
-  description: 'Get in touch with Miraibits in Colombo, Sri Lanka for orders and support.',
+  title: 'Contact – Mirai.lk',
+  description: 'Get in touch with Mirai.lk in Colombo, Sri Lanka for orders and support.',
 };
 
 export default function ContactPage() {
-  const EMAIL = process.env.COMPANY_EMAIL || 'miraibits.electronics@gmail.com';
+  const EMAIL = process.env.COMPANY_EMAIL || 'hello@mirai.lk';
   const PHONE = process.env.COMPANY_PHONE || '+94 11 234 5678';
   const ADDRESS = process.env.COMPANY_ADDRESS || 'Colombo, Sri Lanka';
   return (
@@ -21,5 +21,4 @@ export default function ContactPage() {
     </main>
   );
 }
-
 

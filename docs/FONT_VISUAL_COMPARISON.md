@@ -25,7 +25,7 @@ abcdefghijklmnopqrstuvwxyz
 ### Before (Helvetica - Variable Width)
 ```
 ┌────────────────────────────────────────────┐
-│ ● Miraibits                                │
+│ ● Mirai.lk                                │
 │                                            │
 │ Receipt                                    │
 │ Order ORD-123456 • Oct 19, 2025           │
@@ -55,7 +55,7 @@ abcdefghijklmnopqrstuvwxyz
 │ ────────────────────────────────────────   │
 │                                            │
 │ Thank you for your order.                  │
-│ Miraibits • Colombo, Sri Lanka             │
+│ Mirai.lk • Colombo, Sri Lanka             │
 └────────────────────────────────────────────┘
 ```
 **Issue:** Variable width characters, less technical feel
@@ -65,7 +65,7 @@ abcdefghijklmnopqrstuvwxyz
 ### After (Courier - Monospace) ✅
 ```
 ┌────────────────────────────────────────────┐
-│ ● Miraibits                                │
+│ ● Mirai.lk                                │
 │                                            │
 │ Receipt                                    │
 │ Order ORD-123456 • Oct 19, 2025           │
@@ -95,7 +95,7 @@ abcdefghijklmnopqrstuvwxyz
 │ ────────────────────────────────────────   │
 │                                            │
 │ Thank you for your order.                  │
-│ Miraibits • Colombo, Sri Lanka             │
+│ Mirai.lk • Colombo, Sri Lanka             │
 └────────────────────────────────────────────┘
 ```
 **Benefit:** Fixed-width characters, technical aesthetic, matches email style
