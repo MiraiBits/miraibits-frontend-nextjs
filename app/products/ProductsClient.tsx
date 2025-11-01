@@ -34,7 +34,10 @@ export default function ProductsClient({
         <h1 className="text-2xl font-semibold">Products</h1>
         {activeQuery && (
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Showing results for <span className="font-medium text-gray-700 dark:text-gray-200">"{activeQuery}"</span>
+            Showing results for{" "}
+            <span className="font-medium text-gray-700 dark:text-gray-200">
+              &quot;{activeQuery}&quot;
+            </span>
           </p>
         )}
       </div>
