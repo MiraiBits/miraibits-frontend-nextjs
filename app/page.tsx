@@ -1,6 +1,7 @@
 import { getProducts } from "../lib/products";
 import ShopByCategory from "../components/ShopByCategory";
 import ProductsClient from "./products/ProductsClient";
+import MostPopularProducts from "../components/MostPopularProducts";
 
 export default async function HomePage({
   searchParams,
@@ -11,6 +12,13 @@ export default async function HomePage({
   const qRaw = params["q"];
   const q = Array.isArray(qRaw) ? qRaw[0] : qRaw;
   const products = await getProducts();
+  const productsWithPopularTag = products.filter((product) =>
+    product.tags?.includes("popular")
+  );
+  const popularProducts = (productsWithPopularTag.length
+    ? productsWithPopularTag
+    : products
+  ).slice(0, 8);
   return (
     <main className="container-px mx-auto max-w-6xl">
       <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16">
@@ -38,6 +46,9 @@ export default async function HomePage({
         </div>
       </section>
       <ShopByCategory />
+      {popularProducts.length > 0 && (
+        <MostPopularProducts products={popularProducts} />
+      )}
       <section id="products" className="py-8 md:py-12 lg:py-16">
         <h2 className="sr-only">Mirai.lk Products</h2>
         <div>
