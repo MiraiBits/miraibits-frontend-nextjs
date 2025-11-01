@@ -7,6 +7,7 @@ import { CartProvider } from '../lib/cart';
 import { Inter, Noto_Sans_JP } from 'next/font/google';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 const noto = Noto_Sans_JP({ subsets: ['latin'], weight: ['400','500','700'], display: 'swap' });
@@ -45,7 +46,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body suppressHydrationWarning className="min-h-screen antialiased selection:bg-sakura-100 selection:text-gray-900 flex flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <ThemeProvider>
           <CartProvider>
-            <Navbar />
+            <Suspense fallback={null}>
+              <Navbar />
+            </Suspense>
             <div className="flex-1">
               {children}
             </div>
@@ -58,4 +61,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
