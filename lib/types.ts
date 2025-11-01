@@ -9,6 +9,7 @@ export interface Product {
   stock: number;
   specifications?: { [key: string]: string };
   datasheet?: string[];
+  tags?: string[];
 }
 
 export interface CartItem {
