@@ -66,7 +66,7 @@ npm install jspdf-customfonts
 ### Share Tech Mono (Original HTML Email)
 ```
 ┌─────────────────────────────────────────┐
-│  Miraibits                              │
+│  Mirai.lk                              │
 │  Receipt                                │
 │  Order ORD123 • Oct 19, 2025           │
 │                                         │
@@ -79,7 +79,7 @@ Font: Share Tech Mono (Google Fonts)
 ### Courier (Current PDF)
 ```
 ┌─────────────────────────────────────────┐
-│  Miraibits                              │
+│  Mirai.lk                              │
 │  Receipt                                │
 │  Order ORD123 • Oct 19, 2025           │
 │                                         │

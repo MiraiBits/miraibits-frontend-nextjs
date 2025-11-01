@@ -14,7 +14,7 @@ const noto = Noto_Sans_JP({ subsets: ['latin'], weight: ['400','500','700'], dis
 const baseUrl = process.env.SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
 
 export const metadata: Metadata = {
-  title: 'Miraibits – Electronics Store',
+  title: 'Mirai.lk – Electronics Store',
   description: 'Minimal, modern electronics store for maker hardware.',
   icons: {
     icon: [
@@ -27,12 +27,12 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL(baseUrl),
   openGraph: {
-    title: 'Miraibits – Electronics Store',
+    title: 'Mirai.lk – Electronics Store',
     description: 'Minimal, modern electronics store for maker hardware.',
     url: baseUrl,
-    siteName: 'Miraibits',
+    siteName: 'Mirai.lk',
     images: [
-      { url: '/opengraph-image', width: 1200, height: 630, alt: 'Miraibits' },
+      { url: '/opengraph-image', width: 1200, height: 630, alt: 'Mirai.lk' },
     ],
     locale: 'en_US',
     type: 'website',
@@ -58,5 +58,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-
 

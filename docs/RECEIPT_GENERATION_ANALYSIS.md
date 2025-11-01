@@ -1,7 +1,7 @@
 # Receipt Generation Analysis & Headless Instance Feasibility
 
 ## Overview
-This document explains how receipt generation works in the Miraibits Next.js e-commerce application and evaluates its feasibility for headless (serverless) environments like Vercel.
+This document explains how receipt generation works in the Mirai.lk Next.js e-commerce application and evaluates its feasibility for headless (serverless) environments like Vercel.
 
 ---
 
@@ -69,7 +69,7 @@ Send emails via Resend API:
 #### **D. Email Delivery** (`/lib/email.ts`)
 - Uses **Resend** API for email delivery
 - Sends two emails:
-  1. **Staff Notification** → `miraibits.electronics@gmail.com`
+  1. **Staff Notification** → `hello@mirai.lk`
   2. **Customer Receipt** → customer's email
 - Attachments:
   - Generated PDF receipt
@@ -226,7 +226,7 @@ DIRECT_URL="postgresql://..."  # For Prisma migrations
 # Email
 RESEND_API_KEY="re_..."
 COMPANY_EMAIL="noreply@yourdomain.com"
-COMPANY_NAME="Miraibits"
+COMPANY_NAME="Mirai.lk"
 COMPANY_ADDRESS="Colombo, Sri Lanka"
 
 # Production only
@@ -323,5 +323,5 @@ console.log('Customer receipt sent for Order ID:', id);
 ---
 
 **Generated:** October 19, 2025  
-**Project:** Miraibits E-commerce Platform  
+**Project:** Mirai.lk E-commerce Platform  
 **Stack:** Next.js 15 + Puppeteer + Prisma + Resend

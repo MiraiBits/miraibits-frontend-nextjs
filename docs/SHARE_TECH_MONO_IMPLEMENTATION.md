@@ -68,7 +68,7 @@ pdf.setFont('ShareTechMono');
 ### Your PDF Now Uses:
 ```
 ┌────────────────────────────────────────────┐
-│ ● Miraibits                                │
+│ ● Mirai.lk                                │
 │                                            │
 │ Receipt                                    │
 │ Order ORD-123456 • Oct 19, 2025           │
@@ -97,7 +97,7 @@ pdf.setFont('ShareTechMono');
 │ ────────────────────────────────────────   │
 │                                            │
 │ Thank you for your order.                  │
-│ Miraibits • Colombo, Sri Lanka             │
+│ Mirai.lk • Colombo, Sri Lanka             │
 └────────────────────────────────────────────┘
 ```
 

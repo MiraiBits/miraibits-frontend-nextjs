@@ -128,7 +128,7 @@ export async function generateMetadata({
     (process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : "http://localhost:3000");
-  const title = `${product.name} – Miraibits`;
+  const title = `${product.name} – Mirai.lk`;
   const description =
     product.shortDescription || product.description.slice(0, 160);
   const url = `${base}/products/${product.slug}`;

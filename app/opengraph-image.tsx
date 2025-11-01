@@ -4,7 +4,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default function OpengraphImage() {
-  const brand = process.env.COMPANY_NAME || 'Miraibits';
+  const brand = process.env.COMPANY_NAME || 'Mirai.lk';
   const location = process.env.COMPANY_ADDRESS || 'Colombo, Sri Lanka';
   return new ImageResponse(
     (
@@ -33,5 +33,4 @@ export default function OpengraphImage() {
     { ...size }
   );
 }
-
 

@@ -48,8 +48,8 @@ For receipts and invoices, the monospace characteristic is more important than t
 
 ### Company Header
 ```
-Courier:        ● Miraibits
-Share Tech:     ● Miraibits
+Courier:        ● Mirai.lk
+Share Tech:     ● Mirai.lk
 Match: ✅ Nearly Identical
 ```
 

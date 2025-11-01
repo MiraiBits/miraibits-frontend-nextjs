@@ -56,7 +56,7 @@ html2canvas (~500KB)
 
 Create or update `.env.local`:
 ```bash
-NEXT_PUBLIC_COMPANY_NAME="Miraibits"
+NEXT_PUBLIC_COMPANY_NAME="Mirai.lk"
 NEXT_PUBLIC_COMPANY_ADDRESS="Colombo, Sri Lanka"
 ```
 

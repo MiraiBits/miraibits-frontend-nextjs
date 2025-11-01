@@ -11,9 +11,9 @@ export default async function HomePage({
   const q = Array.isArray(qRaw) ? qRaw[0] : qRaw;
   const products = await getProducts();
   return (
-    <main className="container-px mx-auto">
+    <main className="container-px mx-auto max-w-6xl">
       <section className="py-2 md:py-12">
-        <h1 className="sr-only">Miraibits Products</h1>
+        <h1 className="sr-only">Mirai.lk Products</h1>
         <div>
           <ProductsClient initialProducts={products} initialQuery={q} />
         </div>
