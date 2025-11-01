@@ -19,12 +19,13 @@ export function generateStaticParams() {
   }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: CategoryPageParams;
-}): Metadata {
-  const category = getCategoryBySlug(params.slug);
+  params: Promise<CategoryPageParams>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const category = getCategoryBySlug(slug);
 
   if (!category) {
     return {
@@ -41,9 +42,10 @@ export function generateMetadata({
 export default async function CategoryPage({
   params,
 }: {
-  params: CategoryPageParams;
+  params: Promise<CategoryPageParams>;
 }) {
-  const category = getCategoryBySlug(params.slug);
+  const { slug } = await params;
+  const category = getCategoryBySlug(slug);
 
   if (!category) {
     notFound();
