@@ -1,4 +1,5 @@
 import { getProducts } from "../lib/products";
+import ShopByCategory from "../components/ShopByCategory";
 import ProductsClient from "./products/ProductsClient";
 
 export default async function HomePage({
@@ -36,6 +37,7 @@ export default async function HomePage({
           </div>
         </div>
       </section>
+      <ShopByCategory />
       <section id="products" className="py-8 md:py-12 lg:py-16">
         <h2 className="sr-only">Mirai.lk Products</h2>
         <div>
