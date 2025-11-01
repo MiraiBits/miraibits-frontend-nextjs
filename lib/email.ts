@@ -17,7 +17,7 @@ export function renderOrderReceiptHtml(order: Order) {
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-      <title>${process.env.COMPANY_NAME || "Miraibits"} Receipt ${id}</title>
+      <title>${process.env.COMPANY_NAME || "Mirai.lk"} Receipt ${id}</title>
       <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
         body {
@@ -47,8 +47,8 @@ export function renderOrderReceiptHtml(order: Order) {
           height: 24px;
           width: 24px;
           border-radius: 9999px;
-          background: #ffe4ec;
-          border: 1px solid #fec7d8;
+          background: #ffe4e1;
+          border: 1px solid #ffc4bf;
           margin-right: 8px;
           vertical-align: middle;
         }
@@ -68,9 +68,9 @@ export function renderOrderReceiptHtml(order: Order) {
         <div class="card">
           <div class="card-inner">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-              <img src="https://miraibits.com/logo.png" alt="Miraibits Logo" width="32" height="32">
+              <img src="https://mirai.lk/logo.png" alt="Mirai.lk Logo" width="32" height="32">
               <span class="brand">${
-                process.env.COMPANY_NAME || "Miraibits"
+                process.env.COMPANY_NAME || "Mirai.lk"
               }</span>
             </div>
             <h1 style="font-size:20px;margin:8px 0 0 0;">Receipt</h1>
@@ -141,7 +141,7 @@ export function renderOrderReceiptHtml(order: Order) {
               Thank you for your order. This receipt is not a tax invoice.
             </p>
             <p class="muted" style="font-size:12px;margin:4px 0 0 0;">
-              ${process.env.COMPANY_NAME || "Miraibits"} • ${
+              ${process.env.COMPANY_NAME || "Mirai.lk"} • ${
     process.env.COMPANY_ADDRESS || "Colombo, Sri Lanka"
   }
             </p>
@@ -214,8 +214,8 @@ export async function sendOrderEmail(order: Order) {
           height: 24px;
           width: 24px;
           border-radius: 9999px;
-          background: #ffe4ec;
-          border: 1px solid #fec7d8;
+          background: #ffe4e1;
+          border: 1px solid #ffc4bf;
           margin-right: 8px;
           vertical-align: middle;
         }
@@ -235,9 +235,9 @@ export async function sendOrderEmail(order: Order) {
         <div class="card">
           <div class="card-inner">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-              <img src="https://miraibits.com/logo.png" alt="Miraibits Logo" width="32" height="32">
+              <img src="https://mirai.lk/logo.png" alt="Mirai.lk Logo" width="32" height="32">
               <span class="brand">${
-                process.env.COMPANY_NAME || "Miraibits"
+                process.env.COMPANY_NAME || "Mirai.lk"
               }</span>
             </div>
             <h1 style="font-size:20px;margin:8px 0 0 0;">New Order Received</h1>
@@ -308,7 +308,7 @@ export async function sendOrderEmail(order: Order) {
               New order received from ${name}.
             </p>
             <p class="muted" style="font-size:12px;margin:4px 0 0 0;">
-              ${process.env.COMPANY_NAME || "Miraibits"} • ${
+              ${process.env.COMPANY_NAME || "Mirai.lk"} • ${
     process.env.COMPANY_ADDRESS || "Colombo, Sri Lanka"
   }
             </p>
@@ -320,7 +320,7 @@ export async function sendOrderEmail(order: Order) {
   `;
 
   // Log emails before sending
-  console.log("Staff email to:", "miraibits.electronics@gmail.com");
+  console.log("Staff email to:", "hello@mirai.lk");
   console.log("Customer email to:", email);
   console.log("Order object (partial):", {
     id,
@@ -335,7 +335,7 @@ export async function sendOrderEmail(order: Order) {
   try {
     await resend.emails.send({
       from: process.env.RESEND_EMAIL || "onboarding@resend.dev",
-      to: process.env.COMPANY_EMAIL || "miraibits.electronics@gmail.com",
+      to: process.env.COMPANY_EMAIL || "hello@mirai.lk",
       subject: `New Order Received – ${name}`,
       html: staffHtml,
       attachments,
@@ -354,7 +354,7 @@ export async function sendOrderEmail(order: Order) {
         <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
           <div style="background: #1e293b; color: white; padding: 20px 24px;">
             <h1 style="margin: 0; font-size: 20px;">${
-              process.env.COMPANY_NAME || "Miraibits"
+              process.env.COMPANY_NAME || "Mirai.lk"
             }</h1>
             <p style="margin: 4px 0 0; font-size: 13px; opacity: 0.85;">Thank you for your order!</p>
           </div>
@@ -365,12 +365,12 @@ export async function sendOrderEmail(order: Order) {
             </p>
             <p style="margin-top: 18px; font-size: 13px; color: #6b7280;">
               If you have any questions or concerns, please contact us at ${
-                process.env.COMPANY_EMAIL || "miraibits.electronics@gmail.com"
+                process.env.COMPANY_EMAIL || "hello@mirai.lk"
               }.
             </p>
             <p style="margin-top: 12px; font-size: 13px; color: #6b7280;">
               Thank you for shopping with ${
-                process.env.COMPANY_NAME || "Miraibits"
+                process.env.COMPANY_NAME || "Mirai.lk"
               }!
             </p>
           </div>
@@ -383,7 +383,7 @@ export async function sendOrderEmail(order: Order) {
       from: process.env.RESEND_EMAIL || "onboarding@resend.dev",
       to: `${email}`,
       subject: `Your order receipt – ${
-        process.env.COMPANY_NAME || "Miraibits"
+        process.env.COMPANY_NAME || "Mirai.lk"
       }`,
       html: customerHtml,
       attachments,

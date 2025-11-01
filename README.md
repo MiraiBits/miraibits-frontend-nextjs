@@ -1,4 +1,4 @@
-# Miraibits
+# Mirai.lk
 
 ## Overview
 

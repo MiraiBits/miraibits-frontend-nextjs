@@ -95,7 +95,7 @@ If you don't want to install Chromium locally, you have two options:
 
 ## Pull Request Status
 
-- **PR #36**: https://github.com/MiraiBits/miraibits-frontend-nextjs/pull/36
+- **PR #36**: https://github.com/MiraiBits/mirai-lk-frontend-nextjs/pull/36
 - **Status**: The PR now shows 7 commits instead of 18
 - **Branch**: `feature/adding-prisma-db`
 - **Target**: `development`
@@ -112,7 +112,7 @@ git log --oneline -5
 git log origin/feature/adding-prisma-db --oneline -5
 
 # Check PR on GitHub
-# Visit: https://github.com/MiraiBits/miraibits-frontend-nextjs/pull/36
+# Visit: https://github.com/MiraiBits/mirai-lk-frontend-nextjs/pull/36
 ```
 
 ## Notes

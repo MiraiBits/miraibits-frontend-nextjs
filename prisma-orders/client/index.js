@@ -35,12 +35,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.18.0
- * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
+ * Prisma Client JS version: 6.17.1
+ * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
  */
 Prisma.prismaVersion = {
-  client: "6.18.0",
-  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
+  client: "6.17.1",
+  engine: "272a37d34178c2894197e17273bf937f25acdeac"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -147,7 +147,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/manupawickramasinghe/Documents/renewaa/miraibits-frontend-nextjs/prisma-orders/client",
+      "value": "/Users/jerith/Projects/miraibits-frontend-nextJs/prisma-orders/client",
       "fromEnvVar": null
     },
     "config": {
@@ -156,12 +156,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/manupawickramasinghe/Documents/renewaa/miraibits-frontend-nextjs/prisma-orders/schema.prisma",
+    "sourceFilePath": "/Users/jerith/Projects/miraibits-frontend-nextJs/prisma-orders/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -169,8 +169,8 @@ const config = {
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "..",
-  "clientVersion": "6.18.0",
-  "engineVersion": "34b5a692b7bd79939a9a2c3ef97d816e749cda2f",
+  "clientVersion": "6.17.1",
+  "engineVersion": "272a37d34178c2894197e17273bf937f25acdeac",
   "datasourceNames": [
     "db"
   ],
@@ -179,13 +179,13 @@ const config = {
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "fromEnvVar": null,
+        "value": "prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RfaWQiOjEsInNlY3VyZV9rZXkiOiJza19WckstQk41Z01xQ0phYzBheWFHUEYiLCJhcGlfa2V5IjoiMDFLN1c2RlEwSzNXMDlHVlpTTjhSNEs2MTkiLCJ0ZW5hbnRfaWQiOiIyMTVkZDkwZmRkYWZiOTJlM2ViOTk1NzRjZWZlNzE5MDZkYzVhNjVlNWY5ODFiNzNmNDZmMjkzNmRiY2Y3NzUyIiwiaW50ZXJuYWxfc2VjcmV0IjoiOTVhZDIwNzMtMjM1ZC00YWYyLThlZDctMjJkMzZmMTMxNzc3In0.-Lmm_iKKpwEWXkcA_G-qj6bVm4o8WMt6ud2VwR_pOpw"
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-orders/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  // Customer info\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  // Order items stored as JSON\n  items Json\n  total Float\n\n  // Proof of payment stored as base64\n  proofData     String? @db.Text\n  proofMimeType String?\n  proofFilename String?\n\n  @@map(\"orders\")\n}\n",
-  "inlineSchemaHash": "e0c83cb30fca46c7d946752f95eda0e8f2acd09727183c18939a177861ca969d",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-orders/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = \"prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RfaWQiOjEsInNlY3VyZV9rZXkiOiJza19WckstQk41Z01xQ0phYzBheWFHUEYiLCJhcGlfa2V5IjoiMDFLN1c2RlEwSzNXMDlHVlpTTjhSNEs2MTkiLCJ0ZW5hbnRfaWQiOiIyMTVkZDkwZmRkYWZiOTJlM2ViOTk1NzRjZWZlNzE5MDZkYzVhNjVlNWY5ODFiNzNmNDZmMjkzNmRiY2Y3NzUyIiwiaW50ZXJuYWxfc2VjcmV0IjoiOTVhZDIwNzMtMjM1ZC00YWYyLThlZDctMjJkMzZmMTMxNzc3In0.-Lmm_iKKpwEWXkcA_G-qj6bVm4o8WMt6ud2VwR_pOpw\"\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  // Customer info\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  // Order items stored as JSON\n  items Json\n  total Float\n\n  // Proof of payment stored as base64\n  proofData     String? @db.Text\n  proofMimeType String?\n  proofFilename String?\n\n  @@map(\"orders\")\n}\n",
+  "inlineSchemaHash": "e9df6f6b036030794040b702b5baacbda9ba593bb3ff74c4009784d04d00f7bd",
   "copyEngine": true
 }
 
@@ -224,8 +224,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
-path.join(process.cwd(), "prisma-orders/client/libquery_engine-debian-openssl-3.0.x.so.node")
+path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
+path.join(process.cwd(), "prisma-orders/client/libquery_engine-darwin-arm64.dylib.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma-orders/client/schema.prisma")

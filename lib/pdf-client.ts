@@ -23,11 +23,11 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   } = order;
   
   // Company Header
-  pdf.setFillColor(255, 228, 236); // Light pink
+  pdf.setFillColor(255, 228, 225); // Brand accent halo
   pdf.circle(15, 15, 4, 'F');
   pdf.setFontSize(16);
   pdf.setFont('ShareTechMono');
-  pdf.text(process.env.NEXT_PUBLIC_COMPANY_NAME || 'Miraibits', 25, 17);
+  pdf.text(process.env.NEXT_PUBLIC_COMPANY_NAME || 'Mirai.lk', 25, 17);
   
   // Title
   pdf.setFontSize(20);
@@ -113,7 +113,7 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   
   yPos += 5;
   pdf.text(
-    `${process.env.NEXT_PUBLIC_COMPANY_NAME || 'Miraibits'} • ${process.env.NEXT_PUBLIC_COMPANY_ADDRESS || 'Colombo, Sri Lanka'}`,
+    `${process.env.NEXT_PUBLIC_COMPANY_NAME || 'Mirai.lk'} • ${process.env.NEXT_PUBLIC_COMPANY_ADDRESS || 'Colombo, Sri Lanka'}`,
     15,
     yPos
   );
@@ -123,7 +123,7 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
 
 export function downloadReceiptPdf(order: Order, filename?: string) {
   const pdf = generateReceiptPdfClient(order);
-  pdf.save(filename || `miraibits-receipt-${order.id}.pdf`);
+  pdf.save(filename || `mirai-lk-receipt-${order.id}.pdf`);
 }
 
 export function getReceiptPdfBlob(order: Order): Blob {

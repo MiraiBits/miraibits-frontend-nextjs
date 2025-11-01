@@ -15,7 +15,7 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-const STORAGE_KEY = 'miraibits_cart_v1';
+const STORAGE_KEY = 'mirai_lk_cart_v1';
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -123,5 +123,4 @@ export function useCart() {
   if (!ctx) throw new Error('useCart must be used within CartProvider');
   return ctx;
 }
-
 

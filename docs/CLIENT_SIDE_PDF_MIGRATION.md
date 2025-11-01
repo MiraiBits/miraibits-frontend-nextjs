@@ -124,14 +124,14 @@ Browser downloads PDF
 ### Development
 Add to `.env.local`:
 ```bash
-NEXT_PUBLIC_COMPANY_NAME="Miraibits"
+NEXT_PUBLIC_COMPANY_NAME="Mirai.lk"
 NEXT_PUBLIC_COMPANY_ADDRESS="Colombo, Sri Lanka"
 ```
 
 ### Production (Vercel)
 Add environment variables:
 ```bash
-NEXT_PUBLIC_COMPANY_NAME=Miraibits
+NEXT_PUBLIC_COMPANY_NAME=Mirai.lk
 NEXT_PUBLIC_COMPANY_ADDRESS=Colombo, Sri Lanka
 ```
 

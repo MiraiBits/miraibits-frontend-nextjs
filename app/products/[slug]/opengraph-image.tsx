@@ -3,7 +3,7 @@ import { getProductBySlug } from '../../../lib/products';
 import { formatCurrencyLKR } from '../../../lib/currency';
 
 export const contentType = 'image/png';
-export const alt = 'Miraibits Product Image';
+export const alt = 'Mirai.lk Product Image';
 export const size = { width: 1200, height: 630 };
 
 export default async function OgImage({ params }: { params: { slug: string } }) {

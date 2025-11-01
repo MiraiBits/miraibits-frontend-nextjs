@@ -68,7 +68,7 @@ Vercel should now:
 
 2. **Test Your Preview URL:**
    ```
-   https://miraibits-frontend-nextjs-git-featu-4af66b-manupawicks-projects.vercel.app
+   https://mirai-lk-frontend-nextjs-git-featu-4af66b-manupawicks-projects.vercel.app
    ```
    - [ ] Homepage loads
    - [ ] Products page works

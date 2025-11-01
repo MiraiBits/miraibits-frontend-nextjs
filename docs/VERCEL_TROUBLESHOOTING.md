@@ -38,7 +38,7 @@ Vercel might be caching. Try these steps:
 npm i -g vercel
 
 # Deploy manually
-cd /home/manupawickramasinghe/Documents/renewaa/miraibits-frontend-nextjs
+cd /home/manupawickramasinghe/Documents/renewaa/mirai-lk-frontend-nextjs
 vercel --prod
 ```
 
@@ -123,7 +123,7 @@ If you DON'T see it → ❌ Still using old code
 
 ### Force New Deployment
 ```bash
-cd /home/manupawickramasinghe/Documents/renewaa/miraibits-frontend-nextjs
+cd /home/manupawickramasinghe/Documents/renewaa/mirai-lk-frontend-nextjs
 git commit --allow-empty -m "chore: force Vercel rebuild"
 git push origin feature/adding-prisma-db
 ```
