@@ -29,7 +29,7 @@ export default function ProductCard({ product }: { product: Product }) {
           handleNavigate();
         }
       }}
-      className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-transform transition-shadow duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sakura-200 hover:-translate-y-0.5 hover:shadow-lg sm:p-5 md:p-6 dark:border-gray-800 dark:bg-gray-900"
+      className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-transform transition-shadow duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef6a62]/40 hover:-translate-y-0.5 hover:shadow-lg sm:p-5 md:p-6 dark:border-gray-800 dark:bg-gray-900"
     >
       <div className="relative w-full overflow-hidden rounded-xl bg-gray-50 dark:bg-gray-800/70">
         <div className="relative aspect-[4/3] w-full">
@@ -57,7 +57,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
       <div className="flex flex-1 flex-col justify-between gap-5 pt-4 sm:pt-5">
         <header className="flex flex-col gap-2">
-          <h3 className="break-words text-base font-semibold leading-snug text-gray-900 transition-colors duration-200 group-hover:text-sakura-500 md:text-lg dark:text-gray-50">
+          <h3 className="break-words text-base font-semibold leading-snug text-gray-900 transition-colors duration-200 group-hover:text-[#e6443b] md:text-lg dark:text-gray-50">
             {product.name}
           </h3>
           <p className="break-words text-sm leading-relaxed text-gray-600 sm:text-[0.95rem] dark:text-gray-300">

@@ -10,16 +10,16 @@ const config: Config = {
     extend: {
       colors: {
         sakura: {
-          50: '#fff1f5',
-          100: '#ffe4ec',
-          200: '#fec7d8',
-          300: '#f998b7',
-          400: '#f4719d',
-          500: '#ef4c87',
-          600: '#da2c70',
-          700: '#b3205a',
-          800: '#921c4d',
-          900: '#7a1a45',
+          50: '#fff3f2',
+          100: '#ffe4e1',
+          200: '#ffc4bf',
+          300: '#ff9f97',
+          400: '#f6715f',
+          500: '#e6443b',
+          600: '#c73a34',
+          700: '#a4302c',
+          800: '#842723',
+          900: '#6b1f1d',
         },
       },
       boxShadow: {
@@ -31,5 +31,4 @@ const config: Config = {
 };
 
 export default config;
-
 

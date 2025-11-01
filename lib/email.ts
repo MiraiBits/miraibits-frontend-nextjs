@@ -47,8 +47,8 @@ export function renderOrderReceiptHtml(order: Order) {
           height: 24px;
           width: 24px;
           border-radius: 9999px;
-          background: #ffe4ec;
-          border: 1px solid #fec7d8;
+          background: #ffe4e1;
+          border: 1px solid #ffc4bf;
           margin-right: 8px;
           vertical-align: middle;
         }
@@ -214,8 +214,8 @@ export async function sendOrderEmail(order: Order) {
           height: 24px;
           width: 24px;
           border-radius: 9999px;
-          background: #ffe4ec;
-          border: 1px solid #fec7d8;
+          background: #ffe4e1;
+          border: 1px solid #ffc4bf;
           margin-right: 8px;
           vertical-align: middle;
         }

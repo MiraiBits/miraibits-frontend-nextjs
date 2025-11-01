@@ -22,7 +22,7 @@ export default function OpengraphImage() {
       >
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 9999, background: '#ffe4ec', border: '2px solid #fec7d8' }} />
+          <div style={{ width: 32, height: 32, borderRadius: 9999, background: '#ffe4e1', border: '2px solid #ffc4bf' }} />
             <div style={{ fontSize: 52, fontWeight: 700, letterSpacing: 1 }}>{brand}</div>
           </div>
           <div style={{ fontSize: 28, color: '#6B7280' }}>{location}</div>
@@ -33,4 +33,3 @@ export default function OpengraphImage() {
     { ...size }
   );
 }
-

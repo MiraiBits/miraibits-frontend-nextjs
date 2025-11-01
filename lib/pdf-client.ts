@@ -23,7 +23,7 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   } = order;
   
   // Company Header
-  pdf.setFillColor(255, 228, 236); // Light pink
+  pdf.setFillColor(255, 228, 225); // Brand accent halo
   pdf.circle(15, 15, 4, 'F');
   pdf.setFontSize(16);
   pdf.setFont('ShareTechMono');

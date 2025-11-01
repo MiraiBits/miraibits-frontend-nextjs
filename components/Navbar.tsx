@@ -19,6 +19,7 @@ export default function Navbar() {
   const { totalQuantity } = useCart();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchParams = useSearchParams();
   const [searchValue, setSearchValue] = useState(() => searchParams.get('q') ?? '');
 
@@ -32,7 +33,18 @@ export default function Navbar() {
     const url = query ? `/?q=${encodeURIComponent(query)}` : '/';
     setSearchValue(query);
     setIsMenuOpen(false);
+    setIsSearchOpen(false);
     router.push(url as any);
+  }
+
+  function toggleSearch() {
+    setIsSearchOpen(prev => {
+      const next = !prev;
+      if (next) {
+        setIsMenuOpen(false);
+      }
+      return next;
+    });
   }
 
   return (
@@ -52,7 +64,7 @@ export default function Navbar() {
 
           <form
             onSubmit={onSearchSubmit}
-            className="order-last w-full md:order-none md:flex-1"
+            className="hidden w-full md:block md:flex-1"
             role="search"
           >
             <label htmlFor="navbar-search" className="sr-only">
@@ -66,7 +78,7 @@ export default function Navbar() {
                 value={searchValue}
                 onChange={(event) => setSearchValue(event.target.value)}
                 placeholder="Search products"
-                className="h-11 w-full rounded-full border border-gray-200 bg-white/90 pl-10 pr-4 text-sm text-gray-900 shadow-sm transition focus:border-sakura-300 focus:outline-none focus:ring-2 focus:ring-sakura-200 dark:border-gray-700 dark:bg-gray-800/90 dark:text-gray-100 dark:focus:border-sakura-400 dark:focus:ring-sakura-500/40"
+                className="h-11 w-full rounded-full border border-gray-200 bg-white/90 pl-10 pr-4 text-sm text-gray-900 shadow-sm transition focus:border-[#ef6a62] focus:outline-none focus:ring-2 focus:ring-[#ef6a62]/40 dark:border-gray-700 dark:bg-gray-800/90 dark:text-gray-100 dark:focus:border-[#e6443b] dark:focus:ring-[#e6443b]/40"
                 autoComplete="off"
               />
             </div>
@@ -92,7 +104,7 @@ export default function Navbar() {
             <Link href="/cart" className="relative inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
               <ShoppingCart className="h-5 w-5" />
               {totalQuantity > 0 && (
-                <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-sakura-500 text-white text-[10px] flex items-center justify-center border-2 border-white dark:border-gray-900">
+                <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-[#e6443b] text-white text-[10px] flex items-center justify-center border-2 border-white dark:border-gray-900">
                   {totalQuantity}
                 </span>
               )}
@@ -101,25 +113,60 @@ export default function Navbar() {
           </div>
 
           <div className="ml-auto flex items-center gap-3 md:hidden">
+            <button
+              onClick={toggleSearch}
+              className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+              aria-label="Toggle search"
+              aria-expanded={isSearchOpen}
+            >
+              <Search className="h-5 w-5" />
+            </button>
             <Link href="/cart" className="relative inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
               <ShoppingCart className="h-5 w-5" />
               {totalQuantity > 0 && (
-                <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-sakura-500 text-white text-[10px] flex items-center justify-center border-2 border-white dark:border-gray-900">
+                <span className="absolute -top-1 -right-2 h-5 min-w-5 px-1 rounded-full bg-[#e6443b] text-white text-[10px] flex items-center justify-center border-2 border-white dark:border-gray-900">
                   {totalQuantity}
                 </span>
               )}
             </Link>
             <ThemeToggleButton />
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => {
+                setIsMenuOpen(prev => !prev);
+                setIsSearchOpen(false);
+              }}
               className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
               aria-label="Toggle navigation menu"
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
-        </div>
       </div>
+      </div>
+      {isSearchOpen && (
+        <div className="absolute left-0 top-full w-full border-b border-gray-100 bg-white/95 backdrop-blur dark:border-gray-800 dark:bg-gray-900/95 md:hidden">
+          <div className="container-px mx-auto max-w-6xl">
+            <form onSubmit={onSearchSubmit} role="search" className="py-3">
+              <label htmlFor="navbar-search-mobile" className="sr-only">
+                Search products
+              </label>
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+                <input
+                  id="navbar-search-mobile"
+                  name="q"
+                  value={searchValue}
+                  onChange={(event) => setSearchValue(event.target.value)}
+                  placeholder="Search products"
+                  className="h-11 w-full rounded-full border border-gray-200 bg-white/90 pl-10 pr-4 text-sm text-gray-900 shadow-sm transition focus:border-[#ef6a62] focus:outline-none focus:ring-2 focus:ring-[#ef6a62]/40 dark:border-gray-700 dark:bg-gray-800/90 dark:text-gray-100 dark:focus:border-[#e6443b] dark:focus:ring-[#e6443b]/40"
+                  autoComplete="off"
+                  autoFocus
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       {isMenuOpen && (
         <div className="absolute left-0 top-full w-full border-b border-gray-100 bg-white/95 backdrop-blur dark:border-gray-800 dark:bg-gray-900/95 md:hidden">
           <div className="container-px mx-auto max-w-6xl">
