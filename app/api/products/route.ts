@@ -6,6 +6,17 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
+  const category = searchParams.get('category') ?? undefined;
+  const tag = searchParams.get('tag') ?? undefined;
+  const tags = searchParams.getAll('tags').filter(Boolean);
+  const takeParam = searchParams.get('take');
+  let take: number | undefined;
+  if (takeParam) {
+    const parsed = Number.parseInt(takeParam, 10);
+    if (!Number.isNaN(parsed)) {
+      take = parsed;
+    }
+  }
 
   try {
     if (id) {
@@ -15,7 +26,12 @@ export async function GET(request: Request) {
       }
       return NextResponse.json(product);
     } else {
-      const products = await getProducts();
+      const products = await getProducts({
+        category,
+        tag,
+        tags: tags.length ? tags : undefined,
+        take,
+      });
       return NextResponse.json(products);
     }
   } catch (error) {

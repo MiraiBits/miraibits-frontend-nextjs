@@ -130,7 +130,9 @@ exports.Prisma.ProductScalarFieldEnum = {
   images: 'images',
   stock: 'stock',
   specifications: 'specifications',
-  datasheet: 'datasheet'
+  datasheet: 'datasheet',
+  category: 'category',
+  tags: 'tags'
 };
 
 exports.Prisma.SortOrder = {

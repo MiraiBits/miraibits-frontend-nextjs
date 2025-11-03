@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import {
-  categories,
-  getCategoryBySlug,
-  matchProductsToCategory,
-} from "../../../lib/categories";
+import { categories, getCategoryBySlug } from "../../../lib/categories";
 import { getProducts } from "../../../lib/products";
 import CategoryProductsClient from "./CategoryProductsClient";
 
@@ -51,8 +47,10 @@ export default async function CategoryPage({
     notFound();
   }
 
-  const products = await getProducts();
-  const filtered = matchProductsToCategory(products, category.slug);
+  const products = await getProducts({
+    category: category.filterValue ?? category.slug,
+    orderBy: { name: "asc" },
+  });
   const Icon = category.icon;
 
   return (
@@ -74,7 +72,7 @@ export default async function CategoryPage({
       </header>
 
       <CategoryProductsClient
-        products={filtered}
+        products={products}
         categoryName={category.name}
       />
     </main>
