@@ -2,97 +2,69 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-import { useCart } from "../lib/cart";
 import { formatCurrencyLKR } from "../lib/currency";
 import type { Product } from "../lib/types";
 
 export default function ProductCard({ product }: { product: Product }) {
-  const { addItem, items } = useCart();
-  const router = useRouter();
-
-  const cartItem = items?.find((entry: any) => entry.productId === product.id);
-  const quantityInCart = cartItem?.quantity ?? 0;
-
-  const handleNavigate = () => router.push(`/products/${product.slug}`);
-
   return (
-    <article
-      role="link"
-      tabIndex={0}
+    <Link
+      href={`/products/${product.slug}`}
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 py-5 text-left shadow-sm transition-transform duration-200 hover:-translate-y-1.5 hover:shadow-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:border-gray-800 dark:bg-gray-900 sm:px-6 sm:py-7"
       aria-label={`View product ${product.name}`}
-      onClick={handleNavigate}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          handleNavigate();
-        }
-      }}
-      className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-transform transition-shadow duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef6a62]/40 hover:-translate-y-0.5 hover:shadow-lg sm:p-5 md:p-6 dark:border-gray-800 dark:bg-gray-900"
     >
-      <div className="relative w-full overflow-hidden rounded-xl bg-gray-50 dark:bg-gray-800/70">
+      <div className="relative overflow-hidden rounded-xl bg-gray-50 dark:bg-gray-800">
         <div className="relative aspect-[4/3] w-full">
-          {product.images && product.images.length > 0 ? (
+          {product.images?.[0] ? (
             <Image
               src={product.images[0]}
               alt={product.name}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-contain"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
+              className="object-contain transition-transform duration-300 group-hover:scale-[1.05]"
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-300">
-              <span className="text-xs font-medium">No image</span>
+              <span className="text-xs font-medium uppercase tracking-wide">
+                No image
+              </span>
             </div>
           )}
         </div>
-
-        {quantityInCart > 0 && (
-          <span className="absolute top-3 right-3 flex h-7 min-w-[1.75rem] items-center justify-center rounded-full bg-gray-900 px-2 text-xs font-semibold text-white shadow-md dark:bg-gray-100 dark:text-gray-900">
-            ×{quantityInCart}
-          </span>
-        )}
       </div>
 
-      <div className="flex flex-1 flex-col justify-between gap-5 pt-4 sm:pt-5">
-        <header className="flex flex-col gap-2">
-          <h3 className="break-words text-base font-semibold leading-snug text-gray-900 transition-colors duration-200 group-hover:text-[#e6443b] md:text-lg dark:text-gray-50">
+      <div className="flex flex-1 flex-col justify-between gap-4 pt-5">
+        <div className="flex flex-col gap-2">
+          <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-200 group-hover:text-[#e6443b] dark:text-gray-50">
             {product.name}
           </h3>
-          <p className="break-words text-sm leading-relaxed text-gray-600 sm:text-[0.95rem] dark:text-gray-300">
+          <p className="text-sm text-gray-600 line-clamp-2 dark:text-gray-300">
             {product.shortDescription || product.description}
           </p>
-        </header>
-
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-          <span className="text-lg font-semibold text-gray-900 md:text-xl dark:text-gray-50">
+        </div>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <span className="text-sm font-semibold text-gray-900 dark:text-gray-50 sm:text-base">
             {formatCurrencyLKR(product.price)}
           </span>
-
-          <div className="flex w-full flex-col gap-2 xl:w-auto xl:flex-row xl:flex-wrap xl:justify-end">
-            <Link
-              href={`/products/${product.slug}`}
-              className="btn btn-ghost min-h-[2.5rem] justify-center whitespace-nowrap px-3 text-xs tracking-wide sm:text-sm xl:min-w-[9rem] xl:px-4 xl:text-sm"
-              onClick={(event) => event.stopPropagation()}
+          <span className="inline-flex items-center text-[0.65rem] font-semibold uppercase tracking-wide text-[#e6443b] transition-transform duration-200 group-hover:translate-x-1 whitespace-nowrap sm:text-xs dark:text-[#ff8f88]">
+            View Product
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="ml-1"
             >
-              View Details
-            </Link>
-
-            <button
-              type="button"
-              className="btn btn-primary min-h-[2.5rem] justify-center whitespace-nowrap px-3 text-xs tracking-wide sm:text-sm xl:min-w-[9rem] xl:px-4 xl:text-sm"
-              onClick={(event) => {
-                event.stopPropagation();
-                addItem(product);
-              }}
-              aria-label={`Add ${product.name} to cart`}
-            >
-              Add to Cart
-            </button>
-          </div>
+              <polyline points="9 5 16 12 9 19" />
+            </svg>
+          </span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
