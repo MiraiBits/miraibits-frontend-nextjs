@@ -2,7 +2,7 @@ import ProductCard from "../../components/ProductCard";
 import { searchProducts } from "../../lib/products";
 
 type SearchPageProps = {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
 function normalizeQueryValue(value: string | string[] | undefined): string {
@@ -13,7 +13,8 @@ function normalizeQueryValue(value: string | string[] | undefined): string {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const rawQuery = normalizeQueryValue(searchParams?.q);
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const rawQuery = normalizeQueryValue(resolvedSearchParams.q);
   const query = rawQuery.trim();
   const results = query ? await searchProducts(query) : { direct: [], related: [] };
   const hasDirect = results.direct.length > 0;
@@ -97,4 +98,3 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     </main>
   );
 }
-
