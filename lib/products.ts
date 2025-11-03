@@ -36,6 +36,7 @@ function transformProduct(product: PrismaProductModel): Product {
     ...product,
     specifications: product.specifications as { [key: string]: string } | undefined,
     tags: product.tags && product.tags.length > 0 ? product.tags : undefined,
+    category: product.category ?? undefined,
   };
 }
 
