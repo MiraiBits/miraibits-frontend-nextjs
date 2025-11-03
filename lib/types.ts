@@ -9,6 +9,7 @@ export interface Product {
   stock: number;
   specifications?: { [key: string]: string };
   datasheet?: string[];
+  category?: string;
   tags?: string[];
 }
 

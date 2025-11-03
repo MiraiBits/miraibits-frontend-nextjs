@@ -1,8 +1,6 @@
 import { Cpu, Waves, Cog, Zap, Wrench } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-import type { Product } from "./types";
-
 export type CategorySlug =
   | "microcontrollers-boards"
   | "sensors-modules"
@@ -15,6 +13,11 @@ export type Category = {
   slug: CategorySlug;
   icon: LucideIcon;
   headline: string;
+  /**
+   * Value stored in Prisma `Product.category` column for this category.
+   * Falls back to slug when not set.
+   */
+  filterValue?: string;
 };
 
 export const categories: Category[] = [
@@ -23,12 +26,14 @@ export const categories: Category[] = [
     slug: "microcontrollers-boards",
     icon: Cpu,
     headline: "Brains for your builds",
+    filterValue: "microcontroller",
   },
   {
     name: "Sensors & Modules",
     slug: "sensors-modules",
     icon: Waves,
     headline: "Connect to the world",
+    filterValue: "sensor",
   },
   {
     name: "Passive Components",
@@ -41,6 +46,7 @@ export const categories: Category[] = [
     slug: "power-connectivity",
     icon: Zap,
     headline: "Keep projects powered and linked",
+    filterValue: "power",
   },
   {
     name: "Tools & Accessories",
@@ -49,23 +55,6 @@ export const categories: Category[] = [
     headline: "Everything to build smarter",
   },
 ];
-
-const categoryProductAssignments: Partial<Record<CategorySlug, string[]>> = {
-  // Fill in product slugs as they become available.
-};
-
-export function matchProductsToCategory(
-  products: Product[],
-  slug: CategorySlug
-): Product[] {
-  const matches = categoryProductAssignments[slug];
-  if (!matches || matches.length === 0) {
-    return products;
-  }
-
-  const matchSet = new Set(matches);
-  return products.filter((product) => matchSet.has(product.slug));
-}
 
 export function getCategoryBySlug(slug: string): Category | undefined {
   return categories.find((category) => category.slug === slug);

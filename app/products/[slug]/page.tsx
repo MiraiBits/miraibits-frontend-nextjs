@@ -105,7 +105,11 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
           </div>
         </div>
       </div>
-      <RelatedProducts currentProductId={product.id} />
+      <RelatedProducts
+        currentProductId={product.id}
+        category={product.category}
+        tags={product.tags}
+      />
     </main>
   );
 }

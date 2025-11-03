@@ -3,13 +3,8 @@ import ShopByCategory from "../components/ShopByCategory";
 import MostPopularProducts from "../components/MostPopularProducts";
 
 export default async function HomePage() {
-  const products = await getProducts();
-  const productsWithPopularTag = products.filter((product) =>
-    product.tags?.includes("popular")
-  );
-  const popularProducts = (
-    productsWithPopularTag.length ? productsWithPopularTag : products
-  ).slice(0, 8);
+  const popularProducts = await getProducts({ tag: "popular", take: 8 });
+
   return (
     <main className="container-px mx-auto max-w-6xl">
       <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16">

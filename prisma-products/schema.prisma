@@ -19,6 +19,8 @@ model Product {
   stock            Int
   specifications   Json?
   datasheet        String[]
+  category         String?
+  tags             String[] @default([])
 
   @@map("products")
 }
