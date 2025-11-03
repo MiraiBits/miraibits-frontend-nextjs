@@ -1,7 +1,8 @@
 import Link from "next/link";
+import type { Route } from "next";
 
 type BackLinkProps = {
-  href: string;
+  href: Route;
   ariaLabel: string;
   className?: string;
 };
