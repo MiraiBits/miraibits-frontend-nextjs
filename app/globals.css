@@ -83,3 +83,16 @@ textarea::placeholder {
     transform: translateY(-12px);
   }
 }
+
+@keyframes navbar-shimmer {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-navbar-shimmer {
+  animation: navbar-shimmer 1.15s ease-in-out infinite;
+}
