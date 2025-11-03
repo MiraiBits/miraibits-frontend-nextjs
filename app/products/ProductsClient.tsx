@@ -24,9 +24,9 @@ export default function ProductsClient({
     );
   }, [initialProducts, activeQuery]);
 
-  // Responsive grid: 1 col mobile, 2-3 on tablets, 4 on large screens
+  // Responsive grid: 2 cols on phones, 3 on tablets, 4 on large screens
   const gridClass =
-    "grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
+    "mt-6 grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:grid-cols-4";
 
   return (
     <section className="py-6 md:py-10">

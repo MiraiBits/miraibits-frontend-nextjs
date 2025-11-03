@@ -1,14 +1,14 @@
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getProductBySlug, getProducts } from "../../../lib/products";
 import AddToCartButton from "./AddToCartButton";
 import { formatCurrencyLKR } from "../../../lib/currency";
 import StructuredData from "./StructuredData";
 import ImageGallery from "./ImageGallery";
 import RelatedProducts from "./RelatedProducts";
-import Link from "next/link";
 import ProductSpecifications from "./ProductSpecifications";
 import StockAvailability from "./StockAvailability";
+import BackLink from "../../../components/BackLink";
 
 export default function ProductDetailPage({
   params,
@@ -26,28 +26,7 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <main className="container-px mx-auto py-10">
       <StructuredData product={product} />
-      <div className="mb-4">
-        <Link
-          href="/products"
-          className="h-10 w-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-          aria-label="Back to products"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="m12 19-7-7 7-7" />
-            <path d="M19 12H5" />
-          </svg>
-        </Link>
-      </div>
+      <BackLink href="/products" ariaLabel="Back to products" className="mb-4" />
       <div className="grid md:grid-cols-2 gap-8 items-start">
         <ImageGallery images={product.images} name={product.name} />
         <div className="sticky top-24">

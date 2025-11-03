@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { categories, getCategoryBySlug } from "../../../lib/categories";
 import { getProducts } from "../../../lib/products";
 import CategoryProductsClient from "./CategoryProductsClient";
+import BackLink from "../../../components/BackLink";
 
 type CategoryPageParams = {
   slug: string;
@@ -51,23 +52,18 @@ export default async function CategoryPage({
     category: category.filterValue ?? category.slug,
     orderBy: { name: "asc" },
   });
-  const Icon = category.icon;
-
   return (
-    <main className="container-px mx-auto max-w-6xl py-12 sm:py-16 lg:py-20">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div className="flex items-center gap-4">
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-50 text-gray-700 ring-1 ring-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:ring-gray-700">
-            <Icon className="h-8 w-8" strokeWidth={1.5} />
-          </span>
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-red-600">
-              Category
-            </p>
-            <h1 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl dark:text-gray-50">
-              {category.name}
-            </h1>
-          </div>
+    <main className="container-px mx-auto max-w-6xl py-8 sm:py-12 lg:py-16">
+      <BackLink href="/" ariaLabel="Go back to the home page" className="mb-4 sm:mb-6" />
+
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-red-600">
+            Category
+          </p>
+          <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl dark:text-gray-50">
+            {category.name}
+          </h1>
         </div>
       </header>
 
