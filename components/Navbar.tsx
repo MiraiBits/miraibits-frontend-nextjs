@@ -30,7 +30,7 @@ export default function Navbar() {
   function onSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const query = searchValue.trim();
-    const url = query ? `/?q=${encodeURIComponent(query)}` : '/';
+    const url = query ? `/search?q=${encodeURIComponent(query)}` : '/search';
     setSearchValue(query);
     setIsMenuOpen(false);
     setIsSearchOpen(false);
