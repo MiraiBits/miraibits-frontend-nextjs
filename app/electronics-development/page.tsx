@@ -1,5 +1,5 @@
-
 import type { Metadata } from 'next';
+import BackLink from '../../components/BackLink';
 
 export const metadata: Metadata = {
   title: 'Electronics Development – Mirai Electronics',
@@ -8,11 +8,31 @@ export const metadata: Metadata = {
 
 export default function ElectronicsDevelopmentPage() {
   return (
-    <main className="container-px mx-auto py-10 max-w-3xl">
-      <h1 className="text-2xl font-semibold">Electronics Development</h1>
-      <p className="mt-4 text-gray-700 dark:text-gray-300">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
+    <main className="container-px mx-auto max-w-6xl py-10">
+      <BackLink href="/about" ariaLabel="Back to About Mirai.lk" className="mb-6" />
+      <div className="max-w-3xl">
+        <h1 className="text-2xl font-semibold">Electronics Development</h1>
+        <p className="mt-4 text-gray-700 dark:text-gray-300">
+          From first sketch to pilot run, our hardware engineers design and build dependable electronics that are ready for manufacture.
+        </p>
+        <p className="mt-4 text-gray-700 dark:text-gray-300">
+          We pair fast iterations with rigorous validation so your boards, firmware, and enclosures ship on schedule and within budget.
+        </p>
+        <div className="mt-6 text-gray-700 dark:text-gray-300">
+          <p className="font-medium text-gray-900 dark:text-gray-100">What we deliver</p>
+          <ul className="mt-3 list-disc list-inside space-y-2">
+            <li>Component selection, schematic capture, and multi-layer PCB layout</li>
+            <li>Prototype assembly, hardware bring-up, and embedded firmware</li>
+            <li>Compliance guidance and production handoff for reliable scaling</li>
+          </ul>
+        </div>
+        <p className="mt-6 text-gray-700 dark:text-gray-300">
+          Need hardware that just works?{' '}
+          <a href="/contact" className="text-[#e6443b] underline underline-offset-4">
+            Let’s plan your next build.
+          </a>
+        </p>
+      </div>
     </main>
   );
 }
