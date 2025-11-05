@@ -1,30 +1,18 @@
 import { NextResponse } from 'next/server';
+import { countOrders } from '../../../lib/order-store';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET() {
   try {
-    // Test Prisma import
-    console.log('Health check: Testing Prisma import...');
-    const { default: prisma } = await import("../../../lib/db");
-    console.log('Health check: Prisma imported successfully');
-    
-    // Test database connection
-    console.log('Health check: Testing database connection...');
-    await prisma.$connect();
-    console.log('Health check: Database connected');
-    
-    // Test query
-    console.log('Health check: Testing query...');
-    const count = await prisma.order.count();
-    console.log('Health check: Query successful, order count:', count);
-    
-    await prisma.$disconnect();
+    console.log('Health check: Counting orders...');
+    const { count, source } = await countOrders();
+    console.log('Health check: Order count retrieved from', source, 'store:', count);
     
     return NextResponse.json({ 
       status: 'ok',
-      prisma: 'connected',
+      storage: source,
       orderCount: count,
       timestamp: new Date().toISOString()
     });

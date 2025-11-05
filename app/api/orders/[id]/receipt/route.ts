@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
 import type { Order } from "../../../../../lib/types";
+import { findOrderById } from "../../../../../lib/order-store";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-
-// Lazy load prisma only at runtime, not during build
-const getPrisma = async () => {
-  const { default: prisma } = await import("../../../../../lib/db");
-  return prisma;
-};
 
 // This endpoint now returns order data as JSON
 // PDF generation happens on the client side
@@ -20,12 +15,9 @@ export async function GET(
 
   try {
     console.log('Receipt API: Fetching order', id);
-    const prisma = await getPrisma();
-    const dbOrder = await prisma.order.findUnique({
-      where: { id },
-    });
+    const { order: storedOrder } = await findOrderById(id);
 
-    if (!dbOrder) {
+    if (!storedOrder) {
       console.error('Receipt API: Order not found', id);
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
@@ -34,17 +26,17 @@ export async function GET(
 
     // Convert Prisma order to our Order type
     const order: Order = {
-      id: dbOrder.id,
-      createdAt: dbOrder.createdAt.toISOString(),
+      id: storedOrder.id,
+      createdAt: storedOrder.createdAt.toISOString(),
       customer: { 
-        name: dbOrder.customerName, 
-        email: dbOrder.customerEmail, 
-        phone: dbOrder.customerPhone || undefined,
-        address: dbOrder.customerAddress || undefined,
+        name: storedOrder.customerName, 
+        email: storedOrder.customerEmail, 
+        phone: storedOrder.customerPhone || undefined,
+        address: storedOrder.customerAddress || undefined,
       },
-      items: dbOrder.items as any,
-      total: dbOrder.total,
-      proofFilename: dbOrder.proofFilename || undefined,
+      items: storedOrder.items,
+      total: storedOrder.total,
+      proofFilename: storedOrder.proofFilename || undefined,
     };
 
     // Return order data - client will generate PDF

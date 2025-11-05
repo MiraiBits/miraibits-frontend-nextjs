@@ -1,11 +1,7 @@
-import { PrismaClient } from '../prisma-orders/client'
+import { PrismaClient } from '../prisma-products/client'
 import { withOptimize } from '@prisma/extension-optimize'
 
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton> | undefined;
-} & typeof global;
-
-const prismaClientSingleton = () => {
+const prismaClientSingleton = (): PrismaClient => {
   const client = new PrismaClient({
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
@@ -14,33 +10,50 @@ const prismaClientSingleton = () => {
   if (process.env.OPTIMIZE_API_KEY) {
     return client.$extends(
       withOptimize({ apiKey: process.env.OPTIMIZE_API_KEY })
-    )
+    ) as PrismaClient
   }
   
   return client
 }
 
+type PrismaClientInstance = PrismaClient
+
 // Lazy initialization - only create client when accessed
-let prisma: ReturnType<typeof prismaClientSingleton> | undefined
+let prisma: PrismaClientInstance | undefined
+
+function isClientCompatible(client: unknown): client is PrismaClientInstance {
+  if (!client || typeof client !== 'object') return false
+  const orderDelegate = (client as Record<string, unknown>).order
+  return typeof orderDelegate === 'object' && orderDelegate !== null
+}
 
 function getPrismaClient() {
   if (prisma) return prisma
   
-  if (globalThis.prismaGlobal) {
-    prisma = globalThis.prismaGlobal
-    return prisma
+  const globalForPrisma = globalThis as unknown as {
+    prismaGlobal?: PrismaClientInstance
+  }
+
+  if (globalForPrisma.prismaGlobal) {
+    const cached = globalForPrisma.prismaGlobal
+    if (isClientCompatible(cached)) {
+      prisma = cached
+      return prisma
+    }
+    // Drop incompatible cached client (likely from an older schema)
+    delete globalForPrisma.prismaGlobal
   }
   
   prisma = prismaClientSingleton()
   
   if (process.env.NODE_ENV !== 'production') {
-    globalThis.prismaGlobal = prisma
+    globalForPrisma.prismaGlobal = prisma
   }
   
   return prisma
 }
 
-const prismaProxy = new Proxy({} as ReturnType<typeof prismaClientSingleton>, {
+const prismaProxy = new Proxy({} as PrismaClientInstance, {
   get(_target, prop) {
     const client = getPrismaClient()
     return (client as any)[prop]
