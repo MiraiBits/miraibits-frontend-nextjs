@@ -60,7 +60,7 @@ function CheckoutInner() {
           <input name="name" placeholder="Full Name" required className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
           <input type="email" name="email" placeholder="Email" required className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
           <input name="phone" placeholder="Phone (optional)" className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
-          <textarea name="address" placeholder="Shipping Address (optional)" className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
+          <textarea name="address" placeholder="Shipping Address" required className="border border-gray-200 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
         </section>
 
         <section className="card p-4">
@@ -97,5 +97,4 @@ function CheckoutInner() {
 }
 
 export default function CheckoutPage() { return <CheckoutInner />; }
-
 
