@@ -43,18 +43,7 @@ export default function ImageGallery({ images, name }: ImageGalleryProps) {
 
   return (
     <>
-      <div className="flex flex-col-reverse md:flex-row gap-4">
-        <div className="flex flex-wrap md:flex-col gap-2">
-          {images.map((image, index) => (
-            <button
-              key={index}
-              className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 ${selectedImage === index ? 'border-blue-500' : 'border-transparent'}`}
-              onClick={() => setSelectedImage(index)}
-            >
-              <Image src={image} alt={`${name} thumbnail ${index + 1}`} fill style={{ objectFit: 'cover' }} />
-            </button>
-          ))}
-        </div>
+      <div className="flex flex-col gap-4">
         <div className="aspect-video w-full overflow-hidden rounded-xl bg-gray-50 relative">
           <div className="w-full h-full cursor-pointer" onClick={() => openModal(selectedImage)}>
             <Image src={images[selectedImage]} alt={name} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'contain' }} />
@@ -82,6 +71,17 @@ export default function ImageGallery({ images, name }: ImageGalleryProps) {
               </button>
             </>
           )}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {images.map((image, index) => (
+            <button
+              key={index}
+              className={`relative w-12 h-12 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 ${selectedImage === index ? 'border-blue-500' : 'border-transparent'}`}
+              onClick={() => setSelectedImage(index)}
+            >
+              <Image src={image} alt={`${name} thumbnail ${index + 1}`} fill style={{ objectFit: 'cover' }} />
+            </button>
+          ))}
         </div>
       </div>
 

@@ -24,11 +24,19 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
   if (!product) return notFound();
 
   return (
-    <main className="container-px mx-auto py-10">
+    <main className="container-px mx-auto max-w-6xl py-10">
       <StructuredData product={product} />
       <BackLink href="/products" ariaLabel="Back to products" className="mb-4" />
       <div className="grid md:grid-cols-2 gap-8 items-start">
-        <ImageGallery images={product.images} name={product.name} />
+        <div>
+          <ImageGallery images={product.images} name={product.name} />
+          <div className="mt-6">
+            <AddToCartButton
+              product={product}
+              disabled={product.stock === 0}
+            />
+          </div>
+        </div>
         <div className="sticky top-24">
           <h1 className="text-3xl font-bold">{product.name}</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm">
@@ -79,9 +87,6 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
               </ul>
             </div>
           )}
-          <div className="mt-6">
-            <AddToCartButton product={product} disabled={product.stock === 0} />
-          </div>
         </div>
       </div>
       <RelatedProducts
