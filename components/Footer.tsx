@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import { Instagram, Twitter } from 'lucide-react';
+import { Instagram, MessageCircle, Phone } from 'lucide-react';
 
 export default function Footer() {
-  const PHONE = process.env.COMPANY_PHONE || '+94 11 234 5678';
   const ADDRESS = process.env.COMPANY_ADDRESS || 'Colombo, Sri Lanka';
   return (
     <footer className="mt-16 border-t border-red-100 bg-gradient-to-br from-white via-white to-red-50/60 text-gray-600 backdrop-blur-sm dark:border-gray-800 dark:from-gray-950 dark:via-gray-950 dark:to-gray-900">
@@ -17,8 +16,18 @@ export default function Footer() {
             <h4 className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500 dark:text-gray-500">
               Reach Us
             </h4>
-            <p className="text-gray-700 dark:text-gray-200">Call: {PHONE}</p>
-            <p className="text-gray-500 dark:text-gray-400">Weekdays 9.00AM - 5.30PM</p>
+            <p className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+              <Phone className="h-4 w-4 text-gray-900 dark:text-gray-100" aria-hidden="true" />
+              <a className="hover:underline" href="tel:+94726604751">
+                0726604751
+              </a>
+            </p>
+            <p className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+              <MessageCircle className="h-4 w-4 text-gray-900 dark:text-gray-100" aria-hidden="true" />
+              <a className="hover:underline" href="https://wa.me/94726604751" target="_blank" rel="noopener noreferrer">
+                0726604751
+              </a>
+            </p>
           </div>
           <div className="space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500 dark:text-gray-500">
@@ -27,15 +36,10 @@ export default function Footer() {
             <div className="flex gap-3">
               <Link
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-red-500/10 text-red-600 transition hover:bg-red-500/20 dark:bg-red-500/20 dark:text-red-300 dark:hover:bg-red-500/30"
-                href="https://x.com/mirai_lk"
-                aria-label="Mirai on X"
-              >
-                <Twitter className="h-4 w-4" />
-              </Link>
-              <Link
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-red-500/10 text-red-600 transition hover:bg-red-500/20 dark:bg-red-500/20 dark:text-red-300 dark:hover:bg-red-500/30"
-                href="https://instagram.com/mirai.lk"
+                href="https://www.instagram.com/miraielectronics/"
                 aria-label="Mirai on Instagram"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <Instagram className="h-4 w-4" />
               </Link>
