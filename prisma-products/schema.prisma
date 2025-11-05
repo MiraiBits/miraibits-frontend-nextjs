@@ -24,3 +24,22 @@ model Product {
 
   @@map("products")
 }
+
+model Order {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+
+  customerName    String
+  customerEmail   String
+  customerPhone   String?
+  customerAddress String?
+
+  items         Json
+  total         Float
+
+  proofData     String?  @db.Text
+  proofMimeType String?
+  proofFilename String?
+
+  @@map("orders")
+}

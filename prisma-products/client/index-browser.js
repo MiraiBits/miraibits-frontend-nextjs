@@ -135,6 +135,20 @@ exports.Prisma.ProductScalarFieldEnum = {
   tags: 'tags'
 };
 
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  customerName: 'customerName',
+  customerEmail: 'customerEmail',
+  customerPhone: 'customerPhone',
+  customerAddress: 'customerAddress',
+  items: 'items',
+  total: 'total',
+  proofData: 'proofData',
+  proofMimeType: 'proofMimeType',
+  proofFilename: 'proofFilename'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -142,6 +156,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -163,7 +181,8 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Product: 'Product'
+  Product: 'Product',
+  Order: 'Order'
 };
 
 /**

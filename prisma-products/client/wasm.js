@@ -107,6 +107,20 @@ exports.Prisma.ProductScalarFieldEnum = {
   tags: 'tags'
 };
 
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  customerName: 'customerName',
+  customerEmail: 'customerEmail',
+  customerPhone: 'customerPhone',
+  customerAddress: 'customerAddress',
+  items: 'items',
+  total: 'total',
+  proofData: 'proofData',
+  proofMimeType: 'proofMimeType',
+  proofFilename: 'proofFilename'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -114,6 +128,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -135,7 +153,8 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Product: 'Product'
+  Product: 'Product',
+  Order: 'Order'
 };
 /**
  * Create the Client
@@ -185,13 +204,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-products/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"PRISMA_PRODUCT_DB\")\n}\n\nmodel Product {\n  id               String   @id @default(uuid())\n  name             String\n  slug             String   @unique\n  price            Int\n  description      String\n  shortDescription String\n  images           String[]\n  stock            Int\n  specifications   Json?\n  datasheet        String[]\n  category         String?\n  tags             String[] @default([])\n\n  @@map(\"products\")\n}\n",
-  "inlineSchemaHash": "5383f88fbfd47ab276fabce65e9276726d10e6fe8b8ca5ba18a0f54fe908024d",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-products/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"PRISMA_PRODUCT_DB\")\n}\n\nmodel Product {\n  id               String   @id @default(uuid())\n  name             String\n  slug             String   @unique\n  price            Int\n  description      String\n  shortDescription String\n  images           String[]\n  stock            Int\n  specifications   Json?\n  datasheet        String[]\n  category         String?\n  tags             String[] @default([])\n\n  @@map(\"products\")\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  items Json\n  total Float\n\n  proofData     String? @db.Text\n  proofMimeType String?\n  proofFilename String?\n\n  @@map(\"orders\")\n}\n",
+  "inlineSchemaHash": "479ea9ce6a9cca59b1fe335db3cefff547351cb1a42bf55c7ac49da3af141574",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Product\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"shortDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"images\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stock\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"specifications\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"datasheet\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"products\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Product\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"shortDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"images\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stock\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"specifications\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"datasheet\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"products\"},\"Order\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"customerName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerPhone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"items\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"total\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"proofData\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"proofMimeType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"proofFilename\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"orders\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
