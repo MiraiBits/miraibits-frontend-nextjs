@@ -25,6 +25,10 @@ type StoredOrderRecord = Omit<OrderRecord, 'createdAt'> & { createdAt: string };
 const fallbackDir = path.join(process.cwd(), 'data');
 const fallbackFile = path.join(fallbackDir, 'orders-fallback.json');
 
+let memoryFallbackActive = false;
+let memoryFallbackLogged = false;
+let memoryFallbackOrders: StoredOrderRecord[] = [];
+
 let prismaUnavailable = false;
 let prismaFailureLogged = false;
 
@@ -33,7 +37,7 @@ function markPrismaUnavailable(error: unknown) {
   if (!prismaFailureLogged) {
     prismaFailureLogged = true;
     console.warn(
-      '[orders] Prisma unavailable, falling back to file-based storage.',
+      '[orders] Prisma unavailable, falling back to alternate order storage.',
       error
     );
   }
@@ -65,6 +69,22 @@ function isPrismaUnavailableError(error: unknown): boolean {
   }
 
   return false;
+}
+
+function isReadOnlyFsError(error: unknown): boolean {
+  const code = (error as NodeJS.ErrnoException | undefined)?.code;
+  return code === 'EROFS' || code === 'EPERM';
+}
+
+function enableMemoryFallback(error?: unknown) {
+  memoryFallbackActive = true;
+  if (!memoryFallbackLogged) {
+    memoryFallbackLogged = true;
+    console.warn(
+      '[orders] Filesystem fallback unavailable (read-only). Using in-memory order store.',
+      error
+    );
+  }
 }
 
 type CreateOrderData = {
@@ -129,25 +149,55 @@ function toOrderRecord(order: {
 }
 
 async function ensureFallbackDir() {
-  await fs.mkdir(fallbackDir, { recursive: true });
+  if (memoryFallbackActive) return;
+  try {
+    await fs.mkdir(fallbackDir, { recursive: true });
+  } catch (error) {
+    if (isReadOnlyFsError(error)) {
+      enableMemoryFallback(error);
+      return;
+    }
+    throw error;
+  }
 }
 
 async function readFallbackOrders(): Promise<StoredOrderRecord[]> {
+  if (memoryFallbackActive) {
+    return memoryFallbackOrders;
+  }
   try {
     const raw = await fs.readFile(fallbackFile, 'utf8');
     return JSON.parse(raw) as StoredOrderRecord[];
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+    const code = (error as NodeJS.ErrnoException | undefined)?.code;
+    if (code === 'ENOENT') {
       return [];
+    }
+    if (isReadOnlyFsError(error)) {
+      enableMemoryFallback(error);
+      return memoryFallbackOrders;
     }
     throw error;
   }
 }
 
 async function writeFallbackOrders(orders: StoredOrderRecord[]) {
+  if (memoryFallbackActive) {
+    memoryFallbackOrders = orders;
+    return;
+  }
   await ensureFallbackDir();
   const serialized = JSON.stringify(orders, null, 2);
-  await fs.writeFile(fallbackFile, serialized, 'utf8');
+  try {
+    await fs.writeFile(fallbackFile, serialized, 'utf8');
+  } catch (error) {
+    if (isReadOnlyFsError(error)) {
+      enableMemoryFallback(error);
+      memoryFallbackOrders = orders;
+      return;
+    }
+    throw error;
+  }
 }
 
 function fromStored(record: StoredOrderRecord): OrderRecord {
