@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { Instagram, MessageCircle, Phone, Mail } from "lucide-react";
 import BackLink from "../../components/BackLink";
@@ -112,14 +111,14 @@ export default function ContactPage() {
             <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
               Follow our builds and releases
             </p>
-            <Link
+            <a
               href={INSTAGRAM}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-[#e6443b] transition hover:underline dark:text-[#f1918a]"
             >
               @miraielectronics on Instagram
-            </Link>
+            </a>
           </div>
         </footer>
       </section>
