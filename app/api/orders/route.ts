@@ -2,22 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getProductById } from '../../../lib/products';
 import type { Order } from '../../../lib/types';
 import { sendOrderEmail } from '../../../lib/email';
+import { createOrder } from '../../../lib/order-store';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-// Lazy load prisma only at runtime, not during build
-const getPrisma = async () => {
-  const { default: prisma } = await import("../../../lib/db");
-  return prisma;
-};
-
 export async function POST(req: NextRequest) {
   try {
     console.log('Order API: Starting order creation...');
-    const prisma = await getPrisma();
-    console.log('Order API: Prisma client loaded');
-    
     const formData = await req.formData();
     const name = String(formData.get('name') || '');
     const email = String(formData.get('email') || '');
@@ -59,38 +51,36 @@ export async function POST(req: NextRequest) {
       proofFilename = (proof as any).name || 'proof';
     }
 
-    // Create order in database
-    console.log('Order API: Creating order in database...');
-    const dbOrder = await prisma.order.create({
-      data: {
-        customerName: name,
-        customerEmail: email,
-        customerPhone: phone || null,
-        customerAddress: address || null,
-        items: items as any,
-        total,
-        proofData,
-        proofMimeType,
-        proofFilename,
-      },
+    // Create order using Prisma if available, otherwise fallback storage
+    console.log('Order API: Creating order record...');
+    const { order: storedOrder, source } = await createOrder({
+      customerName: name,
+      customerEmail: email,
+      customerPhone: phone || null,
+      customerAddress: address || null,
+      items,
+      total,
+      proofData,
+      proofMimeType,
+      proofFilename,
     });
-    console.log('Order API: Order created successfully', dbOrder.id);
+    console.log('Order API: Order stored via', source, storedOrder.id);
 
     // Convert Prisma order to our Order type for email
     const order: Order = {
-      id: dbOrder.id,
-      createdAt: dbOrder.createdAt.toISOString(),
+      id: storedOrder.id,
+      createdAt: storedOrder.createdAt.toISOString(),
       customer: { 
-        name: dbOrder.customerName, 
-        email: dbOrder.customerEmail, 
-        phone: dbOrder.customerPhone || undefined,
-        address: dbOrder.customerAddress || undefined,
+        name: storedOrder.customerName, 
+        email: storedOrder.customerEmail, 
+        phone: storedOrder.customerPhone || undefined,
+        address: storedOrder.customerAddress || undefined,
       },
       items,
-      total: dbOrder.total,
-      proofFilename: dbOrder.proofFilename || undefined,
-      proofData: dbOrder.proofData || undefined,
-      proofMimeType: dbOrder.proofMimeType || undefined,
+      total: storedOrder.total,
+      proofFilename: storedOrder.proofFilename || undefined,
+      proofData: storedOrder.proofData || undefined,
+      proofMimeType: storedOrder.proofMimeType || undefined,
     };
 
     // Fire and forget email
@@ -100,12 +90,10 @@ export async function POST(req: NextRequest) {
 
     // Return JSON so client can perform client-side navigation and clear cart
     console.log('Order API: Returning success response');
-    return NextResponse.json({ orderId: dbOrder.id }, { status: 201 });
+    return NextResponse.json({ orderId: storedOrder.id }, { status: 201 });
   } catch (error) {
     console.error('Order creation failed:', error);
     const errorMessage = error instanceof Error ? error.message : 'Failed to create order';
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
-
-
