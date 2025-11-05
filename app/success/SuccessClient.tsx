@@ -155,14 +155,17 @@ export default function SuccessClient({ orderId }: { orderId?: string | null }) 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           {orderId && (
             <button
-              className="btn btn-primary bg-emerald-500 text-white hover:bg-emerald-600 focus-visible:outline-emerald-500"
+              className="btn btn-primary bg-emerald-500 text-white transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gray-900/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
               onClick={handleDownloadReceipt}
               disabled={isDownloading}
             >
               {isDownloading ? 'Generating PDF…' : 'Download receipt'}
             </button>
           )}
-          <Link href="/" className="btn btn-ghost text-emerald-600 hover:text-emerald-700 dark:text-emerald-200 dark:hover:text-emerald-100">
+          <Link
+            href="/"
+            className="btn btn-ghost text-emerald-600 transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md hover:shadow-gray-900/10 hover:bg-gray-100/80 dark:text-emerald-200 dark:hover:text-emerald-200 dark:hover:bg-gray-800/60"
+          >
             Keep browsing
           </Link>
         </div>
