@@ -8,7 +8,7 @@ import Link from 'next/link';
 function CartInner() {
   const { items, totalPrice, updateQuantity, removeItem, clearCart, productsCache } = useCart();
   return (
-    <main className="container-px mx-auto py-10">
+    <main className="container-px mx-auto max-w-6xl py-10">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link href="/products" className="h-10 w-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center hover:bg-ray-200 dark:hover:bg-gray-700 transition-colors" aria-label="Back to products">
@@ -70,5 +70,4 @@ function CartInner() {
 }
 
 export default function CartPage() { return <CartInner />; }
-
 
