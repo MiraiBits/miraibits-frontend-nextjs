@@ -35,8 +35,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     ? await searchProducts(query, { page: requestedPage, pageSize: RESULTS_PER_PAGE })
     : emptyResults;
   const hasDirect = results.direct.length > 0;
-  const hasRelated = results.related.length > 0;
-  const showEmptyState = query.length > 0 && !hasDirect && !hasRelated;
+  const showRelated = results.totalPages <= 1 && results.related.length > 0;
+  const showEmptyState = query.length > 0 && !hasDirect && !showRelated;
   const firstResultIndex =
     results.directTotal === 0 ? 0 : (results.page - 1) * results.pageSize + 1;
   const lastResultIndex =
@@ -98,7 +98,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </section>
       )}
 
-      {hasRelated && (
+      {showRelated && (
         <section className="mt-12">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-50">
@@ -138,17 +138,37 @@ type PaginationControlsProps = {
   totalPages: number;
 };
 
+type PageMarker = number | "ellipsis-start" | "ellipsis-end";
+
+function getVisiblePages(currentPage: number, totalPages: number): PageMarker[] {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  const pages: PageMarker[] = [1];
+  const start = Math.max(2, currentPage - 1);
+  const end = Math.min(totalPages - 1, currentPage + 1);
+
+  if (start > 2) {
+    pages.push("ellipsis-start");
+  }
+
+  for (let page = start; page <= end; page += 1) {
+    pages.push(page);
+  }
+
+  if (end < totalPages - 1) {
+    pages.push("ellipsis-end");
+  }
+
+  pages.push(totalPages);
+  return pages;
+}
+
 function PaginationControls({ query, currentPage, totalPages }: PaginationControlsProps) {
   if (totalPages <= 1) {
     return null;
   }
-
-  const baseButtonClasses =
-    "inline-flex items-center rounded-lg border px-4 py-2 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
-  const activeClasses =
-    "border-gray-300 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800";
-  const disabledClasses =
-    "cursor-not-allowed border-gray-200 text-gray-400 dark:border-gray-800 dark:text-gray-600";
 
   const buildHref = (page: number) => {
     const params = new URLSearchParams();
@@ -162,44 +182,79 @@ function PaginationControls({ query, currentPage, totalPages }: PaginationContro
     return `/search${search ? `?${search}` : ""}`;
   };
 
-  const prevDisabled = currentPage <= 1;
-  const nextDisabled = currentPage >= totalPages;
+  const pageMarkers = getVisiblePages(currentPage, totalPages);
+  const baseButtonClasses =
+    "inline-flex items-center justify-center rounded-full px-2.5 py-1.5 text-xs font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 sm:px-3.5 sm:py-2 sm:text-sm";
+  const arrowClasses =
+    "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100";
+  const disabledArrowClasses = "opacity-40 hover:text-gray-500 dark:hover:text-gray-400";
+
+  const renderArrow = (direction: "prev" | "next") => {
+    const isPrev = direction === "prev";
+    const targetPage = isPrev ? currentPage - 1 : currentPage + 1;
+    const disabled = isPrev ? currentPage <= 1 : currentPage >= totalPages;
+    const label = isPrev ? "Go to previous page" : "Go to next page";
+    const symbol = isPrev ? "←" : "→";
+
+    if (disabled) {
+      return (
+        <span
+          className={`${baseButtonClasses} ${arrowClasses} ${disabledArrowClasses}`}
+          aria-disabled="true"
+        >
+          <span aria-hidden="true">{symbol}</span>
+        </span>
+      );
+    }
+
+    return (
+      <Link
+        href={buildHref(targetPage)}
+        className={`${baseButtonClasses} ${arrowClasses}`}
+        aria-label={label}
+      >
+        <span aria-hidden="true">{symbol}</span>
+      </Link>
+    );
+  };
+
+  const renderPageButton = (marker: PageMarker, index: number) => {
+    if (typeof marker !== "number") {
+      return (
+        <span
+          key={marker + index}
+          className="px-1 text-xs text-gray-400 sm:px-2 sm:text-sm"
+          aria-hidden="true"
+        >
+          &hellip;
+        </span>
+      );
+    }
+
+    const isActive = marker === currentPage;
+    const classes = isActive
+      ? "bg-blue-600 text-white hover:bg-blue-600"
+      : "bg-transparent text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800";
+
+    return (
+      <Link
+        key={marker}
+        href={buildHref(marker)}
+        className={`${baseButtonClasses} ${classes}`}
+        aria-current={isActive ? "page" : undefined}
+        aria-label={isActive ? `Page ${marker}, current page` : `Go to page ${marker}`}
+      >
+        {marker}
+      </Link>
+    );
+  };
 
   return (
-    <nav
-      className="mt-6 flex flex-col gap-4 border-t border-gray-100 pt-6 dark:border-gray-800 sm:flex-row sm:items-center sm:justify-between"
-      aria-label="Pagination"
-    >
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        Page {currentPage} of {totalPages}
-      </p>
-      <div className="flex gap-3">
-        {prevDisabled ? (
-          <span className={`${baseButtonClasses} ${disabledClasses}`} aria-disabled="true">
-            Previous
-          </span>
-        ) : (
-          <Link
-            href={buildHref(currentPage - 1)}
-            className={`${baseButtonClasses} ${activeClasses}`}
-            aria-label="Go to previous page"
-          >
-            Previous
-          </Link>
-        )}
-        {nextDisabled ? (
-          <span className={`${baseButtonClasses} ${disabledClasses}`} aria-disabled="true">
-            Next
-          </span>
-        ) : (
-          <Link
-            href={buildHref(currentPage + 1)}
-            className={`${baseButtonClasses} ${activeClasses}`}
-            aria-label="Go to next page"
-          >
-            Next
-          </Link>
-        )}
+    <nav className="mt-8 flex justify-center" aria-label="Pagination">
+      <div className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white/80 px-1.5 py-1 shadow-sm dark:border-gray-800 dark:bg-gray-900/80">
+        {renderArrow("prev")}
+        {pageMarkers.map((marker, index) => renderPageButton(marker, index))}
+        {renderArrow("next")}
       </div>
     </nav>
   );
