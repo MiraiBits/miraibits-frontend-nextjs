@@ -14,6 +14,10 @@ const prismaUnavailableCodes = new Set(['P5000', 'P5010', 'P6008', 'P1001', 'P10
 
 let cachedFallbackProducts: Product[] | null = null;
 
+const DEFAULT_SEARCH_PAGE_SIZE = 24;
+const MAX_SEARCH_PAGE_SIZE = 60;
+const DEFAULT_RELATED_LIMIT = 12;
+
 function loadFallbackProducts(): Product[] {
   if (!cachedFallbackProducts) {
     const rawProducts = fallbackProductsData as unknown as Product[];
@@ -262,31 +266,127 @@ export type ProductSearchResults = {
   related: Product[];
 };
 
-export async function searchProducts(query: string): Promise<ProductSearchResults> {
+export type SearchProductsOptions = {
+  page?: number;
+  pageSize?: number;
+  relatedLimit?: number;
+};
+
+export type PaginatedProductSearchResults = ProductSearchResults & {
+  page: number;
+  pageSize: number;
+  directTotal: number;
+  totalPages: number;
+};
+
+function clampPageSize(pageSize?: number): number {
+  if (typeof pageSize !== 'number' || !Number.isFinite(pageSize)) {
+    return DEFAULT_SEARCH_PAGE_SIZE;
+  }
+  const rounded = Math.floor(pageSize);
+  return Math.min(Math.max(rounded, 1), MAX_SEARCH_PAGE_SIZE);
+}
+
+function resolvePagination(
+  requestedPage: number,
+  pageSize: number,
+  totalItems: number
+): { page: number; totalPages: number; skip: number } {
+  const totalPages =
+    totalItems <= 0 ? 1 : Math.max(1, Math.ceil(totalItems / pageSize));
+  const page = Math.min(Math.max(requestedPage, 1), totalPages);
+  const skip = (page - 1) * pageSize;
+  return { page, totalPages, skip };
+}
+
+function buildFallbackPaginatedResult(
+  fallbackResults: ProductSearchResults,
+  requestedPage: number,
+  pageSize: number,
+  relatedLimit: number
+): PaginatedProductSearchResults {
+  const directTotal = fallbackResults.direct.length;
+  const { page, totalPages, skip } = resolvePagination(
+    requestedPage,
+    pageSize,
+    directTotal
+  );
+  const direct = fallbackResults.direct.slice(skip, skip + pageSize);
+  const related =
+    relatedLimit === 0
+      ? []
+      : fallbackResults.related.slice(0, relatedLimit);
+
+  return {
+    direct,
+    related,
+    page,
+    pageSize,
+    directTotal,
+    totalPages,
+  };
+}
+
+export async function searchProducts(
+  query: string,
+  options: SearchProductsOptions = {}
+): Promise<PaginatedProductSearchResults> {
   const prisma = getProductPrisma();
   const trimmed = query.trim();
+  const pageSize = clampPageSize(options.pageSize);
+  const requestedPage =
+    typeof options.page === 'number' && Number.isFinite(options.page) && options.page > 0
+      ? Math.floor(options.page)
+      : 1;
+  const relatedLimit =
+    typeof options.relatedLimit === 'number' && options.relatedLimit >= 0
+      ? Math.floor(options.relatedLimit)
+      : DEFAULT_RELATED_LIMIT;
 
   if (!trimmed) {
-    return { direct: [], related: [] };
+    return {
+      direct: [],
+      related: [],
+      page: 1,
+      pageSize,
+      directTotal: 0,
+      totalPages: 1,
+    };
   }
 
   if (!prisma) {
-    return fallbackSearchProducts(trimmed);
+    const fallbackResults = fallbackSearchProducts(trimmed);
+    return buildFallbackPaginatedResult(
+      fallbackResults,
+      requestedPage,
+      pageSize,
+      relatedLimit
+    );
   }
 
   try {
+    const directWhere: Prisma.ProductWhereInput = {
+      OR: [
+        { name: { contains: trimmed, mode: 'insensitive' } },
+        { slug: { contains: trimmed, mode: 'insensitive' } },
+      ],
+    };
+
+    const directTotal = await prisma.product.count({ where: directWhere });
+    const { page, totalPages, skip } = resolvePagination(
+      requestedPage,
+      pageSize,
+      directTotal
+    );
+
     const directMatches = await prisma.product.findMany({
-      where: {
-        OR: [
-          { name: { contains: trimmed, mode: 'insensitive' } },
-          { slug: { contains: trimmed, mode: 'insensitive' } },
-        ],
-      },
+      where: directWhere,
       orderBy: { name: 'asc' },
+      skip,
+      take: pageSize,
     });
 
     const directProducts = directMatches.map(transformProduct);
-    const directIds = new Set(directProducts.map(product => product.id));
 
     const categoriesFromDirect = directProducts
       .map(product => product.category?.trim())
@@ -300,31 +400,40 @@ export async function searchProducts(query: string): Promise<ProductSearchResult
     ];
 
     if (categoriesFromDirect.length > 0) {
-      relatedConditions.push({ category: { in: Array.from(new Set(categoriesFromDirect)) } });
+      relatedConditions.push({
+        category: { in: Array.from(new Set(categoriesFromDirect)) },
+      });
     }
 
     if (tagsFromDirect.length > 0) {
-      relatedConditions.push({ tags: { hasSome: Array.from(new Set(tagsFromDirect)) } });
+      relatedConditions.push({
+        tags: { hasSome: Array.from(new Set(tagsFromDirect)) },
+      });
     }
 
     const relatedMatches =
-      relatedConditions.length === 0
+      relatedConditions.length === 0 || relatedLimit === 0
         ? []
         : await prisma.product.findMany({
             where: {
-              id: directIds.size > 0 ? { notIn: Array.from(directIds) } : undefined,
+              NOT: directWhere,
               OR: relatedConditions,
             },
             orderBy: { name: 'asc' },
+            take: relatedLimit,
           });
 
     const relatedProducts = Array.isArray(relatedMatches)
-      ? relatedMatches.map(transformProduct).filter(product => !directIds.has(product.id))
+      ? relatedMatches.map(transformProduct)
       : [];
 
     return {
       direct: directProducts,
       related: relatedProducts,
+      page,
+      pageSize,
+      directTotal,
+      totalPages,
     };
   } catch (error) {
     if (isPrismaUnavailableError(error)) {
@@ -332,7 +441,13 @@ export async function searchProducts(query: string): Promise<ProductSearchResult
         '[products] Prisma search failed, falling back to static products data.',
         error
       );
-      return fallbackSearchProducts(trimmed);
+      const fallbackResults = fallbackSearchProducts(trimmed);
+      return buildFallbackPaginatedResult(
+        fallbackResults,
+        requestedPage,
+        pageSize,
+        relatedLimit
+      );
     }
     throw error;
   }
