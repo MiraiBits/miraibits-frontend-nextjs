@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { UrlObject } from "url";
 
 import ProductCard from "../../components/ProductCard";
 import { searchProducts, type PaginatedProductSearchResults } from "../../lib/products";
@@ -170,21 +171,23 @@ function PaginationControls({ query, currentPage, totalPages }: PaginationContro
     return null;
   }
 
-  const buildHref = (page: number) => {
-    const params = new URLSearchParams();
+  const buildHref = (page: number): UrlObject => {
+    const queryParams: Record<string, string> = {};
     if (query) {
-      params.set("q", query);
+      queryParams.q = query;
     }
     if (page > 1) {
-      params.set("page", String(page));
+      queryParams.page = String(page);
     }
-    const search = params.toString();
-    return `/search${search ? `?${search}` : ""}`;
+    return {
+      pathname: "/search",
+      query: queryParams,
+    };
   };
 
   const pageMarkers = getVisiblePages(currentPage, totalPages);
   const baseButtonClasses =
-    "inline-flex items-center justify-center rounded-full px-2.5 py-1.5 text-xs font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 sm:px-3.5 sm:py-2 sm:text-sm";
+    "inline-flex items-center justify-center rounded-full px-2.5 py-1.5 text-xs font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 sm:px-3.5 sm:py-2 sm:text-sm";
   const arrowClasses =
     "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100";
   const disabledArrowClasses = "opacity-40 hover:text-gray-500 dark:hover:text-gray-400";
@@ -233,7 +236,7 @@ function PaginationControls({ query, currentPage, totalPages }: PaginationContro
 
     const isActive = marker === currentPage;
     const classes = isActive
-      ? "bg-blue-600 text-white hover:bg-blue-600"
+      ? "bg-red-600 text-white hover:bg-red-600"
       : "bg-transparent text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800";
 
     return (
