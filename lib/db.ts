@@ -1,17 +1,8 @@
 import { PrismaClient } from '../prisma-products/client'
-import { withOptimize } from '@prisma/extension-optimize'
-
 const prismaClientSingleton = (): PrismaClient => {
   const client = new PrismaClient({
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
-  
-  // Add Optimize extension if API key is available
-  if (process.env.OPTIMIZE_API_KEY) {
-    return client.$extends(
-      withOptimize({ apiKey: process.env.OPTIMIZE_API_KEY })
-    ) as PrismaClient
-  }
   
   return client
 }
