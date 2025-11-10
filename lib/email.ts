@@ -320,7 +320,7 @@ export async function sendOrderEmail(order: Order) {
   `;
 
   // Log emails before sending
-  console.log("Staff email to:", "hello@mirai.lk");
+  console.log("Staff email to:", "miraibits.electronics@gmail.com");
   console.log("Customer email to:", email);
   console.log("Order object (partial):", {
     id,
@@ -335,7 +335,7 @@ export async function sendOrderEmail(order: Order) {
   try {
     await resend.emails.send({
       from: process.env.RESEND_EMAIL || "onboarding@resend.dev",
-      to: process.env.COMPANY_EMAIL || "hello@mirai.lk",
+      to: process.env.COMPANY_EMAIL || "miraibits.electronics@gmail.com",
       subject: `New Order Received – ${name}`,
       html: staffHtml,
       attachments,
@@ -365,7 +365,7 @@ export async function sendOrderEmail(order: Order) {
             </p>
             <p style="margin-top: 18px; font-size: 13px; color: #6b7280;">
               If you have any questions or concerns, please contact us at ${
-                process.env.COMPANY_EMAIL || "hello@mirai.lk"
+                process.env.COMPANY_EMAIL || "miraibits.electronics@gmail.com"
               }.
             </p>
             <p style="margin-top: 12px; font-size: 13px; color: #6b7280;">
