@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProductBySlug, getProducts } from "../../../lib/products";
+import { getProductBySlug } from "../../../lib/products";
 import AddToCartButton from "./AddToCartButton";
 import { formatCurrencyLKR } from "../../../lib/currency";
 import StructuredData from "./StructuredData";
@@ -9,6 +9,8 @@ import RelatedProducts from "./RelatedProducts";
 import ProductSpecifications from "./ProductSpecifications";
 import StockAvailability from "./StockAvailability";
 import BackLink from "../../../components/BackLink";
+
+export const dynamic = "force-dynamic";
 
 export default function ProductDetailPage({
   params,
@@ -96,11 +98,6 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
       />
     </main>
   );
-}
-
-export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
