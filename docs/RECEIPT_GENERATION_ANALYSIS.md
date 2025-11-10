@@ -69,7 +69,7 @@ Send emails via Resend API:
 #### **D. Email Delivery** (`/lib/email.ts`)
 - Uses **Resend** API for email delivery
 - Sends two emails:
-  1. **Staff Notification** → `hello@mirai.lk`
+  1. **Staff Notification** → `miraibits.electronics@gmail.com`
   2. **Customer Receipt** → customer's email
 - Attachments:
   - Generated PDF receipt
@@ -322,6 +322,6 @@ console.log('Customer receipt sent for Order ID:', id);
 
 ---
 
-**Generated:** October 19, 2025  
-**Project:** Mirai.lk E-commerce Platform  
+**Generated:** October 19, 2025
+**Project:** Mirai.lk E-commerce Platform
 **Stack:** Next.js 15 + Puppeteer + Prisma + Resend
