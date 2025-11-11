@@ -18,7 +18,7 @@
 ## What Was Done
 
 ### Overview
-Migrated product storage from a static JSON file (`data/products.json`) to a PostgreSQL database using Prisma ORM, utilizing the `PRISMA_PRODUCT_DB` environment variable for database connection.
+Migrated product storage from a static JSON file (`data/products.json`) to a Supabase-hosted PostgreSQL database using Prisma ORM, utilizing the `DATABASE_URL` / `DIRECT_URL` environment variables for database connections.
 
 ### Why This Migration?
 - **Dynamic Updates**: Products can now be updated without redeploying the application
@@ -33,7 +33,7 @@ Migrated product storage from a static JSON file (`data/products.json`) to a Pos
 
 ### 1. Database Schema Setup
 
-**Location**: `prisma-products/schema.prisma`
+**Location**: `prisma/schema.prisma`
 
 The schema defines:
 ```prisma
@@ -59,12 +59,13 @@ model Product {
 
 ### 2. Database Connection
 
-**Environment Variable**: `PRISMA_PRODUCT_DB`
+**Environment Variables**:
 ```
-PRISMA_PRODUCT_DB="prisma+postgres://accelerate.prisma-data.net/?api_key=..."
+DATABASE_URL="postgresql://<user>:<password>@db.<project>.supabase.co:5432/postgres"
+DIRECT_URL="postgresql://<user>:<password>@db.<project>.supabase.co:5432/postgres?pgbouncer=false"
 ```
 
-This uses Prisma Accelerate for connection pooling and edge caching.
+`DATABASE_URL` is used by the running app (often routed through PgBouncer), while `DIRECT_URL` gives Prisma Migrate a direct connection for schema operations.
 
 ### 3. Product Functions Refactored
 
@@ -167,13 +168,13 @@ Cleared existing products
 
 **Step 1 - Generate Prisma Client**:
 ```bash
-npx prisma generate --schema=prisma-products/schema.prisma
+npx prisma generate --schema=prisma/schema.prisma
 ```
 Creates TypeScript types and database client.
 
 **Step 2 - Push Schema to Database**:
 ```bash
-npx prisma db push --schema=prisma-products/schema.prisma
+npx prisma db push --schema=prisma/schema.prisma
 ```
 Creates tables in PostgreSQL database.
 
@@ -231,7 +232,7 @@ All these files updated to use `await`:
 ### Files Preserved
 
 - **`data/products.json`** - Kept as backup and for reference
-- **`prisma-products/schema.prisma`** - Schema was already correct
+- **`prisma/schema.prisma`** - Schema was already correct
 - **`lib/product-prisma-client.ts`** - Client setup was already correct
 
 ---
@@ -250,13 +251,14 @@ If you want to migrate from PostgreSQL (current) to MongoDB, here's what you nee
 
 #### 1. Update Prisma Schema
 
-**File**: `prisma-products/schema.prisma`
+**File**: `prisma/schema.prisma`
 
 **Current (PostgreSQL)**:
 ```prisma
 datasource db {
-  provider = "postgresql"
-  url      = env("PRISMA_PRODUCT_DB")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Product {
@@ -278,8 +280,8 @@ model Product {
 **Change To (MongoDB)**:
 ```prisma
 datasource db {
-  provider = "mongodb"
-  url      = env("MONGODB_PRODUCT_DB")
+  provider  = "mongodb"
+  url       = env("MONGODB_PRODUCT_DB")
 }
 
 model Product {
@@ -341,16 +343,16 @@ await productDBPrismaClient.product.create({
 
 ```bash
 # Delete existing client
-rm -rf prisma-products/client
+rm -rf prisma/client
 
 # Generate new client for MongoDB
-npx prisma generate --schema=prisma-products/schema.prisma
+npx prisma generate --schema=prisma/schema.prisma
 ```
 
 #### 5. Push Schema to MongoDB
 
 ```bash
-npx prisma db push --schema=prisma-products/schema.prisma
+npx prisma db push --schema=prisma/schema.prisma
 ```
 
 This creates the collection and indexes in MongoDB.
@@ -423,12 +425,12 @@ Your application code (`lib/products.ts`, components, API routes) will work exac
 
 - [ ] Install MongoDB (Atlas/Local/Docker)
 - [ ] Get MongoDB connection string
-- [ ] Update `prisma-products/schema.prisma` datasource
+- [ ] Update `prisma/schema.prisma` datasource
 - [ ] Update model Product id field for MongoDB
 - [ ] Add `MONGODB_PRODUCT_DB` to `.env`
-- [ ] Delete `prisma-products/client` folder
-- [ ] Run `npx prisma generate --schema=prisma-products/schema.prisma`
-- [ ] Run `npx prisma db push --schema=prisma-products/schema.prisma`
+- [ ] Delete `prisma/client` folder
+- [ ] Run `npx prisma generate --schema=prisma/schema.prisma`
+- [ ] Run `npx prisma db push --schema=prisma/schema.prisma`
 - [ ] Run seed script: `npx tsx scripts/seed-products.ts`
 - [ ] Test application: `npm run dev`
 - [ ] Verify all pages load correctly
@@ -445,12 +447,12 @@ Your application code (`lib/products.ts`, components, API routes) will work exac
 
 **Problem**: "Table does not exist"
 ```bash
-npx prisma db push --schema=prisma-products/schema.prisma
+npx prisma db push --schema=prisma/schema.prisma
 ```
 
 **Problem**: "Client not generated"
 ```bash
-npx prisma generate --schema=prisma-products/schema.prisma
+npx prisma generate --schema=prisma/schema.prisma
 ```
 
 **Problem**: Products not showing

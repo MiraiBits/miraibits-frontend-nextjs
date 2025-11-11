@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
-import type { Prisma } from '../prisma-products/client';
+import type { Prisma } from '../prisma/client';
 import type { Order } from './types';
 
 type OrderItems = Order['items'];

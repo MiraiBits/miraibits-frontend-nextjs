@@ -4,13 +4,13 @@ import {
   PrismaClient as ProductPrismaClient,
   type Prisma,
   type Product as PrismaProductModel,
-} from '../prisma-products/client';
+} from '../prisma/client';
 
 // Create a singleton instance
 let productPrismaClient: ProductPrismaClient | null = null;
 let prismaInitializationFailed = false;
 
-const prismaUnavailableCodes = new Set(['P5000', 'P5010', 'P6008', 'P1001', 'P1002']);
+const prismaUnavailableCodes = new Set(['P5000', 'P5010', 'P6008', 'P1001', 'P1002', 'P1010']);
 
 let cachedFallbackProducts: Product[] | null = null;
 
@@ -53,17 +53,27 @@ function isPrismaUnavailableError(error: unknown): boolean {
   if (code && prismaUnavailableCodes.has(code)) {
     return true;
   }
+  const name = 'name' in error ? (error as { name?: string }).name : undefined;
+  if (typeof name === 'string' && name.toLowerCase().includes('prismaclientinitializationerror')) {
+    return true;
+  }
   const message =
     'message' in error ? (error as { message?: string }).message : undefined;
   if (typeof message === 'string') {
+    const normalized = message.toLowerCase();
     if (
       Array.from(prismaUnavailableCodes).some(codeFragment =>
-        message.includes(codeFragment)
+        normalized.includes(codeFragment.toLowerCase())
       )
     ) {
       return true;
     }
-    if (message.toLowerCase().includes('fetch failed')) {
+    if (
+      normalized.includes('fetch failed') ||
+      normalized.includes("can't reach database server") ||
+      normalized.includes('database server was reached but timed out') ||
+      normalized.includes('prisma schema loaded from')
+    ) {
       return true;
     }
   }

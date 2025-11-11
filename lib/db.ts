@@ -1,4 +1,4 @@
-import { PrismaClient } from '../prisma-products/client'
+import { PrismaClient } from '../prisma/client'
 const prismaClientSingleton = (): PrismaClient => {
   const client = new PrismaClient({
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],

@@ -1,11 +1,12 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../prisma-products/client"
+  output   = "../prisma/client"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("PRISMA_PRODUCT_DB")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Product {
@@ -26,18 +27,18 @@ model Product {
 }
 
 model Order {
-  id            String   @id @default(uuid())
-  createdAt     DateTime @default(now())
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
 
   customerName    String
   customerEmail   String
   customerPhone   String?
   customerAddress String?
 
-  items         Json
-  total         Float
+  items Json
+  total Float
 
-  proofData     String?  @db.Text
+  proofData     String? @db.Text
   proofMimeType String?
   proofFilename String?
 

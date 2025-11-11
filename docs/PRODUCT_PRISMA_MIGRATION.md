@@ -1,13 +1,13 @@
 # Product Migration to Prisma Database
 
 ## Overview
-Successfully migrated product data from JSON file storage to Prisma database using the `PRISMA_PRODUCT_DB` connection.
+Successfully migrated product data from JSON file storage to a Supabase-hosted PostgreSQL database using Prisma with the `DATABASE_URL` / `DIRECT_URL` connection values.
 
 ## Changes Made
 
 ### 1. Database Schema
-- **File**: `prisma-products/schema.prisma`
-- Already configured with correct schema and datasource pointing to `PRISMA_PRODUCT_DB`
+- **File**: `prisma/schema.prisma`
+- Datasource now points to Supabase via `DATABASE_URL` (and `DIRECT_URL` for migrations)
 - Created the products table with: id, name, slug, price, description, shortDescription, images, stock, specifications, datasheet
 
 ### 2. Updated Product Functions
@@ -51,12 +51,12 @@ All server components updated to await the async functions:
 
 1. **Generated Prisma Client**:
    ```bash
-   npx prisma generate --schema=prisma-products/schema.prisma
+   npx prisma generate --schema=prisma/schema.prisma
    ```
 
 2. **Created Database Tables**:
    ```bash
-   npx prisma db push --schema=prisma-products/schema.prisma
+   npx prisma db push --schema=prisma/schema.prisma
    ```
 
 3. **Seeded Products**:
@@ -66,7 +66,8 @@ All server components updated to await the async functions:
    Result: ✅ Successfully seeded 5 products
 
 ## Environment Variables Used
-- `PRISMA_PRODUCT_DB` - Contains the Prisma connection string to the products database
+- `DATABASE_URL` - Supabase connection string for application traffic
+- `DIRECT_URL` - Direct connection string used by Prisma Migrate
 
 ## Architecture Notes
 

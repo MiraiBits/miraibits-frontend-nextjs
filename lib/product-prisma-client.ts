@@ -1,4 +1,4 @@
-import { PrismaClient } from '../prisma-products/client';
+import { PrismaClient } from '../prisma/client';
 
 const globalForProductDBPrismaClient = global as unknown as {
   productDBPrismaClient: PrismaClient;
