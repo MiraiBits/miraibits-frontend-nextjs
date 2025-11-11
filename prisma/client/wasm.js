@@ -195,17 +195,16 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "PRISMA_PRODUCT_DB",
+        "fromEnvVar": "DATABASE_URL",
         "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"PRISMA_PRODUCT_DB\")\n}\n\nmodel Product {\n  id               String   @id @default(uuid())\n  name             String\n  slug             String   @unique\n  price            Int\n  description      String\n  shortDescription String\n  images           String[]\n  stock            Int\n  specifications   Json?\n  datasheet        String[]\n  category         String?\n  tags             String[] @default([])\n\n  @@map(\"products\")\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  items Json\n  total Float\n\n  proofData     String? @db.Text\n  proofMimeType String?\n  proofFilename String?\n\n  @@map(\"orders\")\n}\n",
-  "inlineSchemaHash": "57d449ceec74fb2a514c51f9be7648b508e69c7ccb0b6ff3a1ac0f954f0c5cc9",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma/client\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel Product {\n  id               String   @id @default(uuid())\n  name             String\n  slug             String   @unique\n  price            Int\n  description      String\n  shortDescription String\n  images           String[]\n  stock            Int\n  specifications   Json?\n  datasheet        String[]\n  category         String?\n  tags             String[] @default([])\n\n  @@map(\"products\")\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  items Json\n  total Float\n\n  proofData     String? @db.Text\n  proofMimeType String?\n  proofFilename String?\n\n  @@map(\"orders\")\n}\n",
+  "inlineSchemaHash": "d6453357a5dc90a6efb01fbbae2f43be143a789a2db780e4850d1b849040eebc",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -224,7 +223,7 @@ config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
   parsed: {
-    PRISMA_PRODUCT_DB: typeof globalThis !== 'undefined' && globalThis['PRISMA_PRODUCT_DB'] || typeof process !== 'undefined' && process.env && process.env.PRISMA_PRODUCT_DB || undefined
+    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
   }
 })
 

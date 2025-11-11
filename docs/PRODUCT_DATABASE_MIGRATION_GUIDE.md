@@ -18,7 +18,7 @@
 ## What Was Done
 
 ### Overview
-Migrated product storage from a static JSON file (`data/products.json`) to a PostgreSQL database using Prisma ORM, utilizing the `PRISMA_PRODUCT_DB` environment variable for database connection.
+Migrated product storage from a static JSON file (`data/products.json`) to a Supabase-hosted PostgreSQL database using Prisma ORM, utilizing the `DATABASE_URL` / `DIRECT_URL` environment variables for database connections.
 
 ### Why This Migration?
 - **Dynamic Updates**: Products can now be updated without redeploying the application
@@ -59,12 +59,13 @@ model Product {
 
 ### 2. Database Connection
 
-**Environment Variable**: `PRISMA_PRODUCT_DB`
+**Environment Variables**:
 ```
-PRISMA_PRODUCT_DB="prisma+postgres://accelerate.prisma-data.net/?api_key=..."
+DATABASE_URL="postgresql://<user>:<password>@db.<project>.supabase.co:5432/postgres"
+DIRECT_URL="postgresql://<user>:<password>@db.<project>.supabase.co:5432/postgres?pgbouncer=false"
 ```
 
-This uses Prisma Accelerate for connection pooling and edge caching.
+`DATABASE_URL` is used by the running app (often routed through PgBouncer), while `DIRECT_URL` gives Prisma Migrate a direct connection for schema operations.
 
 ### 3. Product Functions Refactored
 
@@ -255,8 +256,9 @@ If you want to migrate from PostgreSQL (current) to MongoDB, here's what you nee
 **Current (PostgreSQL)**:
 ```prisma
 datasource db {
-  provider = "postgresql"
-  url      = env("PRISMA_PRODUCT_DB")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Product {
@@ -278,8 +280,8 @@ model Product {
 **Change To (MongoDB)**:
 ```prisma
 datasource db {
-  provider = "mongodb"
-  url      = env("MONGODB_PRODUCT_DB")
+  provider  = "mongodb"
+  url       = env("MONGODB_PRODUCT_DB")
 }
 
 model Product {
