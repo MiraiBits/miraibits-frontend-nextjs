@@ -1,17 +1,18 @@
 import type { NextConfig } from 'next';
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 
-function ensureRoutesManifestSync() {
-  try {
-    const distDir = process.env.NEXT_DIST_DIR || '.next';
-    const manifestPath = path.join(process.cwd(), distDir, 'routes-manifest.json');
+type ManifestDefinition = {
+  relativePath: string[];
+  createContents: () => Record<string, unknown>;
+};
 
-    if (fs.existsSync(manifestPath)) {
-      return;
-    }
-
-    const defaultManifest = {
+const distDir = process.env.NEXT_DIST_DIR || '.next';
+const manifestDefinitions: ManifestDefinition[] = [
+  {
+    relativePath: ['routes-manifest.json'],
+    createContents: () => ({
       version: 4,
       caseSensitive: false,
       basePath: '',
@@ -22,17 +23,59 @@ function ensureRoutesManifestSync() {
         afterFiles: [],
         fallback: [],
       },
-    };
+    }),
+  },
+  {
+    relativePath: ['prerender-manifest.json'],
+    createContents: () => ({
+      version: 4,
+      routes: {},
+      dynamicRoutes: {},
+      preview: {
+        previewModeId: crypto.randomBytes(16).toString('hex'),
+        previewModeSigningKey: crypto.randomBytes(32).toString('base64'),
+        previewModeEncryptionKey: crypto.randomBytes(32).toString('base64'),
+      },
+      notFoundRoutes: [],
+    }),
+  },
+  {
+    relativePath: ['server', 'middleware-manifest.json'],
+    createContents: () => ({
+      version: 3,
+      middleware: {},
+      functions: {},
+      sortedMiddleware: [],
+    }),
+  },
+];
 
-    fs.mkdirSync(path.dirname(manifestPath), { recursive: true });
-    fs.writeFileSync(manifestPath, `${JSON.stringify(defaultManifest, null, 2)}\n`, 'utf8');
-    console.info('[next.config] Created missing .next/routes-manifest.json');
-  } catch (error) {
-    console.warn('[next.config] Failed to ensure .next/routes-manifest.json:', error);
+function ensureDevManifestsSync() {
+  for (const manifest of manifestDefinitions) {
+    const manifestPath = path.join(process.cwd(), distDir, ...manifest.relativePath);
+
+    if (fs.existsSync(manifestPath)) {
+      continue;
+    }
+
+    try {
+      fs.mkdirSync(path.dirname(manifestPath), { recursive: true });
+      fs.writeFileSync(
+        manifestPath,
+        `${JSON.stringify(manifest.createContents(), null, 2)}\n`,
+        'utf8'
+      );
+      console.info(`[next.config] Created missing ${path.relative(process.cwd(), manifestPath)}`);
+    } catch (error) {
+      console.warn(
+        `[next.config] Failed to ensure ${manifest.relativePath.join('/')}:`,
+        error
+      );
+    }
   }
 }
 
-ensureRoutesManifestSync();
+ensureDevManifestsSync();
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -56,4 +99,3 @@ const exportConfig: NextConfig = {
 };
 
 export default nextConfig; // Use regular config instead of exportConfig
-

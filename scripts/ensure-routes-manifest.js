@@ -9,45 +9,82 @@
 
 const fs = require('node:fs/promises');
 const path = require('node:path');
+const crypto = require('node:crypto');
 
-async function ensureManifest() {
-  const projectDir = process.cwd();
-  const distDir = process.env.NEXT_DIST_DIR || '.next';
-  const manifestPath = path.join(projectDir, distDir, 'routes-manifest.json');
+const logTag = '[ensure-dev-manifests]';
+const projectDir = process.cwd();
+const distDir = process.env.NEXT_DIST_DIR || '.next';
+
+const manifestDefinitions = [
+  {
+    relativePath: ['routes-manifest.json'],
+    createContents: () => ({
+      version: 4,
+      caseSensitive: false,
+      basePath: '',
+      headers: [],
+      redirects: [],
+      rewrites: {
+        beforeFiles: [],
+        afterFiles: [],
+        fallback: [],
+      },
+    }),
+  },
+  {
+    relativePath: ['prerender-manifest.json'],
+    createContents: () => ({
+      version: 4,
+      routes: {},
+      dynamicRoutes: {},
+      preview: {
+        previewModeId: crypto.randomBytes(16).toString('hex'),
+        previewModeSigningKey: crypto.randomBytes(32).toString('base64'),
+        previewModeEncryptionKey: crypto.randomBytes(32).toString('base64'),
+      },
+      notFoundRoutes: [],
+    }),
+  },
+  {
+    relativePath: ['server', 'middleware-manifest.json'],
+    createContents: () => ({
+      version: 3,
+      middleware: {},
+      functions: {},
+      sortedMiddleware: [],
+    }),
+  },
+];
+
+async function ensureManifest({ relativePath, createContents }) {
+  const manifestPath = path.join(projectDir, distDir, ...relativePath);
 
   try {
     await fs.access(manifestPath);
     return;
   } catch (error) {
-    if (error && error.code !== 'ENOENT') {
+    if (!error || error.code !== 'ENOENT') {
       throw error;
     }
   }
 
-  const defaultManifest = {
-    version: 4,
-    caseSensitive: false,
-    basePath: '',
-    headers: [],
-    redirects: [],
-    rewrites: {
-      beforeFiles: [],
-      afterFiles: [],
-      fallback: [],
-    },
-  };
-
   await fs.mkdir(path.dirname(manifestPath), { recursive: true });
   await fs.writeFile(
     manifestPath,
-    `${JSON.stringify(defaultManifest, null, 2)}\n`,
+    `${JSON.stringify(createContents(), null, 2)}\n`,
     'utf8'
   );
-  const relativePath = path.relative(projectDir, manifestPath) || manifestPath;
-  console.info(`[ensure-routes-manifest] created ${relativePath}`);
+  const relativeLogPath = path.relative(projectDir, manifestPath) || manifestPath;
+  console.info(`${logTag} created ${relativeLogPath}`);
 }
 
-ensureManifest().catch(error => {
-  console.error('[ensure-routes-manifest] failed:', error);
+async function ensureManifests() {
+  for (const manifest of manifestDefinitions) {
+    await ensureManifest(manifest);
+  }
+}
+
+ensureManifests().catch(error => {
+  console.error(`${logTag} failed:`, error);
   process.exitCode = 1;
 });
