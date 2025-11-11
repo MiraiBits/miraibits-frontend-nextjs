@@ -4,7 +4,7 @@ import {
   PrismaClient as ProductPrismaClient,
   type Prisma,
   type Product as PrismaProductModel,
-} from '../prisma-products/client';
+} from '../prisma/client';
 
 // Create a singleton instance
 let productPrismaClient: ProductPrismaClient | null = null;

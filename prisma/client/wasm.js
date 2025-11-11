@@ -35,12 +35,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.17.1
- * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
+ * Prisma Client JS version: 6.18.0
+ * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
  */
 Prisma.prismaVersion = {
-  client: "6.17.1",
-  engine: "272a37d34178c2894197e17273bf937f25acdeac"
+  client: "6.18.0",
+  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -167,7 +167,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/jerith/Projects/miraibits-frontend-nextJs/prisma-products/client",
+      "value": "/Users/jerith/Projects/miraibits-frontend-nextJs/prisma/client",
       "fromEnvVar": null
     },
     "config": {
@@ -181,7 +181,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/jerith/Projects/miraibits-frontend-nextJs/prisma-products/schema.prisma",
+    "sourceFilePath": "/Users/jerith/Projects/miraibits-frontend-nextJs/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -189,8 +189,8 @@ const config = {
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "..",
-  "clientVersion": "6.17.1",
-  "engineVersion": "272a37d34178c2894197e17273bf937f25acdeac",
+  "clientVersion": "6.18.0",
+  "engineVersion": "34b5a692b7bd79939a9a2c3ef97d816e749cda2f",
   "datasourceNames": [
     "db"
   ],
@@ -204,8 +204,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma-products/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"PRISMA_PRODUCT_DB\")\n}\n\nmodel Product {\n  id               String   @id @default(uuid())\n  name             String\n  slug             String   @unique\n  price            Int\n  description      String\n  shortDescription String\n  images           String[]\n  stock            Int\n  specifications   Json?\n  datasheet        String[]\n  category         String?\n  tags             String[] @default([])\n\n  @@map(\"products\")\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  items Json\n  total Float\n\n  proofData     String? @db.Text\n  proofMimeType String?\n  proofFilename String?\n\n  @@map(\"orders\")\n}\n",
-  "inlineSchemaHash": "479ea9ce6a9cca59b1fe335db3cefff547351cb1a42bf55c7ac49da3af141574",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"PRISMA_PRODUCT_DB\")\n}\n\nmodel Product {\n  id               String   @id @default(uuid())\n  name             String\n  slug             String   @unique\n  price            Int\n  description      String\n  shortDescription String\n  images           String[]\n  stock            Int\n  specifications   Json?\n  datasheet        String[]\n  category         String?\n  tags             String[] @default([])\n\n  @@map(\"products\")\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  items Json\n  total Float\n\n  proofData     String? @db.Text\n  proofMimeType String?\n  proofFilename String?\n\n  @@map(\"orders\")\n}\n",
+  "inlineSchemaHash": "57d449ceec74fb2a514c51f9be7648b508e69c7ccb0b6ff3a1ac0f954f0c5cc9",
   "copyEngine": true
 }
 config.dirname = '/'

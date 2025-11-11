@@ -6,7 +6,7 @@ Successfully migrated product data from JSON file storage to Prisma database usi
 ## Changes Made
 
 ### 1. Database Schema
-- **File**: `prisma-products/schema.prisma`
+- **File**: `prisma/schema.prisma`
 - Already configured with correct schema and datasource pointing to `PRISMA_PRODUCT_DB`
 - Created the products table with: id, name, slug, price, description, shortDescription, images, stock, specifications, datasheet
 
@@ -51,12 +51,12 @@ All server components updated to await the async functions:
 
 1. **Generated Prisma Client**:
    ```bash
-   npx prisma generate --schema=prisma-products/schema.prisma
+   npx prisma generate --schema=prisma/schema.prisma
    ```
 
 2. **Created Database Tables**:
    ```bash
-   npx prisma db push --schema=prisma-products/schema.prisma
+   npx prisma db push --schema=prisma/schema.prisma
    ```
 
 3. **Seeded Products**:

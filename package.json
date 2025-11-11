@@ -4,18 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate --schema ./prisma-products/schema.prisma && next build",
+    "build": "prisma generate --schema ./prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate --schema ./prisma-products/schema.prisma",
-    "generate": "prisma generate --schema ./prisma-products/schema.prisma",
-    "migrate": "npx prisma migrate dev --schema ./prisma-products/schema.prisma",
-    "studio": "npx prisma studio --schema ./prisma-products/schema.prisma --port 5555"
+    "postinstall": "prisma generate --schema ./prisma/schema.prisma",
+    "generate": "prisma generate --schema ./prisma/schema.prisma",
+    "migrate": "npx prisma migrate dev --schema ./prisma/schema.prisma",
+    "studio": "npx prisma studio --schema ./prisma/schema.prisma --port 5555"
   },
   "dependencies": {
     "@prisma/client": "^6.18.0",
     "@prisma/extension-optimize": "^2.0.0",
     "@prisma/instrumentation": "^6.17.1",
+    "@supabase/supabase-js": "^2.81.0",
     "@types/formidable": "^3.4.5",
     "@types/node": "^22.10.2",
     "@types/nodemailer": "^6.4.19",
