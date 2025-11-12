@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useCart } from '../../../lib/cart';
 import type { Product } from '../../../lib/types';
 import QuantityInput from '../../../components/QuantityInput';
+import { useLiveProductStock } from './LiveProductStockProvider';
 
 type Props = {
   product: Product;
@@ -12,11 +13,17 @@ type Props = {
 
 export default function AddToCartButton({ product, disabled }: Props) {
   const { addItem } = useCart();
+  const { stock: liveStock } = useLiveProductStock();
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
 
-  const maxQuantity = product.stock > 0 ? product.stock : 1;
-  const isOutOfStock = disabled || product.stock === 0;
+  const normalizedStock = Math.max(0, liveStock);
+  const maxQuantity = normalizedStock > 0 ? normalizedStock : 1;
+  const isOutOfStock = disabled || normalizedStock === 0;
+  const productWithLiveStock = useMemo(
+    () => ({ ...product, stock: normalizedStock }),
+    [product, normalizedStock]
+  );
 
   useEffect(() => {
     setQuantity((prev) => {
@@ -27,7 +34,7 @@ export default function AddToCartButton({ product, disabled }: Props) {
 
   const handleClick = () => {
     if (isOutOfStock || isAdding) return;
-    addItem(product, quantity);
+    addItem(productWithLiveStock, quantity);
     setIsAdding(true);
     setTimeout(() => {
       setIsAdding(false);
