@@ -31,7 +31,10 @@ function CartInner() {
           </div>
         </div>
         {items.length > 0 && (
-          <button className="btn btn-outline w-full sm:w-auto" onClick={clearCart}>
+          <button
+            className="btn btn-outline self-end sm:self-auto sm:ml-auto"
+            onClick={clearCart}
+          >
             Clear Cart
           </button>
         )}
