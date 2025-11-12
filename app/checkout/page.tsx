@@ -2,6 +2,7 @@
 
 import { useCart } from '../../lib/cart';
 import { formatCurrencyLKR } from '../../lib/currency';
+import { calculateShippingFee } from '../../lib/pricing';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -9,6 +10,9 @@ function CheckoutInner() {
   const { items, totalPrice, clearCart, productsCache } = useCart();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const shippingFee = calculateShippingFee(itemCount);
+  const orderTotal = totalPrice + shippingFee;
   return (
     <main className="container-px mx-auto py-10 max-w-3xl">
       <h1 className="text-2xl font-semibold">Checkout</h1>
@@ -31,7 +35,8 @@ function CheckoutInner() {
         const formData = new FormData(form);
         // attach cart and total
         formData.set('cart', encodeURIComponent(JSON.stringify(items)));
-        formData.set('total', String(totalPrice));
+        formData.set('total', String(orderTotal));
+        formData.set('shippingFee', String(shippingFee));
 
         try {
           const res = await fetch('/api/orders', { method: 'POST', body: formData });
@@ -77,12 +82,22 @@ function CheckoutInner() {
               );
             })}
           </div>
+          <div className="mt-3 space-y-1 text-sm text-gray-700 dark:text-gray-300">
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>{formatCurrencyLKR(totalPrice)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Shipping</span>
+              <span>{formatCurrencyLKR(shippingFee)}</span>
+            </div>
+          </div>
           <div className="mt-3 flex justify-between font-medium">
             <span>Total</span>
-            <span>{formatCurrencyLKR(totalPrice)}</span>
+            <span>{formatCurrencyLKR(orderTotal)}</span>
           </div>
           <input type="hidden" name="cart" value={encodeURIComponent(JSON.stringify(items))} />
-          <input type="hidden" name="total" value={totalPrice} />
+          <input type="hidden" name="total" value={orderTotal} />
         </section>
 
         <section className="card p-4 grid gap-3">
@@ -97,4 +112,3 @@ function CheckoutInner() {
 }
 
 export default function CheckoutPage() { return <CheckoutInner />; }
-
