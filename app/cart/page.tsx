@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '../../lib/cart';
 import { formatCurrencyLKR } from '../../lib/currency';
+import QuantityInput from '../../components/QuantityInput';
 
 function CartInner() {
   const { items, totalPrice, updateQuantity, removeItem, clearCart, productsCache } = useCart();
@@ -12,7 +13,7 @@ function CartInner() {
   const orderTotal = totalPrice + shippingFee;
 
   return (
-    <main className="container-px mx-auto max-w-6xl py-10">
+    <main className="container-px mx-auto max-w-6xl pt-10 pb-32 lg:pb-10">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <Link
@@ -36,7 +37,7 @@ function CartInner() {
         )}
       </header>
 
-      <section className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+      <section className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="space-y-4">
 
           {items.length === 0 && (
@@ -54,9 +55,9 @@ function CartInner() {
             const subtotal = product.price * item.quantity;
 
             return (
-              <div key={item.productId} className="card flex flex-col gap-4 p-4 sm:flex-row sm:items-center">
-                <div className="flex w-full flex-1 items-center gap-4">
-                  <div className="relative h-20 w-20 overflow-hidden rounded bg-gray-50">
+              <div key={item.productId} className="card flex flex-col gap-3 p-3 sm:p-4 sm:flex-row sm:items-center">
+                <div className="flex w-full flex-1 items-center gap-3">
+                  <div className="relative h-16 w-16 overflow-hidden rounded bg-gray-50 sm:h-20 sm:w-20">
                     {product.images && product.images.length > 0 ? (
                       <Image src={product.images[0]} alt={product.name} fill sizes="80px" style={{ objectFit: 'contain' }} />
                     ) : (
@@ -64,27 +65,29 @@ function CartInner() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <div className="font-medium">{product.name}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">{formatCurrencyLKR(product.price)} each</div>
-                    <div className="mt-3 flex items-center gap-2">
-                      <label htmlFor={`qty-${item.productId}`} className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-sm font-semibold sm:text-base">{product.name}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-300 sm:text-sm">{formatCurrencyLKR(product.price)} each</div>
+                    <div className="mt-2 flex items-center gap-1.5 text-xs sm:text-sm">
+                      <label htmlFor={`qty-${item.productId}`} className="text-gray-500 dark:text-gray-400">
                         Qty
                       </label>
-                      <input
-                        id={`qty-${item.productId}`}
-                        type="number"
-                        min={1}
+                      <QuantityInput
                         value={item.quantity}
-                        onChange={e => updateQuantity(item.productId, Math.max(1, Number(e.target.value)))}
-                        className="w-24 rounded border border-gray-200 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-800"
+                        onChange={value => updateQuantity(item.productId, value)}
+                        min={1}
+                        max={product.stock > 0 ? product.stock : undefined}
+                        className="w-24 rounded sm:w-28"
+                        inputClassName="w-full px-1.5 sm:px-2"
+                        ariaLabel={`${product.name} quantity`}
+                        inputId={`qty-${item.productId}`}
                       />
                     </div>
                   </div>
                 </div>
-                <div className="flex w-full flex-col items-end gap-2 sm:w-auto">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Subtotal</span>
-                  <span className="text-lg font-semibold">{formatCurrencyLKR(subtotal)}</span>
-                  <button className="btn btn-ghost text-sm" onClick={() => removeItem(item.productId)}>
+                <div className="flex w-full flex-col items-end gap-1.5 sm:w-auto">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">Subtotal</span>
+                  <span className="text-base font-semibold sm:text-lg">{formatCurrencyLKR(subtotal)}</span>
+                  <button className="btn btn-ghost text-xs sm:text-sm" onClick={() => removeItem(item.productId)}>
                     Remove
                   </button>
                 </div>
@@ -93,7 +96,7 @@ function CartInner() {
           })}
         </div>
 
-        <aside className="card sticky top-24 h-fit self-start p-6">
+        <aside className="card sticky top-24 h-fit self-start p-6 hidden lg:block">
           <h2 className="text-lg font-semibold">Order Summary</h2>
           <div className="mt-4 space-y-4 text-sm">
             <div className="flex items-center justify-between text-gray-500 dark:text-gray-400">
@@ -120,6 +123,24 @@ function CartInner() {
           </div>
         </aside>
       </section>
+
+      <div className="lg:hidden fixed inset-x-0 bottom-0 border-t border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:border-gray-800 dark:bg-gray-950/95">
+        <div className="container-px mx-auto flex max-w-6xl items-center justify-between gap-4 py-4">
+          <div>
+            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Total (incl. shipping)</p>
+            <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">{formatCurrencyLKR(orderTotal)}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {formatCurrencyLKR(totalPrice)} + {formatCurrencyLKR(shippingFee)} shipping
+            </p>
+          </div>
+          <Link
+            href="/checkout"
+            className={`btn btn-primary w-36 text-center text-sm ${items.length === 0 ? 'pointer-events-none opacity-60' : ''}`}
+          >
+            Checkout
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }
