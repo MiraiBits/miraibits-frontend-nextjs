@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { Trash2 } from 'lucide-react';
 import { useCart } from '../../lib/cart';
 import { formatCurrencyLKR } from '../../lib/currency';
 import QuantityInput from '../../components/QuantityInput';
@@ -58,41 +59,58 @@ function CartInner() {
             const subtotal = product.price * item.quantity;
 
             return (
-              <div key={item.productId} className="card flex flex-col gap-3 p-3 sm:p-4 sm:flex-row sm:items-center">
-                <div className="flex w-full flex-1 items-center gap-3">
-                  <div className="relative h-16 w-16 overflow-hidden rounded bg-gray-50 sm:h-20 sm:w-20">
+              <div key={item.productId} className="card p-3 sm:p-4">
+                <div className="flex gap-3">
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded bg-gray-50 sm:h-20 sm:w-20">
                     {product.images && product.images.length > 0 ? (
                       <Image src={product.images[0]} alt={product.name} fill sizes="80px" style={{ objectFit: 'contain' }} />
                     ) : (
                       <div className="h-full w-full bg-gray-200" />
                     )}
                   </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-semibold sm:text-base">{product.name}</div>
-                    <div className="text-xs text-gray-600 dark:text-gray-300 sm:text-sm">{formatCurrencyLKR(product.price)} each</div>
-                    <div className="mt-2 flex items-center gap-1.5 text-xs sm:text-sm">
-                      <label htmlFor={`qty-${item.productId}`} className="text-gray-500 dark:text-gray-400">
-                        Qty
-                      </label>
-                      <QuantityInput
-                        value={item.quantity}
-                        onChange={value => updateQuantity(item.productId, value)}
-                        min={1}
-                        max={product.stock > 0 ? product.stock : undefined}
-                        className="w-24 rounded sm:w-28"
-                        inputClassName="w-full px-1.5 sm:px-2"
-                        ariaLabel={`${product.name} quantity`}
-                        inputId={`qty-${item.productId}`}
-                      />
+                  <div className="flex flex-1 flex-col gap-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="truncate text-sm font-semibold leading-tight sm:text-base">
+                          {product.name}
+                        </div>
+                        <div className="text-xs text-gray-600 dark:text-gray-300 sm:text-sm">
+                          {formatCurrencyLKR(product.price)} each
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeItem(item.productId)}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+                        aria-label={`Remove ${product.name} from cart`}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5 text-xs sm:text-sm">
+                        <label htmlFor={`qty-${item.productId}`} className="text-gray-500 dark:text-gray-400">
+                          Qty
+                        </label>
+                        <QuantityInput
+                          value={item.quantity}
+                          onChange={value => updateQuantity(item.productId, value)}
+                          min={1}
+                          max={product.stock > 0 ? product.stock : undefined}
+                          className="w-24 rounded sm:w-28"
+                          inputClassName="w-full px-1.5 sm:px-2"
+                          ariaLabel={`${product.name} quantity`}
+                          inputId={`qty-${item.productId}`}
+                        />
+                      </div>
+                      <div className="text-right sm:text-left">
+                        <span className="block text-[11px] uppercase tracking-wide text-gray-500 dark:text-gray-400 sm:text-xs">
+                          Subtotal
+                        </span>
+                        <span className="text-base font-semibold sm:text-lg">{formatCurrencyLKR(subtotal)}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex w-full flex-col items-end gap-1.5 sm:w-auto">
-                  <span className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">Subtotal</span>
-                  <span className="text-base font-semibold sm:text-lg">{formatCurrencyLKR(subtotal)}</span>
-                  <button className="btn btn-ghost text-xs sm:text-sm" onClick={() => removeItem(item.productId)}>
-                    Remove
-                  </button>
                 </div>
               </div>
             );
@@ -127,10 +145,10 @@ function CartInner() {
         </aside>
       </section>
 
-      <div className="lg:hidden fixed inset-x-0 bottom-0 border-t border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:border-gray-800 dark:bg-gray-950/95">
+      <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:border-gray-800 dark:bg-gray-950/95">
         <div className="container-px mx-auto flex max-w-6xl items-center justify-between gap-4 py-4">
           <div>
-            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Total (incl. shipping)</p>
+            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Total</p>
             <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">{formatCurrencyLKR(orderTotal)}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {formatCurrencyLKR(totalPrice)} + {formatCurrencyLKR(shippingFee)} shipping
