@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { Trash2 } from 'lucide-react';
 import { useCart } from '../../lib/cart';
 import { formatCurrencyLKR } from '../../lib/currency';
+import { calculateShippingFee } from '../../lib/pricing';
 import QuantityInput from '../../components/QuantityInput';
 
 function CartInner() {
   const { items, totalPrice, updateQuantity, removeItem, clearCart, productsCache } = useCart();
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const shippingFee = itemCount > 0 ? 400 : 0;
+  const shippingFee = calculateShippingFee(itemCount);
   const orderTotal = totalPrice + shippingFee;
 
   return (

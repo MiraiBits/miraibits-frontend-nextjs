@@ -3,6 +3,7 @@ import { getProductById } from '../../../lib/products';
 import type { Order } from '../../../lib/types';
 import { sendOrderEmail } from '../../../lib/email';
 import { createOrder } from '../../../lib/order-store';
+import { calculateShippingFeeForItems } from '../../../lib/pricing';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -29,14 +30,17 @@ export async function POST(req: NextRequest) {
     const cart = JSON.parse(decodeURIComponent(cartEncoded)) as Array<{ productId: string; quantity: number }>;
 
     // Calculate and validate total based on server-side prices
-    let total = 0;
+    let subtotal = 0;
     const items: Order['items'] = [];
     for (const it of cart) {
       const p = await getProductById(it.productId);
       if (!p) continue;
       items.push({ productId: p.id, quantity: it.quantity, price: p.price });
-      total += p.price * it.quantity;
+      subtotal += p.price * it.quantity;
     }
+
+    const shippingFee = calculateShippingFeeForItems(items);
+    const total = subtotal + shippingFee;
 
     // Store proof as base64 in database (Vercel-compatible)
     let proofData: string | null = null;

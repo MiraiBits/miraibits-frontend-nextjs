@@ -21,6 +21,9 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
     items,
     total,
   } = order;
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shippingFee = Math.max(total - subtotal, 0);
+  const grandTotal = subtotal + shippingFee;
   
   // Company Header
   pdf.setFillColor(255, 228, 225); // Brand accent halo
@@ -95,11 +98,16 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   yPos += 3;
   pdf.line(15, yPos, 195, yPos);
   
-  // Total
+  // Totals
   yPos += 8;
   pdf.setFont('ShareTechMono');
+  pdf.setFontSize(10);
+  pdf.text(`Subtotal: Rs. ${subtotal.toLocaleString()}`, 185, yPos, { align: 'right' });
+  yPos += 6;
+  pdf.text(`Shipping: Rs. ${shippingFee.toLocaleString()}`, 185, yPos, { align: 'right' });
+  yPos += 8;
   pdf.setFontSize(11);
-  pdf.text(`Grand Total: Rs. ${total.toLocaleString()}`, 185, yPos, { align: 'right' });
+  pdf.text(`Grand Total: Rs. ${grandTotal.toLocaleString()}`, 185, yPos, { align: 'right' });
   
   // Footer
   yPos += 10;

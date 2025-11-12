@@ -10,6 +10,8 @@ export function renderOrderReceiptHtml(order: Order) {
     total,
     proofFilename,
   } = order;
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shippingFee = Math.max(total - subtotal, 0);
 
   return `
   <!doctype html>
@@ -125,9 +127,11 @@ export function renderOrderReceiptHtml(order: Order) {
 
             <div class="divider"></div>
 
-            <p class="total" style="margin:0;text-align:right;">
-              Grand Total: Rs. ${total.toLocaleString()}
-            </p>
+            <div class="total" style="margin:0;text-align:right;">
+              <p style="margin:0;">Subtotal: Rs. ${subtotal.toLocaleString()}</p>
+              <p style="margin:4px 0 0 0;">Shipping: Rs. ${shippingFee.toLocaleString()}</p>
+              <p style="margin:8px 0 0 0;font-weight:600;">Grand Total: Rs. ${total.toLocaleString()}</p>
+            </div>
 
             <div class="divider"></div>
 
@@ -164,6 +168,8 @@ export async function sendOrderEmail(order: Order) {
     proofFilename,
     proofData,
   } = order;
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shippingFee = Math.max(total - subtotal, 0);
 
   const attachments: { filename: string; content: string }[] = [];
 
@@ -292,9 +298,11 @@ export async function sendOrderEmail(order: Order) {
 
             <div class="divider"></div>
 
-            <p class="total" style="margin:0;text-align:right;">
-              Grand Total: Rs. ${total.toLocaleString()}
-            </p>
+            <div class="total" style="margin:0;text-align:right;">
+              <p style="margin:0;">Subtotal: Rs. ${subtotal.toLocaleString()}</p>
+              <p style="margin:4px 0 0 0;">Shipping: Rs. ${shippingFee.toLocaleString()}</p>
+              <p style="margin:8px 0 0 0;font-weight:600;">Grand Total: Rs. ${total.toLocaleString()}</p>
+            </div>
 
             <div class="divider"></div>
 
