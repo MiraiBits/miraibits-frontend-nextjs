@@ -108,8 +108,13 @@ function normalizeItems(value: unknown): OrderItems {
     const productId = 'productId' in entry ? (entry as any).productId : undefined;
     const quantity = 'quantity' in entry ? (entry as any).quantity : undefined;
     const price = 'price' in entry ? (entry as any).price : undefined;
+    const slug = 'slug' in entry ? (entry as any).slug : undefined;
     if (typeof productId === 'string' && typeof quantity === 'number' && typeof price === 'number') {
-      items.push({ productId, quantity, price });
+      const normalizedItem: OrderItems[number] = { productId, quantity, price };
+      if (typeof slug === 'string' && slug.length > 0) {
+        normalizedItem.slug = slug;
+      }
+      items.push(normalizedItem);
     }
   }
   return items;

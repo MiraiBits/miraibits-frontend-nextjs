@@ -29,6 +29,7 @@ export type Order = {
   };
   items: Array<{
     productId: string;
+    slug?: string;
     quantity: number;
     price: number; // unit price at time of order
   }>;

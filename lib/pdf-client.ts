@@ -1,6 +1,7 @@
 import jsPDF from 'jspdf';
 import type { Order } from './types';
 import { ShareTechMonoBase64 } from './fonts/ShareTechMono-font';
+import { MiraiLogoBase64 } from './images/mirailk-logo';
 
 export function generateReceiptPdfClient(order: Order): jsPDF {
   const pdf = new jsPDF({
@@ -24,70 +25,80 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shippingFee = Math.max(total - subtotal, 0);
   const grandTotal = subtotal + shippingFee;
+  const orderDate = new Date(createdAt).toLocaleString();
   
   // Company Header
-  pdf.setFillColor(255, 228, 225); // Brand accent halo
-  pdf.circle(15, 15, 4, 'F');
-  pdf.setFontSize(16);
-  pdf.setFont('ShareTechMono');
-  pdf.text(process.env.NEXT_PUBLIC_COMPANY_NAME || 'Mirai.lk', 25, 17);
+  const logoWidth = 45;
+  const logoHeight = 15;
+  const headerTop = 20;
   
-  // Title
-  pdf.setFontSize(20);
-  pdf.text('Receipt', 15, 35);
+  // Header text block on the left
+  const headerLeftX = 15;
+  pdf.setTextColor(83, 95, 121);
+  pdf.setFontSize(18);
+  pdf.text('Receipt', headerLeftX, headerTop + 4);
+  pdf.setFontSize(11);
+  pdf.setTextColor(103, 112, 133);
+  pdf.text(`Order ${id}`, headerLeftX, headerTop + 14);
+  pdf.text(orderDate, headerLeftX, headerTop + 21);
   
-  // Order info
-  pdf.setFontSize(10);
-  pdf.setFont('ShareTechMono', 'normal');
-  pdf.setTextColor(107, 114, 128); // Gray
-  pdf.text(`Order ${id} • ${new Date(createdAt).toLocaleString()}`, 15, 42);
-  pdf.text(process.env.NEXT_PUBLIC_COMPANY_ADDRESS || 'Colombo, Sri Lanka', 15, 47);
+  // Logo on the right
+  const logoX = 195 - logoWidth;
+  pdf.addImage(MiraiLogoBase64, 'PNG', logoX, headerTop - 4, logoWidth, logoHeight, undefined, 'FAST');
   
   // Divider
-  pdf.setDrawColor(243, 244, 246);
-  pdf.line(15, 52, 195, 52);
+  const dividerY = headerTop + logoHeight + 22;
+  pdf.setDrawColor(226, 232, 240);
+  pdf.line(15, dividerY, 195, dividerY);
+  
+  let yPos = dividerY + 12;
   
   // Billed To
   pdf.setFontSize(12);
   pdf.setTextColor(17, 24, 39); // Dark
   pdf.setFont('ShareTechMono');
-  pdf.text('Billed To', 15, 62);
+  pdf.text('Billed To', 15, yPos);
   
-  pdf.setFont('ShareTechMono');
   pdf.setFontSize(10);
-  pdf.text(name, 15, 69);
-  pdf.text(`${email}${phone ? ' • ' + phone : ''}`, 15, 74);
+  yPos += 7;
+  pdf.text(name, 15, yPos);
+  yPos += 5;
+  pdf.text(`${email}${phone ? ' • ' + phone : ''}`, 15, yPos);
+  yPos += 5;
   pdf.setTextColor(107, 114, 128);
-  pdf.text(address || 'N/A', 15, 79);
+  pdf.text(address || 'N/A', 15, yPos);
   
   // Divider
+  yPos += 8;
   pdf.setTextColor(17, 24, 39);
-  pdf.line(15, 84, 195, 84);
+  pdf.line(15, yPos, 195, yPos);
+  yPos += 10;
   
   // Items Header
   pdf.setFontSize(12);
-  pdf.setFont('ShareTechMono');
-  pdf.text('Items', 15, 94);
+  pdf.text('Items', 15, yPos);
   
   // Table Header
   pdf.setFontSize(9);
   pdf.setTextColor(107, 114, 128);
-  pdf.setFont('ShareTechMono');
-  pdf.text('Product', 15, 102);
-  pdf.text('Qty', 120, 102, { align: 'center' });
-  pdf.text('Price', 150, 102, { align: 'right' });
-  pdf.text('Total', 185, 102, { align: 'right' });
+  yPos += 8;
+  pdf.text('Slug', 15, yPos);
+  pdf.text('Qty', 120, yPos, { align: 'center' });
+  pdf.text('Price', 150, yPos, { align: 'right' });
+  pdf.text('Total', 185, yPos, { align: 'right' });
   
+  yPos += 2;
   pdf.setDrawColor(243, 244, 246);
-  pdf.line(15, 104, 195, 104);
+  pdf.line(15, yPos, 195, yPos);
+  yPos += 8;
   
   // Table Rows
   pdf.setTextColor(17, 24, 39);
   pdf.setFont('ShareTechMono');
-  let yPos = 112;
   
   items.forEach((item) => {
-    pdf.text(item.productId, 15, yPos);
+    const label = item.slug || item.productId;
+    pdf.text(label, 15, yPos);
     pdf.text(String(item.quantity), 120, yPos, { align: 'center' });
     pdf.text(`Rs. ${item.price.toLocaleString()}`, 150, yPos, { align: 'right' });
     pdf.text(`Rs. ${(item.price * item.quantity).toLocaleString()}`, 185, yPos, { align: 'right' });
