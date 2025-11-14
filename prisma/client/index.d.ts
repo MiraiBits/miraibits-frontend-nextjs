@@ -25,6 +25,28 @@ export type Product = $Result.DefaultSelection<Prisma.$ProductPayload>
 export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const OrderStatus: {
+  pending: 'pending',
+  reviewing_payment: 'reviewing_payment',
+  confirmed_payment: 'confirmed_payment',
+  shipped: 'shipped',
+  delivered: 'delivered',
+  payment_failed: 'payment_failed',
+  cancelled: 'cancelled'
+};
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+}
+
+export type OrderStatus = $Enums.OrderStatus
+
+export const OrderStatus: typeof $Enums.OrderStatus
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -2091,6 +2113,7 @@ export namespace Prisma {
     proofData: string | null
     proofMimeType: string | null
     proofFilename: string | null
+    status: $Enums.OrderStatus | null
   }
 
   export type OrderMaxAggregateOutputType = {
@@ -2104,6 +2127,7 @@ export namespace Prisma {
     proofData: string | null
     proofMimeType: string | null
     proofFilename: string | null
+    status: $Enums.OrderStatus | null
   }
 
   export type OrderCountAggregateOutputType = {
@@ -2118,6 +2142,7 @@ export namespace Prisma {
     proofData: number
     proofMimeType: number
     proofFilename: number
+    status: number
     _all: number
   }
 
@@ -2141,6 +2166,7 @@ export namespace Prisma {
     proofData?: true
     proofMimeType?: true
     proofFilename?: true
+    status?: true
   }
 
   export type OrderMaxAggregateInputType = {
@@ -2154,6 +2180,7 @@ export namespace Prisma {
     proofData?: true
     proofMimeType?: true
     proofFilename?: true
+    status?: true
   }
 
   export type OrderCountAggregateInputType = {
@@ -2168,6 +2195,7 @@ export namespace Prisma {
     proofData?: true
     proofMimeType?: true
     proofFilename?: true
+    status?: true
     _all?: true
   }
 
@@ -2269,6 +2297,7 @@ export namespace Prisma {
     proofData: string | null
     proofMimeType: string | null
     proofFilename: string | null
+    status: $Enums.OrderStatus
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
     _sum: OrderSumAggregateOutputType | null
@@ -2302,6 +2331,7 @@ export namespace Prisma {
     proofData?: boolean
     proofMimeType?: boolean
     proofFilename?: boolean
+    status?: boolean
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2316,6 +2346,7 @@ export namespace Prisma {
     proofData?: boolean
     proofMimeType?: boolean
     proofFilename?: boolean
+    status?: boolean
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2330,6 +2361,7 @@ export namespace Prisma {
     proofData?: boolean
     proofMimeType?: boolean
     proofFilename?: boolean
+    status?: boolean
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectScalar = {
@@ -2344,9 +2376,10 @@ export namespace Prisma {
     proofData?: boolean
     proofMimeType?: boolean
     proofFilename?: boolean
+    status?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "customerName" | "customerEmail" | "customerPhone" | "customerAddress" | "items" | "total" | "proofData" | "proofMimeType" | "proofFilename", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "customerName" | "customerEmail" | "customerPhone" | "customerAddress" | "items" | "total" | "proofData" | "proofMimeType" | "proofFilename" | "status", ExtArgs["result"]["order"]>
 
   export type $OrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Order"
@@ -2363,6 +2396,7 @@ export namespace Prisma {
       proofData: string | null
       proofMimeType: string | null
       proofFilename: string | null
+      status: $Enums.OrderStatus
     }, ExtArgs["result"]["order"]>
     composites: {}
   }
@@ -2797,6 +2831,7 @@ export namespace Prisma {
     readonly proofData: FieldRef<"Order", 'String'>
     readonly proofMimeType: FieldRef<"Order", 'String'>
     readonly proofFilename: FieldRef<"Order", 'String'>
+    readonly status: FieldRef<"Order", 'OrderStatus'>
   }
     
 
@@ -3206,7 +3241,8 @@ export namespace Prisma {
     total: 'total',
     proofData: 'proofData',
     proofMimeType: 'proofMimeType',
-    proofFilename: 'proofFilename'
+    proofFilename: 'proofFilename',
+    status: 'status'
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -3333,6 +3369,20 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
+
+
+  /**
+   * Reference to a field of type 'OrderStatus'
+   */
+  export type EnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'OrderStatus[]'
+   */
+  export type ListEnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -3442,6 +3492,7 @@ export namespace Prisma {
     proofData?: StringNullableFilter<"Order"> | string | null
     proofMimeType?: StringNullableFilter<"Order"> | string | null
     proofFilename?: StringNullableFilter<"Order"> | string | null
+    status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
   }
 
   export type OrderOrderByWithRelationInput = {
@@ -3456,6 +3507,7 @@ export namespace Prisma {
     proofData?: SortOrderInput | SortOrder
     proofMimeType?: SortOrderInput | SortOrder
     proofFilename?: SortOrderInput | SortOrder
+    status?: SortOrder
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -3473,6 +3525,7 @@ export namespace Prisma {
     proofData?: StringNullableFilter<"Order"> | string | null
     proofMimeType?: StringNullableFilter<"Order"> | string | null
     proofFilename?: StringNullableFilter<"Order"> | string | null
+    status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
   }, "id">
 
   export type OrderOrderByWithAggregationInput = {
@@ -3487,6 +3540,7 @@ export namespace Prisma {
     proofData?: SortOrderInput | SortOrder
     proofMimeType?: SortOrderInput | SortOrder
     proofFilename?: SortOrderInput | SortOrder
+    status?: SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
     _max?: OrderMaxOrderByAggregateInput
@@ -3509,6 +3563,7 @@ export namespace Prisma {
     proofData?: StringNullableWithAggregatesFilter<"Order"> | string | null
     proofMimeType?: StringNullableWithAggregatesFilter<"Order"> | string | null
     proofFilename?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    status?: EnumOrderStatusWithAggregatesFilter<"Order"> | $Enums.OrderStatus
   }
 
   export type ProductCreateInput = {
@@ -3628,6 +3683,7 @@ export namespace Prisma {
     proofData?: string | null
     proofMimeType?: string | null
     proofFilename?: string | null
+    status?: $Enums.OrderStatus
   }
 
   export type OrderUncheckedCreateInput = {
@@ -3642,6 +3698,7 @@ export namespace Prisma {
     proofData?: string | null
     proofMimeType?: string | null
     proofFilename?: string | null
+    status?: $Enums.OrderStatus
   }
 
   export type OrderUpdateInput = {
@@ -3656,6 +3713,7 @@ export namespace Prisma {
     proofData?: NullableStringFieldUpdateOperationsInput | string | null
     proofMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     proofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   }
 
   export type OrderUncheckedUpdateInput = {
@@ -3670,6 +3728,7 @@ export namespace Prisma {
     proofData?: NullableStringFieldUpdateOperationsInput | string | null
     proofMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     proofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   }
 
   export type OrderCreateManyInput = {
@@ -3684,6 +3743,7 @@ export namespace Prisma {
     proofData?: string | null
     proofMimeType?: string | null
     proofFilename?: string | null
+    status?: $Enums.OrderStatus
   }
 
   export type OrderUpdateManyMutationInput = {
@@ -3698,6 +3758,7 @@ export namespace Prisma {
     proofData?: NullableStringFieldUpdateOperationsInput | string | null
     proofMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     proofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   }
 
   export type OrderUncheckedUpdateManyInput = {
@@ -3712,6 +3773,7 @@ export namespace Prisma {
     proofData?: NullableStringFieldUpdateOperationsInput | string | null
     proofMimeType?: NullableStringFieldUpdateOperationsInput | string | null
     proofFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -3961,6 +4023,13 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type EnumOrderStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
+  }
+
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
     createdAt?: SortOrder
@@ -3973,6 +4042,7 @@ export namespace Prisma {
     proofData?: SortOrder
     proofMimeType?: SortOrder
     proofFilename?: SortOrder
+    status?: SortOrder
   }
 
   export type OrderAvgOrderByAggregateInput = {
@@ -3990,6 +4060,7 @@ export namespace Prisma {
     proofData?: SortOrder
     proofMimeType?: SortOrder
     proofFilename?: SortOrder
+    status?: SortOrder
   }
 
   export type OrderMinOrderByAggregateInput = {
@@ -4003,6 +4074,7 @@ export namespace Prisma {
     proofData?: SortOrder
     proofMimeType?: SortOrder
     proofFilename?: SortOrder
+    status?: SortOrder
   }
 
   export type OrderSumOrderByAggregateInput = {
@@ -4065,6 +4137,16 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type EnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel> | $Enums.OrderStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOrderStatusFilter<$PrismaModel>
+    _max?: NestedEnumOrderStatusFilter<$PrismaModel>
+  }
+
   export type ProductCreateimagesInput = {
     set: string[]
   }
@@ -4118,6 +4200,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type EnumOrderStatusFieldUpdateOperationsInput = {
+    set?: $Enums.OrderStatus
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -4265,6 +4351,13 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedEnumOrderStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrderStatusFilter<$PrismaModel> | $Enums.OrderStatus
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -4316,6 +4409,16 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel> | $Enums.OrderStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOrderStatusFilter<$PrismaModel>
+    _max?: NestedEnumOrderStatusFilter<$PrismaModel>
   }
 
 

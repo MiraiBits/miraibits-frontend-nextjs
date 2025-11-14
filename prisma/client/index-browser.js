@@ -146,7 +146,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   total: 'total',
   proofData: 'proofData',
   proofMimeType: 'proofMimeType',
-  proofFilename: 'proofFilename'
+  proofFilename: 'proofFilename',
+  status: 'status'
 };
 
 exports.Prisma.SortOrder = {
@@ -178,7 +179,15 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.OrderStatus = exports.$Enums.OrderStatus = {
+  pending: 'pending',
+  reviewing_payment: 'reviewing_payment',
+  confirmed_payment: 'confirmed_payment',
+  shipped: 'shipped',
+  delivered: 'delivered',
+  payment_failed: 'payment_failed',
+  cancelled: 'cancelled'
+};
 
 exports.Prisma.ModelName = {
   Product: 'Product',

@@ -26,6 +26,16 @@ model Product {
   @@map("products")
 }
 
+enum OrderStatus {
+  pending
+  reviewing_payment
+  confirmed_payment
+  shipped
+  delivered
+  payment_failed
+  cancelled
+}
+
 model Order {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -38,9 +48,10 @@ model Order {
   items Json
   total Float
 
-  proofData     String? @db.Text
+  proofData     String?     @db.Text
   proofMimeType String?
   proofFilename String?
+  status        OrderStatus @default(pending)
 
   @@map("orders")
 }
