@@ -16,186 +16,43 @@ const LOGO_URL = new URL(
   })()
 ).toString();
 
-const professionalEmailStyles = `
-      :root {
-        color-scheme: light;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        background: #f6f7fb;
-        color: #0f172a;
-        font-family: 'Inter','Segoe UI','Roboto',sans-serif;
-      }
-      table {
-        border-spacing: 0;
-      }
-      .email-wrapper {
-        width: 100%;
-        padding: 32px 12px;
-        background: #f6f7fb;
-      }
-      .email-card {
-        width: 100%;
-        max-width: 680px;
-        margin: 0 auto;
-        background: #ffffff;
-        border-radius: 18px;
-        overflow: hidden;
-        border: 1px solid rgba(15, 23, 42, 0.08);
-        box-shadow: 0 20px 55px rgba(15, 23, 42, 0.12);
-      }
-      .email-header {
-        background: linear-gradient(135deg, #0f172a, #1e293b);
-        padding: 30px 32px;
-        text-align: center;
-      }
-      .email-header img {
-        height: 42px;
-        width: auto;
-        display: inline-block;
-      }
-      .email-body {
-        padding: 32px;
-      }
-      .eyebrow {
-        text-transform: uppercase;
-        letter-spacing: 0.24em;
-        font-size: 11px;
-        color: #94a3b8;
-        margin: 0 0 8px;
-      }
-      .title {
-        margin: 0;
-        font-size: 24px;
-        color: #0f172a;
-      }
-      .subtitle {
-        margin: 6px 0 24px;
-        font-size: 14px;
-        color: #475569;
-      }
-      .info-grid {
-        width: 100%;
-        border: 1px solid #e2e8f0;
-        border-radius: 16px;
-        margin-bottom: 24px;
-      }
-      .info-grid td {
-        width: 50%;
-        padding: 18px 20px;
-        border-bottom: 1px solid #e2e8f0;
-        vertical-align: top;
-      }
-      .info-grid tr:last-child td {
-        border-bottom: none;
-      }
-      .label {
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #94a3b8;
-        margin: 0 0 6px;
-      }
-      .value {
-        font-size: 15px;
-        margin: 0;
-        font-weight: 600;
-        color: #0f172a;
-      }
-      .muted {
-        color: #64748b;
-        font-size: 13px;
-        margin: 2px 0 0;
-      }
-      .section-title {
-        margin: 24px 0 12px;
-        font-size: 12px;
-        letter-spacing: 0.24em;
-        text-transform: uppercase;
-        color: #94a3b8;
-      }
-      .items-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      .items-table th {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        color: #94a3b8;
-        text-align: left;
-        padding-bottom: 12px;
-        border-bottom: 1px solid #e2e8f0;
-      }
-      .items-table td {
-        padding: 14px 0;
-        border-bottom: 1px solid #f1f5f9;
-        font-size: 14px;
-        color: #0f172a;
-      }
-      .items-table td:nth-child(2),
-      .items-table th:nth-child(2) {
-        text-align: center;
-      }
-      .items-table td:nth-child(3),
-      .items-table td:nth-child(4),
-      .items-table th:nth-child(3),
-      .items-table th:nth-child(4) {
-        text-align: right;
-      }
-      .items-table tr:last-child td {
-        border-bottom: none;
-      }
-      .items-empty {
-        text-align: center;
-        padding: 18px 0;
-        color: #94a3b8;
-        font-size: 13px;
-      }
-      .totals {
-        width: 100%;
-        margin-top: 16px;
-      }
-      .totals td {
-        padding: 4px 0;
-        font-size: 14px;
-        color: #0f172a;
-      }
-      .totals td:last-child {
-        text-align: right;
-        font-weight: 600;
-      }
-      .totals .grand td:last-child {
-        font-size: 16px;
-      }
-      .callout {
-        margin-top: 24px;
-        padding: 16px 20px;
-        background: #f1f5f9;
-        border-radius: 14px;
-        font-size: 13px;
-        color: #475569;
-      }
-      .footer-note {
-        text-align: center;
-        margin-top: 18px;
-        font-size: 12px;
-        color: #94a3b8;
-      }
-      @media (max-width: 600px) {
-        .email-body {
-          padding: 24px;
-        }
-        .info-grid td {
-          display: block;
-          width: 100%;
-          border-bottom: 1px solid #e2e8f0;
-        }
-      }
-    `;
+const professionalEmailStyles = [
+  ":root{color-scheme:light;}",
+  "*{box-sizing:border-box;}",
+  "body{margin:0;background:#f6f7fb;color:#0f172a;font-family:'Inter','Segoe UI','Roboto',sans-serif;}",
+  "table{border-spacing:0;}",
+  ".email-wrapper{width:100%;padding:32px 12px;background:#f6f7fb;}",
+  ".email-card{width:100%;max-width:680px;margin:0 auto;background:#fff;border-radius:18px;overflow:hidden;border:1px solid rgba(15,23,42,0.08);box-shadow:0 20px 55px rgba(15,23,42,0.12);}",
+  ".email-header{background:linear-gradient(135deg,#0f172a,#1e293b);padding:30px 32px;text-align:center;}",
+  ".email-header img{height:42px;width:auto;display:inline-block;}",
+  ".email-body{padding:32px;}",
+  ".eyebrow{text-transform:uppercase;letter-spacing:0.24em;font-size:11px;color:#94a3b8;margin:0 0 8px;}",
+  ".title{margin:0;font-size:24px;color:#0f172a;}",
+  ".subtitle{margin:6px 0 24px;font-size:14px;color:#475569;}",
+  ".info-grid{width:100%;border:none;border-radius:16px;margin-bottom:16px;}",
+  ".info-grid td{width:50%;padding:18px 20px;border-bottom:1px solid #e2e8f0;vertical-align:top;}",
+  ".info-grid tr:last-child td{border-bottom:none;}",
+  ".label{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#94a3b8;margin:0 0 6px;}",
+  ".value{font-size:15px;margin:0;font-weight:600;color:#0f172a;}",
+  ".muted{color:#64748b;font-size:13px;margin:2px 0 0;}",
+  ".section-title{margin:24px 0 12px;font-size:12px;letter-spacing:0.24em;text-transform:uppercase;color:#94a3b8;}",
+  ".items-table{width:100%;border-collapse:collapse;}",
+  ".items-table th{font-size:12px;text-transform:uppercase;letter-spacing:0.2em;color:#94a3b8;text-align:left;padding-bottom:12px;border-bottom:1px solid #e2e8f0;}",
+  ".items-table td{padding:14px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#0f172a;}",
+  ".items-table td:nth-child(2),.items-table th:nth-child(2){text-align:center;}",
+  ".items-table td:nth-child(3),.items-table td:nth-child(4),.items-table th:nth-child(3),.items-table th:nth-child(4){text-align:right;}",
+  ".items-table tr:last-child td{border-bottom:none;}",
+  ".items-empty{text-align:center;padding:18px 0;color:#94a3b8;font-size:13px;}",
+  ".totals{width:auto;min-width:240px;max-width:320px;margin:12px 0 0 0;padding:8px 0;text-align:left;display:flex;flex-direction:column;align-items:flex-start;}",
+  ".totals table{width:100%;}",
+  ".totals td{padding:4px 0;font-size:14px;color:#0f172a;}",
+  ".totals td:first-child{text-align:left;padding-right:12px;font-weight:500;color:#475569;}",
+  ".totals td:last-child{text-align:left;font-weight:600;}",
+  ".totals .grand td{font-size:15px;font-weight:700;color:#0b152d;border-top:1px solid #e2e8f0;padding-top:8px;margin-top:4px;}",
+  ".callout{margin-top:24px;padding:16px 20px;background:#f1f5f9;border-radius:14px;font-size:13px;color:#475569;}",
+  ".footer-note{text-align:center;margin-top:18px;font-size:12px;color:#94a3b8;}",
+  "@media(max-width:600px){.email-body{padding:24px;}.info-grid td{display:block;width:100%;border-bottom:1px solid #e2e8f0;}}",
+].join("");
 
 function getCompanyInfo() {
   return {
@@ -294,7 +151,8 @@ function buildTotalsTable(
   grandTotal: number
 ): string {
   return `
-      <table class="totals" role="presentation" cellpadding="0" cellspacing="0">
+    <div class="totals">
+      <table role="presentation" cellpadding="0" cellspacing="0">
         <tr>
           <td>Subtotal</td>
           <td>${formatCurrency(subtotal)}</td>
@@ -308,7 +166,8 @@ function buildTotalsTable(
           <td>${formatCurrency(grandTotal)}</td>
         </tr>
       </table>
-    `;
+    </div>
+  `;
 }
 
 function buildEmailDocument(
@@ -320,6 +179,8 @@ function buildEmailDocument(
   const safeTitle = escapeHtml(title);
   const defaultFooter = `${escapeHtml(name)} • ${escapeHtml(address)}`;
   const footer = footerContent ?? defaultFooter;
+
+  const content = bodyContent.trim();
 
   return `
   <!doctype html>
@@ -340,7 +201,7 @@ function buildEmailDocument(
           </tr>
           <tr>
             <td class="email-body">
-              ${bodyContent}
+              ${content}
             </td>
           </tr>
         </table>
@@ -359,7 +220,10 @@ export function renderOrderReceiptHtml(order: Order) {
     items,
     total,
   } = order;
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
   const shippingFee = Math.max(total - subtotal, 0);
   const { email: companyEmailRaw, name: companyNameRaw } = getCompanyInfo();
 
@@ -379,7 +243,7 @@ export function renderOrderReceiptHtml(order: Order) {
         <p class="eyebrow">Receipt</p>
         <h1 class="title">Official receipt</h1>
         <p class="subtitle">Thank you for choosing ${companyName}.</p>
-        <table class="info-grid" role="presentation" cellpadding="0" cellspacing="0">
+        <table class="info-grid" role="presentation" cellpadding="0" cellspacing="0" style="border-bottom:none;">
           <tr>
             <td>
               <p class="label">Order</p>
@@ -389,14 +253,18 @@ export function renderOrderReceiptHtml(order: Order) {
             <td>
               <p class="label">Grand Total</p>
               <p class="value">${formatCurrency(total)}</p>
-              <p class="muted">Shipping ${shippingFee > 0 ? formatCurrency(shippingFee) : "Included"}</p>
+              <p class="muted">Shipping ${
+                shippingFee > 0 ? formatCurrency(shippingFee) : "Included"
+              }</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="label">Customer</p>
               <p class="value">${customerName}</p>
-              <p class="muted">${customerEmail}${customerPhone ? ` • ${customerPhone}` : ""}</p>
+              <p class="muted">${customerEmail}${
+    customerPhone ? ` • ${customerPhone}` : ""
+  }</p>
             </td>
             <td>
               <p class="label">Delivery Address</p>
@@ -404,7 +272,7 @@ export function renderOrderReceiptHtml(order: Order) {
             </td>
           </tr>
         </table>
-        <div class="section-title">Billed Items</div>
+        <div class="section-title">Order Details</div>
         ${itemsTable}
         ${totalsTable}
         <div class="callout">
@@ -426,7 +294,10 @@ export async function sendOrderEmail(order: Order) {
     proofFilename,
     proofData,
   } = order;
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
   const shippingFee = Math.max(total - subtotal, 0);
 
   const attachments: { filename: string; content: string }[] = [];
@@ -458,10 +329,9 @@ export async function sendOrderEmail(order: Order) {
   const totalsTable = buildTotalsTable(subtotal, shippingFee, total);
 
   const staffBody = `
-        <p class="eyebrow">New Order</p>
         <h1 class="title">New order received</h1>
         <p class="subtitle">Customer ${customerName} submitted an order.</p>
-        <table class="info-grid" role="presentation" cellpadding="0" cellspacing="0">
+        <table class="info-grid" role="presentation" cellpadding="0" cellspacing="0" style="border-bottom:none;">
           <tr>
             <td>
               <p class="label">Order</p>
@@ -478,22 +348,17 @@ export async function sendOrderEmail(order: Order) {
             <td>
               <p class="label">Customer</p>
               <p class="value">${customerName}</p>
-              <p class="muted">${customerEmail}${customerPhone ? ` • ${customerPhone}` : ""}</p>
+              <p class="muted">${customerEmail}${
+    customerPhone ? ` • ${customerPhone}` : ""
+  }</p>
             </td>
             <td>
               <p class="label">Shipping Address</p>
               <p class="value">${customerAddress}</p>
             </td>
           </tr>
-          <tr>
-            <td colspan="2">
-              <p class="label">Proof</p>
-              <p class="value">${proofLabel}</p>
-              <p class="muted">${proofFilename ? "Review attachment" : "Request proof if needed"}</p>
-            </td>
-          </tr>
         </table>
-        <div class="section-title">Line Items</div>
+        <div class="section-title">Order Details</div>
         ${itemsTable}
         ${totalsTable}
         <div class="callout">
@@ -502,7 +367,11 @@ export async function sendOrderEmail(order: Order) {
       `;
 
   const staffFooter = `${companyName} • Internal notification`;
-  const staffHtml = buildEmailDocument(`New Order – ${id}`, staffBody, staffFooter);
+  const staffHtml = buildEmailDocument(
+    `New Order – ${id}`,
+    staffBody,
+    staffFooter
+  );
 
   const customerBody = `
         <p class="eyebrow">Order confirmed</p>
@@ -511,7 +380,7 @@ export async function sendOrderEmail(order: Order) {
         <div class="callout">
           We'll double-check your proof of payment and reach out from ${companyEmail} once your order ships.
         </div>
-        <table class="info-grid" role="presentation" cellpadding="0" cellspacing="0">
+        <table class="info-grid" role="presentation" cellpadding="0" cellspacing="0" style="border-bottom:none;">
           <tr>
             <td>
               <p class="label">Order</p>
@@ -521,7 +390,11 @@ export async function sendOrderEmail(order: Order) {
             <td>
               <p class="label">Total</p>
               <p class="value">${formatCurrency(total)}</p>
-              <p class="muted">${shippingFee > 0 ? `Shipping ${formatCurrency(shippingFee)}` : "Shipping included"}</p>
+              <p class="muted">${
+                shippingFee > 0
+                  ? `Shipping ${formatCurrency(shippingFee)}`
+                  : "Shipping included"
+              }</p>
             </td>
           </tr>
           <tr>
@@ -531,7 +404,7 @@ export async function sendOrderEmail(order: Order) {
             </td>
           </tr>
         </table>
-        <div class="section-title">Order Summary</div>
+        <div class="section-title">Order Details</div>
         ${itemsTable}
         ${totalsTable}
         <p class="muted">
