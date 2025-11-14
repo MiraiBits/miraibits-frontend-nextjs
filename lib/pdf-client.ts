@@ -73,7 +73,7 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   pdf.setFontSize(9);
   pdf.setTextColor(107, 114, 128);
   pdf.setFont('ShareTechMono');
-  pdf.text('Product', 15, 102);
+  pdf.text('Slug', 15, 102);
   pdf.text('Qty', 120, 102, { align: 'center' });
   pdf.text('Price', 150, 102, { align: 'right' });
   pdf.text('Total', 185, 102, { align: 'right' });
@@ -87,7 +87,8 @@ export function generateReceiptPdfClient(order: Order): jsPDF {
   let yPos = 112;
   
   items.forEach((item) => {
-    pdf.text(item.productId, 15, yPos);
+    const label = item.slug || item.productId;
+    pdf.text(label, 15, yPos);
     pdf.text(String(item.quantity), 120, yPos, { align: 'center' });
     pdf.text(`Rs. ${item.price.toLocaleString()}`, 150, yPos, { align: 'right' });
     pdf.text(`Rs. ${(item.price * item.quantity).toLocaleString()}`, 185, yPos, { align: 'right' });
