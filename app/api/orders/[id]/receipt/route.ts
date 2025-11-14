@@ -28,6 +28,7 @@ export async function GET(
     const order: Order = {
       id: storedOrder.id,
       createdAt: storedOrder.createdAt.toISOString(),
+      status: storedOrder.status,
       customer: { 
         name: storedOrder.customerName, 
         email: storedOrder.customerEmail, 

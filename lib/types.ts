@@ -18,9 +18,19 @@ export interface CartItem {
   quantity: number;
 }
 
+export type OrderStatus =
+  | 'pending'
+  | 'reviewing_payment'
+  | 'confirmed_payment'
+  | 'shipped'
+  | 'delivered'
+  | 'payment_failed'
+  | 'cancelled';
+
 export type Order = {
   id: string;
   createdAt: string;
+  status: OrderStatus;
   customer: {
     name: string;
     email: string;

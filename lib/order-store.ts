@@ -2,13 +2,14 @@ import { promises as fs } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import type { Prisma } from '../prisma/client';
-import type { Order } from './types';
+import type { Order, OrderStatus } from './types';
 
 type OrderItems = Order['items'];
 
 type OrderRecord = {
   id: string;
   createdAt: Date;
+  status: OrderStatus;
   customerName: string;
   customerEmail: string;
   customerPhone: string | null;
@@ -31,6 +32,26 @@ let memoryFallbackOrders: StoredOrderRecord[] = [];
 
 let prismaUnavailable = false;
 let prismaFailureLogged = false;
+
+const ORDER_STATUS_VALUES: OrderStatus[] = [
+  'pending',
+  'reviewing_payment',
+  'confirmed_payment',
+  'shipped',
+  'delivered',
+  'payment_failed',
+  'cancelled',
+];
+
+const ORDER_STATUS_SET = new Set<OrderStatus>(ORDER_STATUS_VALUES);
+
+function normalizeOrderStatus(value: unknown): OrderStatus {
+  if (typeof value === 'string' && ORDER_STATUS_SET.has(value as OrderStatus)) {
+    return value as OrderStatus;
+  }
+
+  return 'pending';
+}
 
 function markPrismaUnavailable(error: unknown) {
   prismaUnavailable = true;
@@ -97,6 +118,7 @@ type CreateOrderData = {
   proofData: string | null;
   proofMimeType: string | null;
   proofFilename: string | null;
+  status?: OrderStatus;
 };
 
 function normalizeItems(value: unknown): OrderItems {
@@ -123,6 +145,7 @@ function normalizeItems(value: unknown): OrderItems {
 function toOrderRecord(order: {
   id: string;
   createdAt: string | Date;
+  status: string | null;
   customerName: string;
   customerEmail: string;
   customerPhone: string | null;
@@ -141,6 +164,7 @@ function toOrderRecord(order: {
   return {
     id: order.id,
     createdAt,
+    status: normalizeOrderStatus(order.status),
     customerName: order.customerName,
     customerEmail: order.customerEmail,
     customerPhone: order.customerPhone,
@@ -172,7 +196,13 @@ async function readFallbackOrders(): Promise<StoredOrderRecord[]> {
   }
   try {
     const raw = await fs.readFile(fallbackFile, 'utf8');
-    return JSON.parse(raw) as StoredOrderRecord[];
+    const parsed = JSON.parse(raw) as Array<
+      Omit<StoredOrderRecord, 'status'> & { status?: unknown }
+    >;
+    return parsed.map(record => ({
+      ...record,
+      status: normalizeOrderStatus(record.status),
+    }));
   } catch (error) {
     const code = (error as NodeJS.ErrnoException | undefined)?.code;
     if (code === 'ENOENT') {
@@ -208,6 +238,7 @@ async function writeFallbackOrders(orders: StoredOrderRecord[]) {
 function fromStored(record: StoredOrderRecord): OrderRecord {
   return {
     ...record,
+    status: normalizeOrderStatus(record.status),
     createdAt: new Date(record.createdAt),
   };
 }
@@ -229,6 +260,7 @@ async function fallbackCreateOrder(
     proofData: data.proofData ?? null,
     proofMimeType: data.proofMimeType ?? null,
     proofFilename: data.proofFilename ?? null,
+    status: normalizeOrderStatus(data.status),
   };
 
   existing.push(record);
@@ -250,21 +282,28 @@ async function fallbackCount(): Promise<number> {
 export async function createOrder(
   data: CreateOrderData
 ): Promise<{ order: OrderRecord; source: 'prisma' | 'fallback' }> {
+  const normalizedData: CreateOrderData = {
+    ...data,
+    status: normalizeOrderStatus(data.status),
+  };
+
   if (!prismaUnavailable) {
     try {
       const { default: prisma } = await import('./db');
+      const prismaData: Prisma.OrderCreateInput = {
+        customerName: normalizedData.customerName,
+        customerEmail: normalizedData.customerEmail,
+        customerPhone: normalizedData.customerPhone,
+        customerAddress: normalizedData.customerAddress,
+        items: normalizedData.items as unknown as Prisma.InputJsonValue,
+        total: normalizedData.total,
+        proofData: normalizedData.proofData,
+        proofMimeType: normalizedData.proofMimeType,
+        proofFilename: normalizedData.proofFilename,
+        status: normalizedData.status,
+      };
       const created = await prisma.order.create({
-        data: {
-          customerName: data.customerName,
-          customerEmail: data.customerEmail,
-          customerPhone: data.customerPhone,
-          customerAddress: data.customerAddress,
-          items: data.items as unknown as Prisma.InputJsonValue,
-          total: data.total,
-          proofData: data.proofData,
-          proofMimeType: data.proofMimeType,
-          proofFilename: data.proofFilename,
-        },
+        data: prismaData,
       });
       return { order: toOrderRecord(created), source: 'prisma' };
     } catch (error) {
@@ -276,7 +315,7 @@ export async function createOrder(
     }
   }
 
-  const order = await fallbackCreateOrder(data);
+  const order = await fallbackCreateOrder(normalizedData);
   return { order, source: 'fallback' };
 }
 

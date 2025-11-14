@@ -118,7 +118,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   total: 'total',
   proofData: 'proofData',
   proofMimeType: 'proofMimeType',
-  proofFilename: 'proofFilename'
+  proofFilename: 'proofFilename',
+  status: 'status'
 };
 
 exports.Prisma.SortOrder = {
@@ -150,7 +151,15 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.OrderStatus = exports.$Enums.OrderStatus = {
+  pending: 'pending',
+  reviewing_payment: 'reviewing_payment',
+  confirmed_payment: 'confirmed_payment',
+  shipped: 'shipped',
+  delivered: 'delivered',
+  payment_failed: 'payment_failed',
+  cancelled: 'cancelled'
+};
 
 exports.Prisma.ModelName = {
   Product: 'Product',
@@ -204,13 +213,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma/client\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel Product {\n  id               String   @id @default(uuid())\n  name             String\n  slug             String   @unique\n  price            Int\n  description      String\n  shortDescription String\n  images           String[]\n  stock            Int\n  specifications   Json?\n  datasheet        String[]\n  category         String?\n  tags             String[] @default([])\n\n  @@map(\"products\")\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  items Json\n  total Float\n\n  proofData     String? @db.Text\n  proofMimeType String?\n  proofFilename String?\n\n  @@map(\"orders\")\n}\n",
-  "inlineSchemaHash": "d6453357a5dc90a6efb01fbbae2f43be143a789a2db780e4850d1b849040eebc",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../prisma/client\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel Product {\n  id               String   @id @default(uuid())\n  name             String\n  slug             String   @unique\n  price            Int\n  description      String\n  shortDescription String\n  images           String[]\n  stock            Int\n  specifications   Json?\n  datasheet        String[]\n  category         String?\n  tags             String[] @default([])\n\n  @@map(\"products\")\n}\n\nenum OrderStatus {\n  pending\n  reviewing_payment\n  confirmed_payment\n  shipped\n  delivered\n  payment_failed\n  cancelled\n}\n\nmodel Order {\n  id        String   @id @default(uuid())\n  createdAt DateTime @default(now())\n\n  customerName    String\n  customerEmail   String\n  customerPhone   String?\n  customerAddress String?\n\n  items Json\n  total Float\n\n  proofData     String?     @db.Text\n  proofMimeType String?\n  proofFilename String?\n  status        OrderStatus @default(pending)\n\n  @@map(\"orders\")\n}\n",
+  "inlineSchemaHash": "39965958485bc64dee167dd7a6aa0134e57743cdd0d25e1227deb133226595be",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Product\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"shortDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"images\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stock\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"specifications\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"datasheet\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"products\"},\"Order\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"customerName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerPhone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"items\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"total\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"proofData\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"proofMimeType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"proofFilename\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"orders\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Product\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"shortDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"images\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stock\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"specifications\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"datasheet\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"products\"},\"Order\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"customerName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerPhone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"items\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"total\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"proofData\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"proofMimeType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"proofFilename\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"OrderStatus\"}],\"dbName\":\"orders\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
