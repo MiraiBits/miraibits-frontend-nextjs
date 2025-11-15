@@ -1,12 +1,18 @@
-import type { Metadata } from "next";
 import { Instagram, MessageCircle, Phone, Mail } from "lucide-react";
 import BackLink from "../../components/BackLink";
+import { buildPageMetadata } from "../../lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact – Mirai.lk",
+export const metadata = buildPageMetadata({
+  title: "Contact Mirai.lk",
   description:
-    "Get in touch with Mirai.lk for fast support on components, orders, and services.",
-};
+    "Chat with Mirai.lk about electronics orders, service engagements, and support via phone, email, or WhatsApp.",
+  path: "/contact",
+  keywords: [
+    "Mirai.lk contact",
+    "Mirai Electronics phone number",
+    "Mirai support Sri Lanka",
+  ],
+});
 
 function sanitizeForTel(value: string) {
   return value.replace(/[^+\d]/g, "");

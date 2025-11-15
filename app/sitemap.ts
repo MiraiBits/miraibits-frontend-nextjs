@@ -1,17 +1,41 @@
 import type { MetadataRoute } from 'next';
 import { getProducts } from '../lib/products';
+import { categories } from '../lib/categories';
+import { getSiteUrl } from '../lib/seo';
+
+const STATIC_PATHS = [
+  '/',
+  '/about',
+  '/contact',
+  '/cart',
+  '/checkout',
+  '/cloud-devops-services',
+  '/electronics-development',
+  '/software-development',
+  '/search',
+  '/success',
+];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = process.env.SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+  const base = getSiteUrl();
+  const lastModified = new Date();
+
   const products = await getProducts();
-  const productUrls = products.map(p => ({ url: `${base}/products/${p.slug}`, lastModified: new Date() }));
+  const productUrls = products.map(product => ({
+    url: `${base}/products/${product.slug}`,
+    lastModified,
+  }));
 
-  return [
-    { url: `${base}/`, lastModified: new Date() },
-    { url: `${base}/about`, lastModified: new Date() },
-    { url: `${base}/contact`, lastModified: new Date() },
-    ...productUrls,
-  ];
+  const categoryUrls = categories.map(category => ({
+    url: `${base}/categories/${category.slug}`,
+    lastModified,
+  }));
+
+  const staticUrls = STATIC_PATHS.map(path => ({
+    url: `${base}${path === '/' ? '' : path}`,
+    lastModified,
+  }));
+
+  return [...staticUrls, ...categoryUrls, ...productUrls];
 }
-
 

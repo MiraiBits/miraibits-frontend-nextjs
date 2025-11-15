@@ -5,6 +5,7 @@ import { categories, getCategoryBySlug } from "../../../lib/categories";
 import { getProducts } from "../../../lib/products";
 import CategoryProductsClient from "./CategoryProductsClient";
 import BackLink from "../../../components/BackLink";
+import { buildPageMetadata } from "../../../lib/seo";
 
 type CategoryPageParams = {
   slug: string;
@@ -25,15 +26,25 @@ export async function generateMetadata({
   const category = getCategoryBySlug(slug);
 
   if (!category) {
-    return {
-      title: "Category",
-    };
+    return buildPageMetadata({
+      title: "Components by Category – Mirai.lk",
+      description: "Explore Mirai.lk electronics categories to keep every build on track.",
+      path: "/categories",
+      keywords: ["Mirai product categories", "electronics categories Sri Lanka"],
+    });
   }
 
-  return {
-    title: `${category.name} | mirai.lk`,
-    description: `Discover ${category.name} products available from mirai.lk for your next build.`,
-  };
+  return buildPageMetadata({
+    title: `${category.name} Components – Mirai.lk`,
+    description: `Discover ${category.name} products available from Mirai.lk for your next build.`,
+    path: `/categories/${category.slug}`,
+    keywords: [
+      `${category.name} Sri Lanka`,
+      category.headline,
+      `buy ${category.name}`,
+      category.filterValue ? `${category.filterValue} parts` : "",
+    ],
+  });
 }
 
 export default async function CategoryPage({

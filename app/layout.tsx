@@ -8,15 +8,24 @@ import { Inter, Noto_Sans_JP } from 'next/font/google';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from 'react';
+import { buildKeywordVariants, getSiteUrl, siteMetadataDefaults } from '../lib/seo';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
 const noto = Noto_Sans_JP({ subsets: ['latin'], weight: ['400','500','700'], display: 'swap' });
 
-const baseUrl = process.env.SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+const baseUrl = getSiteUrl();
 
 export const metadata: Metadata = {
-  title: 'Mirai.lk – Electronics Store',
-  description: 'Minimal, modern electronics store for maker hardware.',
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: 'Mirai.lk – Electronics Store',
+    template: '%s | Mirai.lk',
+  },
+  description: siteMetadataDefaults.description,
+  alternates: {
+    canonical: baseUrl,
+  },
+  keywords: buildKeywordVariants(),
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -26,10 +35,9 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
     apple: '/favicon.ico',
   },
-  metadataBase: new URL(baseUrl),
   openGraph: {
     title: 'Mirai.lk – Electronics Store',
-    description: 'Minimal, modern electronics store for maker hardware.',
+    description: siteMetadataDefaults.description,
     url: baseUrl,
     siteName: 'Mirai.lk',
     images: [

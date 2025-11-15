@@ -1,11 +1,14 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import BackLink from '../../components/BackLink';
+import { buildPageMetadata } from '../../lib/seo';
 
-export const metadata: Metadata = {
-  title: 'About – Mirai Electronics',
-  description: 'Learn about Mirai Electronics – a dynamic Sri Lankan electronics startup.',
-};
+export const metadata = buildPageMetadata({
+  title: 'About Mirai.lk Electronics',
+  description:
+    'Learn how Mirai.lk powers Sri Lankan makers with reliable components, sourcing support, and hardware services.',
+  path: '/about',
+  keywords: ['Mirai Electronics company profile', 'Sri Lankan electronics startup', 'Mirai.lk story'],
+});
 
 export default function AboutPage() {
   return (

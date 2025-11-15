@@ -10,6 +10,7 @@ import ProductSpecifications from "./ProductSpecifications";
 import StockAvailability from "./StockAvailability";
 import BackLink from "../../../components/BackLink";
 import { LiveProductStockProvider } from "./LiveProductStockProvider";
+import { buildProductMetadata } from "../../../lib/seo";
 
 export default function ProductDetailPage({
   params,
@@ -111,25 +112,5 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) return {};
-  const base =
-    process.env.SITE_URL ||
-    (process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000");
-  const title = `${product.name} – Mirai.lk`;
-  const description =
-    product.shortDescription || product.description.slice(0, 160);
-  const url = `${base}/products/${product.slug}`;
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: {
-      title,
-      description,
-      url,
-      images: [{ url: `/products/${product.slug}/opengraph-image` }],
-      type: "website",
-    },
-  };
+  return buildProductMetadata(product);
 }

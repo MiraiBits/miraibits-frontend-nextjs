@@ -3,6 +3,19 @@ import type { UrlObject } from "url";
 
 import ProductCard from "../../components/ProductCard";
 import { searchProducts, type PaginatedProductSearchResults } from "../../lib/products";
+import { buildPageMetadata } from "../../lib/seo";
+
+export const metadata = buildPageMetadata({
+  title: "Search Mirai.lk Products",
+  description:
+    "Find Arduino boards, sensors, and maker components fast across the full Mirai.lk electronics catalog.",
+  path: "/search",
+  keywords: [
+    "Mirai product search",
+    "electronics search Sri Lanka",
+    "find Arduino Colombo",
+  ],
+});
 
 type SearchPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;

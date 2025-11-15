@@ -1,10 +1,17 @@
-import type { Metadata } from 'next';
 import BackLink from '../../components/BackLink';
+import { buildPageMetadata } from '../../lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Cloud/DevOps Services – Mirai Electronics',
-  description: 'Learn about our Cloud/DevOps services.',
-};
+export const metadata = buildPageMetadata({
+  title: 'Cloud & DevOps Services – Mirai.lk',
+  description:
+    'Scale your connected products with Mirai.lk DevOps support: CI/CD, IaC, observability, and infrastructure tuning.',
+  path: '/cloud-devops-services',
+  keywords: [
+    'DevOps services Sri Lanka',
+    'cloud infrastructure Mirai',
+    'CI/CD consulting Colombo',
+  ],
+});
 
 export default function CloudDevOpsServicesPage() {
   return (

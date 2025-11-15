@@ -1,10 +1,17 @@
-import type { Metadata } from 'next';
 import BackLink from '../../components/BackLink';
+import { buildPageMetadata } from '../../lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Electronics Development – Mirai Electronics',
-  description: 'Learn about our electronics development services.',
-};
+export const metadata = buildPageMetadata({
+  title: 'Electronics Development Services – Mirai.lk',
+  description:
+    'Mirai.lk designs, prototypes, and validates custom electronics for connected products in Sri Lanka.',
+  path: '/electronics-development',
+  keywords: [
+    'electronics design services Sri Lanka',
+    'hardware prototyping Colombo',
+    'embedded engineering Mirai',
+  ],
+});
 
 export default function ElectronicsDevelopmentPage() {
   return (

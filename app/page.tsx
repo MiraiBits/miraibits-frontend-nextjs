@@ -1,6 +1,20 @@
 import { getProducts } from "../lib/products";
 import ShopByCategory from "../components/ShopByCategory";
 import MostPopularProducts from "../components/MostPopularProducts";
+import { buildPageMetadata } from "../lib/seo";
+
+export const metadata = buildPageMetadata({
+  title: "Mirai.lk – Electronics Store for Makers in Sri Lanka",
+  description:
+    "Browse Mirai.lk for Arduino boards, sensors, components, and maker kits with fast delivery across Sri Lanka.",
+  path: "/",
+  keywords: [
+    "buy Arduino Sri Lanka",
+    "maker electronics Colombo",
+    "embedded hardware shop",
+    "electronics components Sri Lanka",
+  ],
+});
 
 export default async function HomePage() {
   const popularProducts = await getProducts({ tag: "popular", take: 8 });
