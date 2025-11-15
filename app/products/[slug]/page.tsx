@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProductBySlug, getProducts } from "../../../lib/products";
+import { getProductBySlug } from "../../../lib/products";
 import AddToCartButton from "./AddToCartButton";
 import { formatCurrencyLKR } from "../../../lib/currency";
 import StructuredData from "./StructuredData";
@@ -96,11 +96,6 @@ async function AsyncProduct({ params }: { params: Promise<{ slug: string }> }) {
       </main>
     </LiveProductStockProvider>
   );
-}
-
-export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
