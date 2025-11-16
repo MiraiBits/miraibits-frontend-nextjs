@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Instagram, MessageCircle, Phone } from 'lucide-react';
+import { Facebook, Instagram, MessageCircle, Phone } from 'lucide-react';
 
 export default function Footer() {
   const ADDRESS = process.env.COMPANY_ADDRESS || 'Colombo, Sri Lanka';
@@ -42,6 +42,15 @@ export default function Footer() {
                 rel="noopener noreferrer"
               >
                 <Instagram className="h-4 w-4" />
+              </Link>
+              <Link
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-red-500/10 text-red-600 transition hover:bg-red-500/20 dark:bg-red-500/20 dark:text-red-300 dark:hover:bg-red-500/30"
+                href="https://www.facebook.com/people/Mirailk/61583875169776/"
+                aria-label="Mirai on Facebook"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Facebook className="h-4 w-4" />
               </Link>
             </div>
           </div>

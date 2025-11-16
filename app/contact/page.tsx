@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instagram, MessageCircle, Phone, Mail } from "lucide-react";
+import { Facebook, Instagram, MessageCircle, Phone, Mail } from "lucide-react";
 import BackLink from "../../components/BackLink";
 
 export const metadata: Metadata = {
@@ -26,6 +26,9 @@ export default function ContactPage() {
   const INSTAGRAM =
     process.env.COMPANY_INSTAGRAM ||
     "https://www.instagram.com/miraielectronics/";
+  const FACEBOOK =
+    process.env.COMPANY_FACEBOOK ||
+    "https://www.facebook.com/people/Mirailk/61583875169776/";
 
   const phoneHref = `tel:${sanitizeForTel(PHONE)}`;
   const whatsappHref = `https://wa.me/${sanitizeForWa(WHATSAPP)}`;
@@ -96,29 +99,51 @@ export default function ContactPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400">
                 Email
               </p>
-              <p className="mt-1 text-lg font-medium text-gray-900 dark:text-gray-100">
+              <p className="mt-1 text-xs font-medium text-gray-900 dark:text-gray-100 sm:text-lg">
                 {EMAIL}
               </p>
             </div>
           </a>
         </div>
 
-        <footer className="flex items-start gap-3 rounded-2xl border border-gray-200 bg-white/70 p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900/70">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e6443b]/10 text-[#e6443b] dark:bg-[#e6443b]/20 dark:text-[#f1918a]">
-            <Instagram className="h-4 w-4" aria-hidden="true" />
-          </span>
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-              Follow our builds and releases
-            </p>
-            <a
-              href={INSTAGRAM}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-[#e6443b] transition hover:underline dark:text-[#f1918a]"
-            >
-              @miraielectronics on Instagram
-            </a>
+        <footer className="rounded-2xl border border-gray-200 bg-white/70 p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900/70">
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="flex items-start gap-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e6443b]/10 text-[#e6443b] dark:bg-[#e6443b]/20 dark:text-[#f1918a]">
+                <Instagram className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  Follow our builds and releases
+                </p>
+                <a
+                  href={INSTAGRAM}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-[#e6443b] transition hover:underline dark:text-[#f1918a]"
+                >
+                  @miraielectronics on Instagram
+                </a>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2563eb]/10 text-[#1d4ed8] dark:bg-[#2563eb]/20 dark:text-[#93b4ff]">
+                <Facebook className="h-4 w-4" aria-hidden="true" />
+              </span>
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  Join the community on Facebook
+                </p>
+                <a
+                  href={FACEBOOK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-[#1d4ed8] transition hover:underline dark:text-[#93b4ff]"
+                >
+                  Mirai.lk on Facebook
+                </a>
+              </div>
+            </div>
           </div>
         </footer>
       </section>
