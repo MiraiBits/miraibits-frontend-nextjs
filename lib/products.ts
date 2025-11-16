@@ -80,8 +80,8 @@ function isPrismaUnavailableError(error: unknown): boolean {
   return false;
 }
 
-function applyFilters(products: Product[], options: ProductQueryOptions): Product[] {
-  const { category, tag, tags, excludeId, excludeSlug, take, orderBy } = options;
+function filterProductsList(products: Product[], options: ProductQueryOptions): Product[] {
+  const { category, tag, tags, excludeId, excludeSlug } = options;
 
   let filtered = products;
 
@@ -110,6 +110,13 @@ function applyFilters(products: Product[], options: ProductQueryOptions): Produc
     filtered = filtered.filter(product => product.slug !== excludeSlug);
   }
 
+  return filtered;
+}
+
+function applyFilters(products: Product[], options: ProductQueryOptions): Product[] {
+  const { take, orderBy, skip } = options;
+  const filtered = filterProductsList(products, options);
+
   const sorted = filtered.slice();
   const sorter =
     Array.isArray(orderBy) && orderBy.length > 0 ? orderBy[0] : orderBy ?? { name: 'asc' };
@@ -125,16 +132,27 @@ function applyFilters(products: Product[], options: ProductQueryOptions): Produc
     sorted.sort((a, b) => a.name.localeCompare(b.name));
   }
 
+  const normalizedSkip =
+    typeof skip === 'number' && Number.isFinite(skip) && skip > 0
+      ? Math.floor(skip)
+      : 0;
+  const paged = normalizedSkip > 0 ? sorted.slice(normalizedSkip) : sorted;
+
   if (typeof take === 'number' && Number.isFinite(take) && take > 0) {
-    return sorted.slice(0, take);
+    return paged.slice(0, take);
   }
 
-  return sorted;
+  return paged;
 }
 
 function fallbackGetProducts(options: ProductQueryOptions = {}): Product[] {
   const products = loadFallbackProducts();
   return applyFilters(products, options);
+}
+
+function fallbackCountProducts(options: ProductQueryOptions = {}): number {
+  const products = loadFallbackProducts();
+  return filterProductsList(products, options).length;
 }
 
 function fallbackSearchProducts(query: string): ProductSearchResults {
@@ -206,26 +224,12 @@ export type ProductQueryOptions = {
   excludeId?: string;
   excludeSlug?: string;
   take?: number;
+  skip?: number;
   orderBy?: Prisma.ProductOrderByWithRelationInput | Prisma.ProductOrderByWithRelationInput[];
 };
 
-function transformProduct(product: PrismaProductModel): Product {
-  return {
-    ...product,
-    specifications: product.specifications as { [key: string]: string } | undefined,
-    tags: product.tags && product.tags.length > 0 ? product.tags : undefined,
-    category: product.category ?? undefined,
-  };
-}
-
-export async function getProducts(options: ProductQueryOptions = {}): Promise<Product[]> {
-  const prisma = getProductPrisma();
-
-  if (!prisma) {
-    return fallbackGetProducts(options);
-  }
-
-  const { category, tag, tags, excludeId, excludeSlug, take, orderBy } = options;
+function buildProductWhere(options: ProductQueryOptions): Prisma.ProductWhereInput {
+  const { category, tag, tags, excludeId, excludeSlug } = options;
 
   const where: Prisma.ProductWhereInput = {};
 
@@ -251,10 +255,37 @@ export async function getProducts(options: ProductQueryOptions = {}): Promise<Pr
     where.slug = { not: excludeSlug };
   }
 
+  return where;
+}
+
+function transformProduct(product: PrismaProductModel): Product {
+  return {
+    ...product,
+    specifications: product.specifications as { [key: string]: string } | undefined,
+    tags: product.tags && product.tags.length > 0 ? product.tags : undefined,
+    category: product.category ?? undefined,
+  };
+}
+
+export async function getProducts(options: ProductQueryOptions = {}): Promise<Product[]> {
+  const prisma = getProductPrisma();
+
+  if (!prisma) {
+    return fallbackGetProducts(options);
+  }
+
+  const where = buildProductWhere(options);
+  const { take, orderBy, skip } = options;
+  const normalizedSkip =
+    typeof skip === 'number' && Number.isFinite(skip) && skip > 0
+      ? Math.floor(skip)
+      : undefined;
+
   try {
     const products = await prisma.product.findMany({
       where,
       take,
+      skip: normalizedSkip,
       orderBy: orderBy ?? { name: 'asc' },
     });
 
@@ -266,6 +297,29 @@ export async function getProducts(options: ProductQueryOptions = {}): Promise<Pr
         error
       );
       return fallbackGetProducts(options);
+    }
+    throw error;
+  }
+}
+
+export async function countProducts(options: ProductQueryOptions = {}): Promise<number> {
+  const prisma = getProductPrisma();
+
+  if (!prisma) {
+    return fallbackCountProducts(options);
+  }
+
+  const where = buildProductWhere(options);
+
+  try {
+    return prisma.product.count({ where });
+  } catch (error) {
+    if (isPrismaUnavailableError(error)) {
+      console.warn(
+        '[products] Prisma count query failed, falling back to static products data.',
+        error
+      );
+      return fallbackCountProducts(options);
     }
     throw error;
   }

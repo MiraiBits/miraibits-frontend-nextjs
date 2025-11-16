@@ -26,20 +26,21 @@ export const categories: Category[] = [
     slug: "microcontrollers-boards",
     icon: Cpu,
     headline: "Brains for your builds",
-    filterValue: "microcontroller",
+    filterValue: "microcontrollers",
   },
   {
     name: "Sensors & Modules",
     slug: "sensors-modules",
     icon: Waves,
     headline: "Connect to the world",
-    filterValue: "sensor",
+    filterValue: "sensors",
   },
   {
     name: "Passive Components",
     slug: "passive-components",
     icon: Cog,
     headline: "Tuning and stability essentials",
+    filterValue: "passive",
   },
   {
     name: "Power & Connectivity",
@@ -53,6 +54,7 @@ export const categories: Category[] = [
     slug: "tools-accessories",
     icon: Wrench,
     headline: "Everything to build smarter",
+    filterValue: "tools",
   },
 ];
 
