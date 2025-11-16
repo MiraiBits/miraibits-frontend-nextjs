@@ -88,11 +88,11 @@ export default function Navbar() {
         <div className="flex flex-wrap items-center gap-3 md:gap-6 md:h-16 py-4 md:py-0">
           <Link href="/" className="flex items-center text-gray-900 dark:text-gray-100">
             <Image
-              src="/mirailk.png"
+              src="/mirailk.svg"
               alt="Mirai.lk Logo"
-              width={160}
-              height={160}
-              className="h-10 w-auto object-contain"
+              width={100}
+              height={100}
+              className="h-7 w-auto object-contain"
               priority
             />
           </Link>
