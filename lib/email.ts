@@ -435,7 +435,7 @@ export async function sendOrderEmail(order: Order) {
 
   try {
     await resend.emails.send({
-      from: process.env.RESEND_EMAIL || "roreply@mail.mirai.lk",
+      from: process.env.RESEND_EMAIL || "noreply@mail.mirai.lk",
       to: process.env.COMPANY_EMAIL || "miraibits.electronics@gmail.com",
       subject: `New Order Received – ${name}`,
       html: staffHtml,
@@ -451,7 +451,7 @@ export async function sendOrderEmail(order: Order) {
 
   try {
     await resend.emails.send({
-      from: process.env.RESEND_EMAIL || "roreply@mail.mirai.lk",
+      from: process.env.RESEND_EMAIL || "noreply@mail.mirai.lk",
       to: `${email}`,
       subject: `Your order receipt – ${companyInfo.name}`,
       html: customerHtml,
