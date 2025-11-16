@@ -15,13 +15,9 @@ export default async function HomePage() {
               <span className="text-xs font-semibold uppercase tracking-[0.3em] text-red-600">
                 mirai.lk
               </span>
-              <h1 className="mt-4 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl dark:text-gray-50">
-                Power Up Your Next Creation
+              <h1 className="mt-4 text-4xl font-black leading-tight text-gray-900 sm:text-5xl dark:text-gray-50">
+                Get your order in 24 hours within Colombo
               </h1>
-              <p className="mt-3 max-w-2xl text-base text-gray-600 sm:text-lg dark:text-gray-300">
-                Explore a world of components, boards, and sensors to build
-                anything you imagine.
-              </p>
             </div>
           </div>
         </div>
