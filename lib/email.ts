@@ -1,20 +1,33 @@
 import { Resend } from "resend";
 import type { Order } from "./types";
 
-const LOGO_URL = new URL(
-  "/mirailk.png",
-  (() => {
-    const envUrl =
-      process.env.NEXT_PUBLIC_APP_URL ||
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      process.env.APP_URL ||
-      (process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : undefined);
-    if (!envUrl) return "https://mirai.lk";
-    return envUrl.startsWith("http") ? envUrl : `https://${envUrl}`;
-  })()
-).toString();
+const FALLBACK_ASSET_HOST = "https://www.mirai.lk";
+
+function resolveAssetBaseUrl() {
+  const envUrl =
+    process.env.EMAIL_ASSET_BASE_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.APP_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);
+  const base = envUrl && envUrl.trim().length > 0 ? envUrl : FALLBACK_ASSET_HOST;
+  return base.startsWith("http") ? base : `https://${base}`;
+}
+
+const ASSET_BASE_URL = resolveAssetBaseUrl();
+
+function buildAssetUrl(path: string) {
+  try {
+    return new URL(path, ASSET_BASE_URL).toString();
+  } catch {
+    return new URL(path, FALLBACK_ASSET_HOST).toString();
+  }
+}
+
+const LOGO_SVG_URL = buildAssetUrl("/mirailk.svg");
+const LOGO_PNG_URL = buildAssetUrl("/mirailk.png");
+const LOGO_IMG_FALLBACK =
+  LOGO_PNG_URL || LOGO_SVG_URL || `${FALLBACK_ASSET_HOST}/mirailk.png`;
 
 const professionalEmailStyles = [
   ":root{color-scheme:light;}",
@@ -24,6 +37,7 @@ const professionalEmailStyles = [
   ".email-wrapper{width:100%;padding:32px 12px;background:#f6f7fb;}",
   ".email-card{width:100%;max-width:680px;margin:0 auto;background:#fff;border-radius:18px;overflow:hidden;border:1px solid rgba(15,23,42,0.08);box-shadow:0 20px 55px rgba(15,23,42,0.12);}",
   ".email-header{background:linear-gradient(135deg,#0f172a,#1e293b);padding:30px 32px;text-align:center;}",
+  ".email-header picture{display:inline-flex;align-items:center;justify-content:center;}",
   ".email-header img{height:42px;width:auto;display:inline-block;}",
   ".email-body{padding:32px;}",
   ".eyebrow{text-transform:uppercase;letter-spacing:0.24em;font-size:11px;color:#94a3b8;margin:0 0 8px;}",
@@ -170,6 +184,15 @@ function buildTotalsTable(
   `;
 }
 
+const LOGO_PICTURE_HTML = [
+  '<picture class="email-logo">',
+  LOGO_SVG_URL
+    ? `<source srcset="${LOGO_SVG_URL}" type="image/svg+xml" />`
+    : "",
+  `<img src="${LOGO_IMG_FALLBACK}" alt="Company logo" height="42" />`,
+  "</picture>",
+].join("");
+
 function buildEmailDocument(
   title: string,
   bodyContent: string,
@@ -196,7 +219,7 @@ function buildEmailDocument(
         <table role="presentation" class="email-card" cellpadding="0" cellspacing="0">
           <tr>
             <td class="email-header">
-              <img src="${LOGO_URL}" alt="Company logo" />
+              ${LOGO_PICTURE_HTML}
             </td>
           </tr>
           <tr>
