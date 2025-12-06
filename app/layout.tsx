@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Snowflakes from '../components/Snowflakes';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { CartProvider } from '../lib/cart';
 import { Inter, Noto_Sans_JP } from 'next/font/google';
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`h-full ${inter.className} ${noto.className}`}>
       <body suppressHydrationWarning className="min-h-screen antialiased selection:bg-sakura-100 selection:text-gray-900 flex flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <ThemeProvider>
+          <Snowflakes />
           <CartProvider>
             <Suspense fallback={null}>
               <Navbar />
