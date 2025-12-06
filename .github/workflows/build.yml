@@ -19,6 +19,13 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Create dummy .env file
+        run: |
+          echo "SUPABASE_URL=https://example.supabase.co" >> .env
+          echo "SUPABASE_ANON_KEY=dummy" >> .env
+          echo "DATABASE_URL=postgresql://user:password@localhost:5432/db" >> .env
+          echo "DIRECT_URL=postgresql://user:password@localhost:5432/db" >> .env
+
       - name: Install dependencies
         run: npm install
 
