@@ -5,6 +5,7 @@ import {
   type Prisma,
   type Product as PrismaProductModel,
 } from '../prisma/client';
+import { generateTypos } from './typos';
 
 // Create a singleton instance
 let productPrismaClient: ProductPrismaClient | null = null;
@@ -520,25 +521,56 @@ export async function searchProducts(
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   const prisma = getProductPrisma();
 
+  // Helper to find product (either exact match or via typo lookup)
+  const findProduct = async (
+    fetcher: (s: string) => Promise<Product | null>
+  ): Promise<Product | null> => {
+    // 1. Try exact match
+    const exact = await fetcher(slug);
+    if (exact) return exact;
+
+    // 2. If no exact match, check if this slug is a typo of a real product.
+    // Since we can't easily reverse generateTypos without iterating everything,
+    // we might need to iterate all products and check their typos.
+    // This is expensive for a large DB, but okay for small scale or fallback data.
+    // For Prisma, we can try to fetch all slugs (cached maybe?) or rely on a known mapping.
+
+    // For now, let's do a scan approach which is acceptable for the scale implied here.
+    // Ideally, we'd have a "typo_redirects" table or similar.
+
+    // Optimization: Fetch all products (lightweight) and check locally.
+    const allProducts = await getProducts(); // This might be cached or fast enough
+
+    for (const p of allProducts) {
+      const typos = generateTypos(p.slug);
+      if (typos.includes(slug)) {
+        return p;
+      }
+    }
+
+    return null;
+  };
+
   if (!prisma) {
-    return loadFallbackProducts().find(product => product.slug === slug) ?? null;
+    return findProduct(async (s) =>
+      loadFallbackProducts().find(product => product.slug === s) ?? null
+    );
   }
 
   try {
-    const product = await prisma.product.findUnique({
-      where: { slug },
+    return await findProduct(async (s) => {
+      const product = await prisma.product.findUnique({ where: { slug: s } });
+      return product ? transformProduct(product) : null;
     });
-    
-    if (!product) return null;
-    
-    return transformProduct(product);
   } catch (error) {
     if (isPrismaUnavailableError(error)) {
       console.warn(
         '[products] Prisma getProductBySlug failed, using fallback data.',
         error
       );
-      return loadFallbackProducts().find(product => product.slug === slug) ?? null;
+      return findProduct(async (s) =>
+        loadFallbackProducts().find(product => product.slug === s) ?? null
+      );
     }
     throw error;
   }
