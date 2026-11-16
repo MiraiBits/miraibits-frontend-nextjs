@@ -24,7 +24,7 @@ jobs:
           ssh-keyscan -H "github.com" >> ~/.ssh/known_hosts
 
       - name: Push to mirror
-        run: git push --mirror git@github.com:miraibitselectronics/miraibits-frontend-nextjs.git
+        run: git push --force git@github.com:miraibitselectronics/miraibits-frontend-nextjs.git "HEAD:${GITHUB_REF}"
 
       # - name: Push to mirror
       #   run: git push --mirror https://miraibitselectronics:${{ secrets.MIRROR_REPO_PAT }}@github.com/miraibitselectronics/miraibits-frontend-nextjs.git
